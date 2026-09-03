@@ -8,7 +8,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -29,6 +29,9 @@
     .font-mono-code {
       font-family: 'Space Mono', monospace;
     }
+    .font-signature {
+      font-family: 'Caveat', cursive;
+    }
     .solid-editorial {
       color: #ffffff;
       text-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
@@ -36,74 +39,68 @@
       letter-spacing: -0.04em;
     }
 
-    /* Head-Splitting & Blending Mechanics */
-    .character-stage {
+    /* Seamless Sticky Canvas Container */
+    #flow-stage {
       position: relative;
-      width: 480px;
-      height: 480px;
-      mix-blend-mode: multiply; /* Erases white background seamlessly onto neon green */
+      width: 100%;
+      height: 320vh;
+      background-color: #d4f038;
+    }
+    #flow-sticky {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #d4f038;
     }
 
-    /* Base face layer (masked to bottom portion) */
-    .char-face {
+    /* Blends the video's white background into the neon canvas */
+    #canvas-video-layer {
       position: absolute;
-      inset: 0;
-      background: url('meme.jpg') center/contain no-repeat;
-      clip-path: polygon(0 38%, 100% 38%, 100% 100%, 0 100%);
-    }
-
-    /* Top head lid (masked to top skull portion) */
-    .char-lid {
-      position: absolute;
-      inset: 0;
-      background: url('meme.jpg') center/contain no-repeat;
-      clip-path: polygon(0 0, 100% 0, 100% 38%, 0 38%);
-      transform-origin: 82% 38%;
-      will-change: transform;
-    }
-
-    /* Glowing Erupted Head Cavity */
-    .cavity-glow {
-      position: absolute;
-      top: 36%;
-      left: 28%;
-      width: 44%;
-      height: 8%;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, #00ffff 0%, #38bdf8 45%, transparent 75%);
-      filter: blur(4px);
-      opacity: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+      max-height: 70vh;
+      mix-blend-mode: multiply;
       pointer-events: none;
+      z-index: 10;
     }
 
-    /* Scattering Letter Glyphs */
+    /* Dynamic Scattering Letter Glyphs */
     .scatter-glyph {
       display: inline-block;
-      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s ease, text-shadow 0.15s ease;
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s ease, text-shadow 0.15s ease;
       will-change: transform;
     }
 
-    /* Cursor Spotlight */
-    #cursor-light {
+    /* Ambient Cursor Spotlight */
+    #cursor-spotlight {
       position: fixed;
-      width: 320px;
-      height: 320px;
+      width: 280px;
+      height: 280px;
       border-radius: 50%;
       pointer-events: none;
       z-index: 40;
       opacity: 0;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 40%, transparent 70%);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.2) 35%, transparent 70%);
       mix-blend-mode: overlay;
-      filter: blur(10px);
+      filter: blur(8px);
       transition: opacity 0.3s ease;
     }
   </style>
 </head>
 <body class="selection:bg-black selection:text-[#d4f038] text-slate-950">
 
-  <!-- Interactive Cursor Spotlight -->
-  <div id="cursor-light"></div>
+  <!-- Interactive Spotlight Effect -->
+  <div id="cursor-spotlight"></div>
 
   <!-- Top spacer runway -->
   <header class="h-[20vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
@@ -133,7 +130,7 @@
             <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
           </div>
           <div class="py-3 font-mono-code text-xs space-y-1.5">
-            <div class="flex justify-between"><span>Inventory Tier-A</span><span>$620.00</span></div>
+            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
             <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
             <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
           </div>
@@ -243,26 +240,24 @@
     </div>
   </section>
 
-  <!-- ==================== SECTION 2: SMOOTH VECTOR-MASK HEAD BURST TO PHRASE ==================== -->
-  <section id="explode-stage" class="relative w-full min-h-[300vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
-    <div id="explode-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
+  <!-- ==================== SECTION 2: GOOGLE FLOW SCROLL ANIMATION & LETTER FORMATION ==================== -->
+  <section id="flow-stage">
+    <div id="flow-sticky">
       
-      <!-- Pure CSS Split-Meme Layer (No video player, zero watermarks, 100% smooth) -->
-      <div id="character-wrapper" class="character-stage flex items-center justify-center">
-        <div class="char-face"></div>
-        <div id="char-lid" class="char-lid"></div>
-        <div id="cavity-glow" class="cavity-glow"></div>
-      </div>
+      <!-- Video Element Rendered as Pure Canvas Motion (Hidden Controls, Blended into Neon) -->
+      <video id="canvas-video-layer" muted playsinline preload="auto">
+        <source src="Man_holding_head_with_numbers_202609032343.mp4" type="video/mp4">
+      </video>
 
-      <!-- Letter & Financial Number Fountain Container -->
-      <div id="fountain-container" class="absolute inset-0 pointer-events-none flex items-center justify-center z-20"></div>
+      <!-- Dynamic Particle Fountain Container -->
+      <div id="flow-fountain" class="absolute inset-0 pointer-events-none flex items-center justify-center z-20"></div>
 
-      <!-- Massive Assembled Editorial Phrase -->
-      <div id="final-phrase-card" class="relative z-30 max-w-7xl px-4 text-center opacity-0 pointer-events-auto">
-        <h2 id="evade-container" class="font-headline text-[9.5vw] sm:text-[8.5vw] leading-[0.84] text-black tracking-[-0.035em] uppercase cursor-default select-none">
-          <!-- Populated by script into interactive scatterable letters -->
+      <!-- Final Assembled Editorial Phrase (Dominant Typography with Mouse Scattering) -->
+      <div id="final-phrase-container" class="relative z-30 max-w-7xl px-6 text-center opacity-0 pointer-events-auto">
+        <h2 id="evade-container" class="font-headline text-[9.5vw] sm:text-[8.5vw] leading-[0.84] text-black tracking-[-0.03em] uppercase cursor-default select-none">
+          <!-- Dynamically broken into interactive letter spans -->
         </h2>
-        <p class="text-black/80 font-mono-code text-xs sm:text-sm mt-6 uppercase tracking-widest font-bold">
+        <p class="text-black/75 font-mono-code text-xs sm:text-sm mt-6 uppercase tracking-widest font-bold">
           [ Hover cursor to scatter letters ]
         </p>
       </div>
@@ -270,7 +265,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- ==================== FOOTER ==================== -->
   <footer class="h-[60vh] bg-[#d4f038] text-black flex flex-col items-center justify-center p-8 border-t-2 border-black">
     <h3 class="font-headline text-6xl md:text-8xl tracking-tight uppercase">Ready to get balanced?</h3>
     <a href="mailto:hello@precisionbooks.com" class="mt-6 px-10 py-5 bg-black text-[#d4f038] font-bold font-mono-code text-sm rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
@@ -278,11 +273,11 @@
     </a>
   </footer>
 
-  <!-- ==================== ANIMATION ENGINE ==================== -->
+  <!-- ==================== ANIMATION SCRIPT ==================== -->
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. Section 1 Parallax Cards & Depth Blur
+    // 1. SECTION 1: PARALLAX DEPTH & BLUR
     const cards = gsap.utils.toArray('.scroll-card');
     cards.forEach((card) => {
       const targetY = parseFloat(card.getAttribute('data-y')) || -300;
@@ -310,13 +305,13 @@
       });
     });
 
-    // 2. Build Interactive Assembled Headline with Letter Spans
+    // 2. BUILD THE ASSEMBLED HEADLINE WITH SCATTERABLE GLYPHS
     const phrase = "LET ME HANDLE YOUR BOOKS WITH PRECISION WHILE YOU FOCUS ON YOUR VISION";
     const evadeContainer = document.getElementById('evade-container');
 
     phrase.split(' ').forEach((word) => {
       const wordWrap = document.createElement('span');
-      wordWrap.className = 'inline-block whitespace-nowrap mr-[2vw] my-1';
+      wordWrap.className = 'inline-block whitespace-nowrap mr-[2.2vw] my-1';
 
       word.split('').forEach((char) => {
         const charWrap = document.createElement('span');
@@ -328,84 +323,86 @@
       evadeContainer.appendChild(wordWrap);
     });
 
-    // 3. Generate Floating Explosion Tokens (Numbers, Symbols & Letters)
-    const fountain = document.getElementById('fountain-container');
-    const burstSymbols = ["$", "%", "#", "Σ", "404", "TAX", "DEBIT", "&", "84%", "INV", "+", "√", "ERR", "NET", "0.00", "L", "E", "T", "B", "O", "O", "K", "S"];
+    // 3. GENERATE FLOATING EXPLOSION PARTICLES
+    const fountain = document.getElementById('flow-fountain');
+    const glyphList = "LETMEHANDLEYOURBOOKSWITHPRECISIONWHILEYOUFOCUSONYOURVISION$%#@&Σ0123456789".split('');
     const fountainItems = [];
 
-    for (let i = 0; i < 54; i++) {
+    for (let i = 0; i < 48; i++) {
       const token = document.createElement('span');
-      token.className = 'absolute font-mono-code font-black text-xl sm:text-3xl text-black pointer-events-none opacity-0 select-none';
-      token.textContent = burstSymbols[Math.floor(Math.random() * burstSymbols.length)];
+      token.className = 'absolute font-black text-2xl sm:text-4xl text-black pointer-events-none opacity-0 select-none';
+      token.textContent = glyphList[Math.floor(Math.random() * glyphList.length)];
       fountain.appendChild(token);
       fountainItems.push(token);
     }
 
-    // 4. Smooth 60FPS Scroll Timeline (No Stuttering Video)
-    const charWrapper = document.getElementById('character-wrapper');
-    const charLid = document.getElementById('char-lid');
-    const cavityGlow = document.getElementById('cavity-glow');
-    const phraseCard = document.getElementById('final-phrase-card');
+    // 4. SCROLL-BOUND TIMELINE FOR VIDEO SCRUBBING & FORMATION
+    const flowVideo = document.getElementById('canvas-video-layer');
+    const finalPhraseBox = document.getElementById('final-phrase-container');
 
-    const explodeTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#explode-stage",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.0
-      }
-    });
+    function initScrollAnimation() {
+      const flowTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#flow-stage",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.8,
+          onUpdate: (self) => {
+            // Frame-scrub the video smoothly during scroll
+            if (flowVideo.duration) {
+              const videoTime = self.progress * (flowVideo.duration * 0.95);
+              if (!isNaN(videoTime)) {
+                flowVideo.currentTime = videoTime;
+              }
+            }
+          }
+        }
+      });
 
-    // Step A: Tremble under mental stress
-    explodeTl.to(charWrapper, {
-      x: () => (Math.random() - 0.5) * 16,
-      repeat: 4,
-      yoyo: true,
-      duration: 0.8,
-      ease: "power1.inOut"
-    }, 0);
-
-    // Step B: Head lid pops open, revealing the cavity glow
-    explodeTl.to(charLid, {
-      rotate: 52,
-      x: 35,
-      y: -40,
-      duration: 1.4,
-      ease: "back.out(1.8)"
-    }, 0.6);
-    explodeTl.to(cavityGlow, { opacity: 0.9, duration: 0.4 }, 0.8);
-
-    // Step C: Fountain of numbers and symbols blasts into the sky
-    fountainItems.forEach((token, index) => {
-      const angle = (index / fountainItems.length) * Math.PI * 1.6 - (Math.PI * 0.8);
-      const distance = 300 + Math.random() * 320;
-      const targetX = Math.cos(angle) * distance;
-      const targetY = -Math.sin(angle) * distance - 180;
-
-      explodeTl.fromTo(token,
-        { x: 0, y: -40, opacity: 0, scale: 0.3 },
-        { 
-          x: targetX, 
-          y: targetY, 
-          opacity: 1, 
-          scale: 1.6, 
-          duration: 1.5, 
-          ease: "power2.out" 
-        }, 
-        0.8 + (index * 0.02)
+      // Video grows slightly into focus
+      flowTl.fromTo(flowVideo, 
+        { scale: 0.95, opacity: 1 }, 
+        { scale: 1.08, opacity: 1, duration: 1.5 }
       );
 
-      // Fade out particles as headline assembles
-      explodeTl.to(token, { opacity: 0, scale: 0.2, duration: 0.6 }, 2.4);
-    });
+      // Letter Fountain explodes out of the head between 40% and 75% scroll
+      fountainItems.forEach((token, index) => {
+        const angle = (index / fountainItems.length) * Math.PI * 1.6 - (Math.PI * 0.8);
+        const dist = 320 + Math.random() * 320;
+        const targetX = Math.cos(angle) * dist;
+        const targetY = -Math.sin(angle) * dist - 160;
 
-    // Step D: Character smoothly fades back as the massive phrase commands the screen
-    explodeTl.to(charWrapper, { scale: 0.55, opacity: 0.12, y: -60, filter: "blur(6px)", duration: 1.4 }, 2.0);
-    explodeTl.to(phraseCard, { opacity: 1, y: -40, duration: 1.5, ease: "power2.out" }, 2.2);
+        flowTl.fromTo(token,
+          { x: 0, y: -20, opacity: 0, scale: 0.3 },
+          { 
+            x: targetX, 
+            y: targetY, 
+            opacity: 1, 
+            scale: 1.8, 
+            duration: 1.4, 
+            ease: "power2.out" 
+          },
+          0.8 + (index * 0.02)
+        );
 
-    // 5. Scaled Interactive Mouse Evade Physics & Spotlight
+        // Tokens dissolve into the final formed headline
+        flowTl.to(token, { opacity: 0, scale: 0.2, duration: 0.6 }, 2.4);
+      });
+
+      // Fade out video illustration smoothly so typography takes 100% hierarchy
+      flowTl.to(flowVideo, { scale: 0.6, opacity: 0.08, filter: "blur(6px)", y: -60, duration: 1.5 }, 1.9);
+      flowTl.to(finalPhraseBox, { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 2.2);
+    }
+
+    // Ensure metadata is ready for scrubbing
+    flowVideo.addEventListener('loadedmetadata', initScrollAnimation);
+    if (flowVideo.readyState >= 1) {
+      initScrollAnimation();
+    }
+
+    // 5. MOUSE ILLUMINATION SPOTLIGHT & EVASION PHYSICS
     const glyphs = document.querySelectorAll('.scatter-glyph');
-    const spotlight = document.getElementById('cursor-light');
+    const spotlight = document.getElementById('cursor-spotlight');
 
     window.addEventListener('mousemove', (e) => {
       spotlight.style.opacity = '1';
@@ -421,11 +418,12 @@
         const deltaY = e.clientY - glyphCenterY;
         const distance = Math.hypot(deltaX, deltaY);
 
+        // Repel within 140px radius
         if (distance < 140) {
           const force = (140 - distance) / 140;
           const pushX = -(deltaX / distance) * force * 50;
           const pushY = -(deltaY / distance) * force * 50;
-          const rotate = (deltaX > 0 ? -1 : 1) * force * 32;
+          const rotate = (deltaX > 0 ? -1 : 1) * force * 30;
 
           glyph.style.transform = `translate(${pushX}px, ${pushY}px) rotate(${rotate}deg) scale(1.15)`;
           glyph.style.color = '#ffffff';
