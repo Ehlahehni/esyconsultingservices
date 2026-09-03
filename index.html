@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Numbers Not Making Sense? | Scroll Parallax</title>
+  <title>Numbers Not Making Sense?</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue (Headline) & Space Mono + Space Grotesk (Artifacts) -->
+  <!-- Google Fonts: Bebas Neue (Editorial Display) & Clean Accents -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -32,160 +32,153 @@
     .font-signature {
       font-family: 'Caveat', cursive;
     }
-
-    /* Translucent editorial typography style matching simple.design */
-    .ghost-editorial {
-      color: rgba(255, 255, 255, 0.48);
-      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-      line-height: 0.86;
-      letter-spacing: -0.01em;
+    /* Solid, crisp display typography from 0:26 */
+    .solid-editorial {
+      color: #ffffff;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      line-height: 0.84;
+      letter-spacing: -0.04em;
     }
   </style>
 </head>
 <body class="selection:bg-black selection:text-[#d4f038]">
 
   <!-- Top spacer to create initial scroll distance -->
-  <div class="h-[35vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
+  <div class="h-[30vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
     <span class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold">
       ↓ Scroll down to start scroll depth
     </span>
   </div>
 
-  <!-- ==================== MAIN STAGE SECTION ==================== -->
-  <section id="parallax-stage" class="relative w-full min-h-[220vh] bg-[#d4f038] flex flex-col justify-start items-center">
+  <!-- ==================== MAIN PARALLAX STAGE ==================== -->
+  <section id="parallax-stage" class="relative w-full min-h-[230vh] bg-[#d4f038] flex flex-col justify-start items-center">
     
     <!-- Sticky Full-Screen Viewport Window -->
     <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
       
-      <!-- 1. MASSIVE CONDENSED EDITORIAL HEADLINE -->
-      <div class="absolute z-10 text-center px-2 pointer-events-none select-none w-full max-w-7xl">
-        <h1 class="font-headline ghost-editorial text-[18vw] uppercase tracking-tight">
+      <!-- 1. MASSIVE CRISP EDITORIAL HEADLINE -->
+      <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
+        <h1 class="font-headline solid-editorial text-[19vw] uppercase">
           Numbers Not<br/>
           <span>Making Sense?</span>
         </h1>
       </div>
 
-      <!-- ==================== ACCOUNTING ARTIFACTS ==================== -->
+      <!-- ==================== ENLARGED ACCOUNTING ARTIFACTS ==================== -->
 
-      <!-- ARTIFACT 1: Physical Store Receipt (Top Left) -->
-      <!-- High-speed card that moves closest to camera, scales up, and blurs heavily -->
-      <div class="scroll-card absolute top-[10%] left-[3%] sm:left-[7%] z-30"
-           data-y="-480" data-blur="14" data-scale="1.25" data-rotate="-11">
-        <div class="w-56 sm:w-64 bg-white text-slate-900 rounded-xl p-4 shadow-[0_30px_60px_rgba(0,0,0,0.3)] border border-neutral-200">
-          <div class="text-center pb-2 border-b border-dashed border-slate-300 font-mono-code text-xs">
-            <p class="font-bold text-sm">WHOLESALE DISTRO</p>
-            <p class="text-[10px] text-slate-400">POS #9024 • Batch 11</p>
+      <!-- ARTIFACT 1: Store Receipt (Top Left) -->
+      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
+           data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
+        <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.3)] border border-neutral-200">
+          <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
+            <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
+            <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
           </div>
-          <div class="py-2.5 font-mono-code text-[11px] space-y-1">
-            <div class="flex justify-between"><span>Inventory Stock A</span><span>$420.00</span></div>
-            <div class="flex justify-between"><span>Carrier Freight</span><span>$85.50</span></div>
-            <div class="flex justify-between text-slate-400"><span>State Tax (7%)</span><span>$35.38</span></div>
+          <div class="py-3 font-mono-code text-xs space-y-1.5">
+            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
+            <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
+            <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
           </div>
-          <div class="pt-2 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-xs">
+          <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
             <span>TOTAL DUE</span>
-            <span>$540.88</span>
+            <span>$796.17</span>
           </div>
         </div>
       </div>
 
-      <!-- ARTIFACT 2: Minimal Overdue Bill / Invoice Badge (Top Right) -->
-      <!-- Fast drift with high focal blur -->
-      <div class="scroll-card absolute top-[8%] right-[4%] sm:right-[9%] z-25"
-           data-y="-440" data-blur="12" data-scale="1.2" data-rotate="9">
-        <div class="w-60 sm:w-68 bg-[#0f172a] text-white rounded-2xl p-4 shadow-[0_35px_65px_rgba(0,0,0,0.38)] border border-slate-800">
-          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-            <span class="text-[10px] font-mono-code uppercase px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
+      <!-- ARTIFACT 2: Minimal Overdue Invoice Badge (Top Right) -->
+      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
+           data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
+        <div class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.4)] border border-slate-800">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
               OVERDUE 45 DAYS
             </span>
-            <span class="text-slate-400 text-xs font-mono-code">INV-2026</span>
+            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
           </div>
-          <p class="text-xs text-slate-400 mt-2.5">Q3 Marketing Retainer</p>
-          <p class="text-2xl font-black text-white mt-1">$6,200.00</p>
+          <p class="text-xs text-slate-400 mt-3 font-medium">Q3 Retainer Balance Due</p>
+          <p class="text-3xl font-black text-white mt-1.5">$8,450.00</p>
         </div>
       </div>
 
-      <!-- ARTIFACT 3: Bank Statement Feed (Middle Right) -->
-      <!-- Center focal point: slow movement, stays sharp and in crisp focus -->
-      <div class="scroll-card absolute top-[45%] right-[2%] sm:right-[6%] z-35"
-           data-y="-160" data-blur="1.5" data-scale="1.03" data-rotate="-4">
-        <div class="w-64 sm:w-76 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-[0_25px_50px_rgba(0,0,0,0.22)] border border-slate-200">
-          <div class="flex justify-between items-center pb-2 border-b border-slate-100">
-            <span class="text-xs font-bold tracking-tight text-slate-900">Checking (...3810)</span>
-            <span class="text-[10px] font-mono-code text-slate-400">Live Sync</span>
+      <!-- ARTIFACT 3: Bank Statement Live Feed (Middle Right) -->
+      <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
+           data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
+        <div class="w-72 sm:w-88 md:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-slate-200">
+          <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
+            <span class="text-sm font-bold tracking-tight text-slate-900">Checking (...3810)</span>
+            <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
           </div>
-          <div class="mt-2.5 space-y-2 font-mono-code text-xs">
+          <div class="mt-3 space-y-2.5 font-mono-code text-xs">
             <div class="flex justify-between text-rose-600 font-bold">
               <span>Stripe Payout Reversal</span>
-              <span>-$1,840.00</span>
+              <span>-$2,450.00</span>
             </div>
             <div class="flex justify-between text-slate-600">
-              <span>Server Hosting</span>
-              <span>-$312.40</span>
+              <span>Infrastructure Hosting</span>
+              <span>-$420.80</span>
             </div>
             <div class="flex justify-between text-emerald-600 font-bold">
               <span>Client Wire (Cleared)</span>
-              <span>+$9,500.00</span>
+              <span>+$12,300.00</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ARTIFACT 4: QuickBooks Reconciliation Warning (Middle Left) -->
-      <!-- Intermediate speed and gentle focal blur -->
+      <!-- ARTIFACT 4: QuickBooks Alert Slip (Middle Left) -->
       <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
-           data-y="-240" data-blur="4" data-scale="0.95" data-rotate="8">
-        <div class="w-56 sm:w-64 bg-amber-50 rounded-2xl p-4 border border-amber-300 shadow-[0_20px_40px_rgba(217,119,6,0.18)]">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-            <span class="text-xs font-bold text-amber-900">Unreconciled Items</span>
+           data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
+        <div class="w-64 sm:w-76 bg-amber-50 rounded-2xl p-4.5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.2)]">
+          <div class="flex items-center gap-2.5">
+            <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
+            <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Sync Discrepancy</span>
           </div>
-          <p class="text-xs text-amber-800 mt-1.5 font-mono-code">
-            142 transactions require manual categorization.
+          <p class="text-xs text-amber-800 mt-2 font-mono-code">
+            142 unreconciled entries synced via QuickBooks & Xero.
           </p>
         </div>
       </div>
 
-      <!-- ARTIFACT 5: Shopify / Amazon Sales Margin Dashboard (Bottom Left) -->
-      <!-- Starts in background, catches speed and blurs as it moves up -->
-      <div class="scroll-card absolute bottom-[8%] left-[6%] sm:left-[14%] z-30"
-           data-y="-380" data-blur="10" data-scale="1.18" data-rotate="-6">
-        <div class="w-60 sm:w-72 bg-[#111111] text-white rounded-2xl p-4 shadow-[0_30px_60px_rgba(0,0,0,0.45)] border border-neutral-800">
+      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard (Bottom Left) -->
+      <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
+           data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
+        <div class="w-72 sm:w-84 md:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.45)] border border-neutral-800">
           <div class="flex justify-between items-center text-xs text-neutral-400">
-            <span>Shopify Gross Margin</span>
-            <span class="text-rose-400 font-bold font-mono-code">↓ 16.4%</span>
+            <span class="font-medium">Shopify Gross Margin</span>
+            <span class="text-rose-400 font-bold font-mono-code">↓ 18.2%</span>
           </div>
-          <div class="mt-2 flex items-baseline gap-2">
-            <span class="text-2xl font-bold font-mono-code">$14,210</span>
-            <span class="text-xs text-neutral-500">vs $17,000</span>
+          <div class="mt-2.5 flex items-baseline gap-2">
+            <span class="text-3xl font-bold font-mono-code">$19,420</span>
+            <span class="text-xs text-neutral-500 font-mono-code">vs $23,750</span>
           </div>
           <!-- Sparkline Bars -->
-          <div class="mt-3 w-full h-8 flex items-end gap-1.5 pt-2">
-            <div class="flex-1 bg-neutral-700 h-5 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
+          <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
             <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500/80 h-3 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500 h-2 rounded-sm"></div>
+            <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
+            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
+            <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
+            <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
           </div>
         </div>
       </div>
 
       <!-- ARTIFACT 6: Business Check Slip (Bottom Right) -->
-      <!-- Drifts upward with depth blur -->
-      <div class="scroll-card absolute bottom-[6%] right-[6%] sm:right-[15%] z-25"
-           data-y="-320" data-blur="8" data-scale="1.1" data-rotate="5">
-        <div class="w-64 sm:w-80 bg-[#fdfcf7] text-stone-900 rounded-xl p-4 shadow-[0_25px_50px_rgba(0,0,0,0.25)] border border-stone-300">
+      <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
+           data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
+        <div class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-stone-300">
           <div class="flex justify-between items-start">
-            <span class="text-[10px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
-            <span class="font-mono-code text-[11px] text-stone-600">NO. 2049</span>
+            <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
+            <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
           </div>
-          <div class="mt-2 flex justify-between items-center border-b border-stone-300 pb-1">
-            <span class="text-[10px] font-mono-code text-stone-400">PAY:</span>
-            <span class="text-xs font-semibold">Contractor Services</span>
-            <span class="text-xs font-mono-code font-bold">$3,450.00</span>
+          <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
+            <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
+            <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
+            <span class="text-xs sm:text-sm font-mono-code font-bold">$4,850.00</span>
           </div>
-          <div class="mt-2 flex justify-between items-baseline font-mono-code text-[10px] text-stone-400">
+          <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
             <span>MEMO: Tax Accrual</span>
-            <span class="font-signature text-stone-800 text-lg">M. Kensington</span>
+            <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
           </div>
         </div>
       </div>
@@ -193,13 +186,13 @@
     </div>
   </section>
 
-  <!-- Clean Bottom Section to Complete the Scroll Out -->
+  <!-- Bottom section to finish scroll sequence -->
   <footer class="h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8">
-    <h2 class="font-headline text-6xl text-[#d4f038] tracking-tight">Financial Clarity, Restored.</h2>
-    <p class="text-neutral-400 mt-2 font-mono-code text-sm">Monthly close, sales reconciliation, and balanced books.</p>
+    <h2 class="font-headline text-6xl md:text-7xl text-[#d4f038] tracking-tight">Clarity Reclaimed.</h2>
+    <p class="text-neutral-400 mt-2 font-mono-code text-sm">Monthly close, reconciliation, and peace of mind.</p>
   </footer>
 
-  <!-- ==================== ANIMATION SCRIPT ==================== -->
+  <!-- ==================== ANIMATION ENGINE ==================== -->
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
@@ -211,14 +204,14 @@
       const targetScale = parseFloat(card.getAttribute('data-scale')) || 1.1;
       const baseRotation = parseFloat(card.getAttribute('data-rotate')) || 0;
 
-      // Initial card position
+      // Initial card position setup
       gsap.set(card, {
         rotationZ: baseRotation,
         filter: "blur(0px)",
         transformOrigin: "center center"
       });
 
-      // Scroll-linked parallax and cinematic depth-of-field blur
+      // Smooth scroll interpolation matching Framer showcase
       gsap.to(card, {
         y: targetY,
         scale: targetScale,
