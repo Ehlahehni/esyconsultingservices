@@ -72,26 +72,24 @@
 <body class="selection:bg-black selection:text-[#d4f038] text-slate-900">
 
   <!-- ==================== STAGE 1: HERO VIDEO + 3D MOUSE TILT ==================== -->
-  <section id="hero-section" class="relative w-full h-[100vh] bg-white flex items-center justify-center overflow-hidden [perspective:1200px]">
+  <section id="hero-section" class="relative w-full h-[100vh] bg-white flex items-center justify-center overflow-hidden">
 
     <!-- Loading indicator while the video buffers on slower connections -->
     <div id="video-loading" class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
       <div class="w-10 h-10 border-[3px] border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
     </div>
 
-    <div id="video-tilt-wrapper" class="relative w-full h-full flex items-center justify-center gpu transition-transform duration-100 ease-out">
-      <video
-        id="head-video"
-        src="hero-video.mp4"
-        autoplay
-        muted
-        playsinline
-        preload="auto"
-        class="w-full h-full object-contain max-w-4xl select-none pointer-events-none">
-      </video>
-    </div>
+    <video
+      id="head-video"
+      src="hero-video.mp4"
+      autoplay
+      muted
+      playsinline
+      preload="auto"
+      class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none">
+    </video>
 
-    <div id="scroll-prompt" class="absolute bottom-8 flex flex-col items-center pointer-events-none z-20">
+    <div id="scroll-prompt" class="absolute bottom-8 flex flex-col items-center pointer-events-none z-20 opacity-0 transition-opacity duration-500 ease-out">
       <span class="text-[11px] uppercase tracking-widest font-mono-code text-slate-500 font-bold mb-2">
         ↓ Scroll down to unpack
       </span>
@@ -263,8 +261,8 @@
     gsap.registerPlugin(ScrollTrigger);
 
     // -------------------------------------------------------------
-    // 1. VIDEO: single source of truth for the mist reveal
-    //    (previously two different triggers fought over this — removed)
+    // 1. VIDEO: plays once, scroll is locked until it ends, then the
+    //    mist reveal takes over and is driven by scroll from there.
     // -------------------------------------------------------------
     const video = document.getElementById('head-video');
     const mistOverlay = document.getElementById('mist-overlay');
@@ -274,12 +272,31 @@
     video.addEventListener('loadeddata', () => {
       videoLoading.style.opacity = '0';
     });
-    // Fallback in case the browser is slow to fire loadeddata
     video.addEventListener('playing', () => {
       videoLoading.style.opacity = '0';
     });
 
-    // The mist is controlled ONLY by scroll now — one predictable source.
+    // Lock scroll until the video finishes playing.
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    let videoHasEnded = false;
+    const unlockScroll = () => {
+      if (videoHasEnded) return;
+      videoHasEnded = true;
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      scrollPrompt.style.opacity = '1';
+      ScrollTrigger.refresh();
+    };
+
+    video.addEventListener('ended', unlockScroll);
+    // Safety net: if the video can't play for some reason (autoplay
+    // blocked, slow network, missing file) don't trap the user — unlock
+    // scroll after a timeout regardless.
+    setTimeout(unlockScroll, 15000);
+
+    // The mist is controlled by scroll, and only ever runs after unlock.
     gsap.to(mistOverlay, {
       opacity: 1,
       ease: 'none',
@@ -289,39 +306,15 @@
         end: 'bottom 55%',
         scrub: 0.6,
         onUpdate: (self) => {
-          scrollPrompt.style.opacity = self.progress > 0.08 ? '0' : '1';
+          if (videoHasEnded) {
+            scrollPrompt.style.opacity = self.progress > 0.08 ? '0' : '1';
+          }
         }
       }
     });
 
     // -------------------------------------------------------------
-    // 2. 3D MOUSE TILT — only active before the user starts scrolling
-    // -------------------------------------------------------------
-    const videoTiltWrapper = document.getElementById('video-tilt-wrapper');
-    let mouseX = 0, mouseY = 0;
-    let targetRotX = 0, targetRotY = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseY = (e.clientY / window.innerHeight) * 2 - 1;
-    });
-
-    const updateTilt = () => {
-      if (window.scrollY < window.innerHeight * 0.5) {
-        targetRotX += ((-mouseY * 12) - targetRotX) * 0.08;
-        targetRotY += ((mouseX * 16) - targetRotY) * 0.08;
-        videoTiltWrapper.style.transform = `rotateX(${targetRotX}deg) rotateY(${targetRotY}deg)`;
-      } else if (targetRotX !== 0 || targetRotY !== 0) {
-        targetRotX += (0 - targetRotX) * 0.1;
-        targetRotY += (0 - targetRotY) * 0.1;
-        videoTiltWrapper.style.transform = `rotateX(${targetRotX}deg) rotateY(${targetRotY}deg)`;
-      }
-      requestAnimationFrame(updateTilt);
-    };
-    updateTilt();
-
-    // -------------------------------------------------------------
-    // 3. PARALLAX CARDS — transform + opacity only (no scrubbed blur)
+    // 2. PARALLAX CARDS — transform + opacity only (no scrubbed blur)
     //    Blur is set ONCE via a cheap CSS transition, not recalculated
     //    every scroll frame. This is the main lag fix.
     // -------------------------------------------------------------
@@ -367,7 +360,7 @@
     });
 
     // -------------------------------------------------------------
-    // 4. INTERACTIVE SCATTER TEXT — bigger, modern, clearly two lines
+    // 3. INTERACTIVE SCATTER TEXT — bigger, modern, clearly two lines
     // -------------------------------------------------------------
     const canvas = document.getElementById('interactive-text-canvas');
     const ctx = canvas.getContext('2d');
