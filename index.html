@@ -3,26 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pen & Ink Scroll Animation</title>
+  <title>Scroll Hero Overload</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
+
     body {
-      background-color: #f4efe6; /* Parchment ink paper feel */
-      font-family: monospace;
-      color: #1a1a1a;
+      background-color: #faf7f2;
+      color: #111;
+      font-family: system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
     }
-    /* Creates scroll distance */
-    .scroll-track {
-      height: 400vh;
+
+    /* Long track to allow scrolling */
+    .scroll-container {
+      height: 350vh;
       position: relative;
     }
-    /* Keeps the hero element locked in the viewport */
-    .sticky-container {
+
+    /* Locks the animation inside the viewport */
+    .hero-viewport {
       position: sticky;
       top: 0;
       height: 100vh;
@@ -31,191 +34,171 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      pointer-events: none;
+      overflow: hidden;
     }
+
     canvas {
       width: 100%;
-      max-width: 600px;
-      height: 600px;
+      max-width: 650px;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      filter: url(#ink-boil); /* Real-time hand-drawn line jitter */
     }
-    .hud {
+
+    .scroll-hint {
       position: absolute;
       bottom: 2rem;
-      font-size: 0.9rem;
-      letter-spacing: 0.1em;
+      font-size: 0.85rem;
       text-transform: uppercase;
-      opacity: 0.6;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      color: #555;
     }
   </style>
 </head>
 <body>
 
-  <div class="scroll-track">
-    <div class="sticky-container">
-      <canvas id="hero-canvas" width="600" height="600"></canvas>
-      <div class="hud">Scroll down to overload</div>
+  <svg style="position: absolute; width: 0; height: 0; pointer-events: none;">
+    <filter id="ink-boil">
+      <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
+  <div class="scroll-container">
+    <div class="hero-viewport">
+      <canvas id="stage" width="700" height="700"></canvas>
+      <div class="scroll-hint">Scroll down to overload</div>
     </div>
   </div>
 
   <script>
-    const canvas = document.getElementById("hero-canvas");
+    const canvas = document.getElementById("stage");
     const ctx = canvas.getContext("2d");
+    const turbulence = document.getElementById("turbulence");
+
+    // Load your transparent Jackie Chan meme cutout
+    const memeImg = new Image();
+    memeImg.src = "Snipaste_2026-09-04_03-21-35.png";
 
     let scrollProgress = 0;
-    const symbols = ["∑", "√", "π", "∫", "0", "1", "%", "≠", "{ }", "∂", "∞", "λ"];
-    const particles = [];
+    let seed = 0;
 
-    // Initialize exploded particles
-    for (let i = 0; i < 45; i++) {
+    // Symbol pool for the explosion
+    const chars = ["∑", "√", "π", "∫", "0", "1", "%", "≠", "{ }", "∂", "∞", "λ", "404", "NaN"];
+    const particles = [];
+    for (let i = 0; i < 50; i++) {
       particles.push({
-        char: symbols[Math.floor(Math.random() * symbols.length)],
+        text: chars[Math.floor(Math.random() * chars.length)],
         angle: Math.random() * Math.PI * 2,
-        dist: 30 + Math.random() * 220,
-        speed: 0.5 + Math.random() * 1.5,
+        dist: 40 + Math.random() * 260,
+        speed: 0.7 + Math.random() * 1.3,
         size: 14 + Math.random() * 18
       });
     }
 
-    // Track scroll depth normalized (0.0 to 1.0)
+    // Scroll normalization (0.0 to 1.0)
     window.addEventListener("scroll", () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       scrollProgress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
     });
 
-    // Ink hand-drawn jitter function
-    function jitter(val, amount = 1.5) {
-      return val + (Math.random() - 0.5) * amount;
-    }
-
-    // Procedural jagged lightning line
+    // Draw jagged electric arcs
     function drawLightning(x1, y1, x2, y2, segments = 5) {
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       for (let i = 1; i < segments; i++) {
         const t = i / segments;
-        const nx = x1 + (x2 - x1) * t + (Math.random() - 0.5) * 20;
-        const ny = y1 + (y2 - y1) * t + (Math.random() - 0.5) * 20;
+        const nx = x1 + (x2 - x1) * t + (Math.random() - 0.5) * 24;
+        const ny = y1 + (y2 - y1) * t + (Math.random() - 0.5) * 24;
         ctx.lineTo(nx, ny);
       }
       ctx.lineTo(x2, y2);
       ctx.stroke();
     }
 
-    function render() {
+    function loop() {
+      // 1. Animate line-boil filter periodically
+      seed += 0.05;
+      turbulence.setAttribute("seed", Math.floor(seed % 10));
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const cx = 300;
-      const cy = 300;
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
 
-      // Stage thresholds
-      // 0.0 - 0.5: Frustration / Contortion
-      // 0.5 - 1.0: Overload / Electric Explosion
-      const frustration = Math.min(scrollProgress / 0.5, 1);
-      const explosion = Math.max((scrollProgress - 0.45) / 0.55, 0);
+      // Phase boundaries:
+      // 0.0 - 0.55: Escalating frustration & face contortion
+      // 0.45 - 1.0: Head burst, electricity & symbol scatter
+      const frustration = Math.min(scrollProgress / 0.55, 1);
+      const burst = Math.max((scrollProgress - 0.45) / 0.55, 0);
 
-      // Frustration head vibration
-      const shakeX = frustration > 0.4 ? (Math.random() - 0.5) * (frustration * 10) : 0;
-      const shakeY = frustration > 0.4 ? (Math.random() - 0.5) * (frustration * 10) : 0;
+      // Increasing head vibration
+      const shakeIntensity = frustration * 14;
+      const shakeX = frustration > 0.1 ? (Math.random() - 0.5) * shakeIntensity : 0;
+      const shakeY = frustration > 0.1 ? (Math.random() - 0.5) * shakeIntensity : 0;
+
+      // Squish/squeeze contortion as frustration mounts
+      const scaleX = 1 + frustration * 0.15;
+      const scaleY = 1 - frustration * 0.18;
 
       ctx.save();
       ctx.translate(cx + shakeX, cy + shakeY);
-      ctx.strokeStyle = "#111";
-      ctx.lineWidth = 2.5;
-      ctx.lineCap = "round";
-      ctx.fillStyle = "#111";
 
-      // 1. HEAD BASE
-      if (explosion < 0.7) {
-        ctx.beginPath();
-        const headScale = 1 - explosion * 0.4;
-        ctx.ellipse(
-          jitter(0),
-          jitter(0),
-          jitter(75 * headScale),
-          jitter(95 * headScale),
-          0,
-          0,
-          Math.PI * 2
-        );
-        ctx.stroke();
+      // Draw the meme head if not fully dispersed
+      if (burst < 0.95 && memeImg.complete) {
+        ctx.save();
+        ctx.scale(scaleX, scaleY);
+        ctx.globalAlpha = Math.max(0, 1 - burst * 1.3);
 
-        // Cross-hatching shading (frustration tension)
-        if (frustration > 0.2) {
-          ctx.lineWidth = 1;
-          const lines = Math.floor(frustration * 12);
-          for (let i = 0; i < lines; i++) {
-            ctx.beginPath();
-            ctx.moveTo(jitter(-40 + i * 5), jitter(-70));
-            ctx.lineTo(jitter(-25 + i * 5), jitter(-50));
-            ctx.stroke();
-          }
-          ctx.lineWidth = 2.5;
-        }
-
-        // 2. CONTORTING EYES & EYEBROWS
-        const browDrop = frustration * 12;
-        const eyeSquint = frustration * 4;
-
-        // Eyebrows (slanted down into an angry/frustrated V-shape)
-        ctx.beginPath();
-        ctx.moveTo(jitter(-45), jitter(-25 + browDrop));
-        ctx.lineTo(jitter(-10), jitter(-15 + browDrop * 1.8));
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(jitter(45), jitter(-25 + browDrop));
-        ctx.lineTo(jitter(10), jitter(-15 + browDrop * 1.8));
-        ctx.stroke();
-
-        // Pupils
-        ctx.beginPath();
-        ctx.arc(jitter(-25), jitter(-5), Math.max(1, 5 - eyeSquint), 0, Math.PI * 2);
-        ctx.arc(jitter(25), jitter(-5), Math.max(1, 5 - eyeSquint), 0, Math.PI * 2);
-        ctx.fill();
-
-        // 3. MOUTH (from neutral line to grimace / open scream)
-        ctx.beginPath();
-        const mouthOpen = frustration * 22;
-        ctx.ellipse(jitter(0), jitter(45), jitter(20 + frustration * 10), jitter(2 + mouthOpen), 0, 0, Math.PI * 2);
-        ctx.stroke();
+        const imgW = 460;
+        const imgH = (memeImg.naturalHeight / memeImg.naturalWidth) * imgW;
+        ctx.drawImage(memeImg, -imgW / 2, -imgH / 2, imgW, imgH);
+        ctx.restore();
       }
 
-      // 4. ELECTRICITY & SYMBOLS EXPLOSION
-      if (explosion > 0.05) {
-        // Jagged electricity bolts
-        ctx.lineWidth = 1.8;
-        const boltCount = Math.floor(explosion * 8);
+      // 2. Draw jagged electrical bolts
+      if (burst > 0.05) {
+        ctx.strokeStyle = "#111";
+        ctx.lineWidth = 2.2;
+        ctx.lineCap = "round";
+
+        const boltCount = Math.floor(burst * 10);
         for (let i = 0; i < boltCount; i++) {
           const angle = Math.random() * Math.PI * 2;
           const r1 = 30;
-          const r2 = 90 + explosion * 90;
+          const r2 = 120 + burst * 160;
           drawLightning(
             Math.cos(angle) * r1,
-            Math.sin(angle) * r1,
+            Math.sin(angle) * r1 - 40,
             Math.cos(angle) * r2,
-            Math.sin(angle) * r2
+            Math.sin(angle) * r2 - 40
           );
         }
 
-        // Floating / expanding numbers and equations
-        ctx.font = "bold 18px monospace";
+        // 3. Exploding symbols & numbers
+        ctx.fillStyle = "#111";
+        ctx.font = "bold 20px monospace";
+
         particles.forEach((p) => {
-          const currentDist = p.dist * explosion * p.speed;
+          const currentDist = p.dist * burst * p.speed;
           const px = Math.cos(p.angle) * currentDist;
-          const py = Math.sin(p.angle) * currentDist - explosion * 30; // rising drift
+          const py = Math.sin(p.angle) * currentDist - burst * 60; // upward drift
+
           ctx.save();
-          ctx.translate(jitter(px, 2), jitter(py, 2));
-          ctx.globalAlpha = Math.min(explosion * 1.5, 1);
-          ctx.fillText(p.char, 0, 0);
+          ctx.translate(px, py);
+          ctx.globalAlpha = Math.min(burst * 1.6, 1);
+          ctx.fillText(p.text, 0, 0);
           ctx.restore();
         });
       }
 
       ctx.restore();
-      requestAnimationFrame(render);
+      requestAnimationFrame(loop);
     }
 
-    render();
+    memeImg.onload = () => requestAnimationFrame(loop);
+    if (memeImg.complete) requestAnimationFrame(loop);
   </script>
 </body>
 </html>
