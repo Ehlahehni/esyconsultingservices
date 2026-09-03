@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Precision Books | Numbers Not Making Sense?</title>
+  <title>Numbers Not Making Sense? | Precision Bookkeeping</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue (Editorial Display) & Space Mono + Space Grotesk -->
+  <!-- Bebas Neue & Space Grotesk / Space Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
-  <!-- GSAP + ScrollTrigger -->
+  <!-- GSAP & ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
     body {
-      background-color: #0d1117;
+      background-color: #d4f038;
       font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
     }
@@ -38,20 +38,20 @@
       line-height: 0.84;
       letter-spacing: -0.04em;
     }
-    /* Letter repulsion effect container */
+    /* Dynamic scattering letter tokens */
     .scatter-letter {
       display: inline-block;
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease;
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s ease;
       will-change: transform;
     }
   </style>
 </head>
-<body class="selection:bg-black selection:text-[#d4f038] text-slate-100">
+<body class="selection:bg-black selection:text-[#d4f038] text-slate-950">
 
-  <!-- Top scroll runway indicator -->
+  <!-- Top spacer runway -->
   <header class="h-[25vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
     <span class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold">
-      ↓ Scroll down to trigger the experience
+      ↓ Scroll down to start scroll depth
     </span>
   </header>
 
@@ -61,7 +61,7 @@
     <!-- Sticky Full-Screen Viewport Window -->
     <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
       
-      <!-- 1. MASSIVE CRISP EDITORIAL HEADLINE -->
+      <!-- MASSIVE CRISP EDITORIAL HEADLINE -->
       <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
         <h1 class="font-headline solid-editorial text-[19vw] uppercase">
           Numbers Not<br/>
@@ -69,17 +69,16 @@
         </h1>
       </div>
 
-      <!-- Financial UI Artifacts -->
       <!-- ARTIFACT 1: Store Receipt (Top Left) -->
       <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
            data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
-        <div class="w-64 sm:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.3)] border border-neutral-200">
+        <div class="w-64 sm:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.22)] border border-neutral-300/80">
           <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
             <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
             <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
           </div>
           <div class="py-3 font-mono-code text-xs space-y-1.5">
-            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
+            <div class="flex justify-between"><span>Inventory Tier-A</span><span>$620.00</span></div>
             <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
             <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
           </div>
@@ -93,7 +92,7 @@
       <!-- ARTIFACT 2: Minimal Overdue Invoice Badge (Top Right) -->
       <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
            data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
-        <div class="w-72 sm:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.4)] border border-slate-800">
+        <div class="w-72 sm:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.3)] border border-slate-800">
           <div class="flex items-center justify-between pb-3 border-b border-slate-800">
             <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
               OVERDUE 45 DAYS
@@ -108,7 +107,7 @@
       <!-- ARTIFACT 3: Bank Statement Live Feed (Middle Right) -->
       <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
            data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
-        <div class="w-72 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-slate-200">
+        <div class="w-72 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.18)] border border-slate-300">
           <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
             <span class="text-sm font-bold tracking-tight text-slate-900">Checking (...3810)</span>
             <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
@@ -133,12 +132,12 @@
       <!-- ARTIFACT 4: QuickBooks Alert Slip (Middle Left) -->
       <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
            data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
-        <div class="w-64 sm:w-76 bg-amber-50 rounded-2xl p-4.5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.2)]">
+        <div class="w-64 sm:w-76 bg-white/90 backdrop-blur-md rounded-2xl p-4.5 border border-amber-400 shadow-[0_24px_45px_rgba(0,0,0,0.12)]">
           <div class="flex items-center gap-2.5">
             <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
-            <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Sync Discrepancy</span>
+            <span class="text-xs font-bold text-amber-950 uppercase tracking-wide">Sync Discrepancy</span>
           </div>
-          <p class="text-xs text-amber-800 mt-2 font-mono-code">
+          <p class="text-xs text-amber-900 mt-2 font-mono-code">
             142 unreconciled entries synced via QuickBooks & Xero.
           </p>
         </div>
@@ -147,7 +146,7 @@
       <!-- ARTIFACT 5: Shopify Gross Margin Dashboard (Bottom Left) -->
       <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
            data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
-        <div class="w-72 sm:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.45)] border border-neutral-800">
+        <div class="w-72 sm:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-neutral-800">
           <div class="flex justify-between items-center text-xs text-neutral-400">
             <span class="font-medium">Shopify Gross Margin</span>
             <span class="text-rose-400 font-bold font-mono-code">↓ 18.2%</span>
@@ -169,7 +168,7 @@
       <!-- ARTIFACT 6: Business Check Slip (Bottom Right) -->
       <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
            data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
-        <div class="w-76 sm:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-stone-300">
+        <div class="w-76 sm:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-stone-300">
           <div class="flex justify-between items-start">
             <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
             <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
@@ -189,50 +188,41 @@
     </div>
   </section>
 
-  <!-- ==================== SECTION 2: THE EXPLODING MIND TO CLARITY ==================== -->
-  <section id="resolution-stage" class="relative w-full min-h-[260vh] bg-[#0d1117] flex flex-col justify-start items-center">
+  <!-- ==================== SECTION 2: CONTINUOUS LIME CANVAS + MEME VIDEO + LETTER EXPLOSION ==================== -->
+  <section id="meme-stage" class="relative w-full min-h-[260vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
     
-    <!-- Sticky viewport for the video + letter explosion -->
-    <div id="mind-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4">
+    <!-- Sticky Full-Screen Viewport for Video & Explosive Typography -->
+    <div id="meme-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
       
-      <!-- Video Frame Container -->
-      <div id="character-wrapper" class="relative w-full max-w-lg aspect-video rounded-3xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.6)] border border-white/10 bg-white">
-        <!-- The Overwhelmed Head Exploding Clip -->
-        <video id="meme-video" class="w-full h-full object-cover" muted playsinline loop>
-          <source src="https://media.giphy.com/media/26ueZpd8bdBpm4KJ2/source.mp4" type="video/mp4">
-          <!-- Fallback direct animation gif for browsers that block remote mp4 embeds -->
-          <img src="https://media.giphy.com/media/26ueZpd8bdBpm4KJ2/giphy.gif" alt="Mind explosion illustration" class="w-full h-full object-cover">
+      <!-- Video Container Styled to blend directly into the Neon Lime Canvas -->
+      <div id="video-box" class="relative w-full max-w-xl aspect-video rounded-3xl overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.25)] border-4 border-black bg-white flex items-center justify-center">
+        <video id="head-video" class="w-full h-full object-contain" muted playsinline preload="auto">
+          <!-- Local video asset -->
+          <source src="Man_holding_head_with_numbers_202609032343.mp4" type="video/mp4">
         </video>
-        <!-- Subtle gradient overlay blending video into background -->
-        <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
       </div>
 
-      <!-- Letter Fountain / Scattered Particle Container (Emerges from the top of the head) -->
-      <div id="particle-fountain" class="absolute w-full h-full pointer-events-none flex items-center justify-center">
-        <!-- Dynamically populated floating letter tokens via JavaScript -->
-      </div>
+      <!-- Dynamic Fountain Container for Letters Shooting Upward -->
+      <div id="particle-fountain" class="absolute w-full h-full pointer-events-none flex items-center justify-center"></div>
 
-      <!-- The Formed Destination Phrase (Starts hidden, materializes as letters snap into order) -->
-      <div id="final-phrase-box" class="relative z-20 mt-8 max-w-4xl text-center opacity-0 transform translate-y-8">
-        <span class="font-mono-code text-xs font-bold tracking-widest text-[#d4f038] uppercase bg-[#d4f038]/10 px-3.5 py-1.5 rounded-full border border-[#d4f038]/20">
-          Clarity & Precision
-        </span>
-        <h2 id="interactive-headline" class="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight mt-4 cursor-default select-none">
-          <!-- Populated by script into interactive scatterable letters -->
+      <!-- MASSIVE ASSEMBLED PHRASE (Enlarged to Hero Display Scale) -->
+      <div id="assembled-phrase-card" class="relative z-30 mt-4 w-full max-w-7xl text-center opacity-0 pointer-events-auto">
+        <h2 id="evade-target" class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-black tracking-tight leading-[0.92] cursor-default select-none">
+          <!-- Dynamically populated letters -->
         </h2>
-        <p class="text-slate-400 mt-4 text-sm sm:text-base font-mono-code max-w-xl mx-auto">
-          Hover over the text to feel the balance. When you're ready, let’s get your ledger reconciled.
+        <p class="text-black/80 font-mono-code text-xs sm:text-base mt-6 tracking-widest uppercase font-bold">
+          [ Hover cursor over letters to interact ]
         </p>
       </div>
 
     </div>
   </section>
 
-  <!-- ==================== CALL TO ACTION FOOTER ==================== -->
-  <footer class="h-[60vh] bg-[#090d12] text-white flex flex-col items-center justify-center p-8 border-t border-white/10">
-    <h3 class="font-headline text-5xl md:text-7xl text-[#d4f038] tracking-tight">Ready to hand over the books?</h3>
-    <a href="mailto:hello@precisionbooks.com" class="mt-6 px-8 py-4 bg-[#d4f038] text-black font-bold font-mono-code text-sm rounded-full shadow-[0_10px_30px_rgba(212,240,56,0.3)] hover:scale-105 transition-transform">
-      Schedule a Financial Audit →
+  <!-- ==================== CALL TO ACTION SECTION ==================== -->
+  <footer class="h-[60vh] bg-[#d4f038] text-black flex flex-col items-center justify-center p-8 border-t-2 border-black">
+    <h3 class="font-headline text-6xl md:text-8xl tracking-tight uppercase">Ready to get balanced?</h3>
+    <a href="mailto:hello@precisionbooks.com" class="mt-6 px-10 py-5 bg-black text-[#d4f038] font-bold font-mono-code text-sm rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
+      Schedule a Reconciliation Call →
     </a>
   </footer>
 
@@ -240,7 +230,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. SECTION 1 PARALLAX + DEPTH BLUR
+    // 1. Section 1 Parallax Cards & Depth Blur
     const cards = gsap.utils.toArray('.scroll-card');
     cards.forEach((card) => {
       const targetY = parseFloat(card.getAttribute('data-y')) || -300;
@@ -268,20 +258,14 @@
       });
     });
 
-    // 2. SECTION 2: VIDEO SCRUB / TRANSITION & LETTER FOUNTAIN
-    const memeVideo = document.getElementById('meme-video');
-    const characterWrapper = document.getElementById('character-wrapper');
-    const fountainContainer = document.getElementById('particle-fountain');
-    const finalPhraseBox = document.getElementById('final-phrase-box');
-    const interactiveHeadline = document.getElementById('interactive-headline');
+    // 2. Phrase Generator with Individual Letter Glyphs
+    const finalPhrase = "Let me handle your books with precision while you focus on your vision.";
+    const evadeTarget = document.getElementById('evade-target');
 
-    const phrase = "Let me handle your books with precision while you focus on your vision";
-
-    // Split phrase into span glyphs for interactive cursor repulsion
-    phrase.split(' ').forEach((word, wordIndex) => {
+    finalPhrase.split(' ').forEach((word) => {
       const wordSpan = document.createElement('span');
-      wordSpan.className = 'inline-block whitespace-nowrap mr-3';
-      
+      wordSpan.className = 'inline-block whitespace-nowrap mr-3 sm:mr-5 md:mr-7 my-1';
+
       word.split('').forEach((char) => {
         const charSpan = document.createElement('span');
         charSpan.textContent = char;
@@ -289,104 +273,119 @@
         wordSpan.appendChild(charSpan);
       });
 
-      interactiveHeadline.appendChild(wordSpan);
+      evadeTarget.appendChild(wordSpan);
     });
 
-    // Generate random fountain letters that burst out of the head
-    const tokens = "$ % # Σ 7 4 8 + √ Let books vision precision audit tax".split(' ');
+    // 3. Spawning the Letter Explosion Fountain Tokens
+    const fountainContainer = document.getElementById('particle-fountain');
+    const burstChars = "LETMEHANDLEYOURBOOKSWITHPRECISIONWHILEYOUFOCUSONYOURVISION$%#@&".split('');
     const fountainElements = [];
-    for (let i = 0; i < 28; i++) {
-      const el = document.createElement('div');
-      el.className = 'absolute font-mono-code font-bold text-sm sm:text-base pointer-events-none opacity-0 select-none';
-      el.textContent = tokens[Math.floor(Math.random() * tokens.length)];
-      // Palette mixing chartreuse and electric cyan
-      el.style.color = i % 2 === 0 ? '#d4f038' : '#38bdf8';
+
+    for (let i = 0; i < 40; i++) {
+      const el = document.createElement('span');
+      el.className = 'absolute font-black text-2xl sm:text-4xl text-black pointer-events-none opacity-0 select-none';
+      el.textContent = burstChars[Math.floor(Math.random() * burstChars.length)];
       fountainContainer.appendChild(el);
       fountainElements.push(el);
     }
 
-    // GSAP Scroll Timeline connecting video playback to head eruption and typography convergence
-    const mindTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#resolution-stage",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.2,
-        onUpdate: (self) => {
-          if (memeVideo && memeVideo.duration) {
-            memeVideo.currentTime = self.progress * memeVideo.duration;
+    // 4. Scroll-Bound Timeline for the Video & Explosion
+    const headVideo = document.getElementById('head-video');
+    const videoBox = document.getElementById('video-box');
+    const assembledCard = document.getElementById('assembled-phrase-card');
+
+    headVideo.addEventListener('loadedmetadata', () => {
+      initMemeTimeline();
+    });
+    if (headVideo.readyState >= 1) {
+      initMemeTimeline();
+    }
+
+    function initMemeTimeline() {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#meme-stage",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.2,
+          onUpdate: (self) => {
+            if (headVideo.duration) {
+              headVideo.currentTime = self.progress * headVideo.duration;
+            }
           }
         }
-      }
-    });
+      });
 
-    // Step A: The Video scales slightly into view as mind gets strained
-    mindTimeline.fromTo(characterWrapper, 
-      { scale: 0.9, y: 30, opacity: 0.8 },
-      { scale: 1.05, y: -20, opacity: 1, duration: 1.5 }
-    );
-
-    // Step B: Fountain particles erupt upward out of the head
-    fountainElements.forEach((el, index) => {
-      const angle = (index / fountainElements.length) * Math.PI * 1.5 - (Math.PI * 0.75);
-      const distance = 220 + Math.random() * 200;
-      const targetX = Math.cos(angle) * distance;
-      const targetY = -Math.sin(angle) * distance - 80;
-
-      mindTimeline.fromTo(el, 
-        { x: 0, y: -40, opacity: 0, scale: 0.4 },
-        { 
-          x: targetX, 
-          y: targetY, 
-          opacity: 0.9, 
-          scale: 1.2 + Math.random() * 0.4, 
-          duration: 1.8, 
-          ease: "power2.out" 
-        }, 
-        1.2 + (index * 0.02)
+      // Video scales slightly up during stress build-up
+      tl.fromTo(videoBox, 
+        { scale: 0.9, y: 30 }, 
+        { scale: 1.05, y: -10, duration: 1.5 }
       );
 
-      // Fade out particles as they clear
-      mindTimeline.to(el, { opacity: 0, scale: 0.2, duration: 0.8 }, 3.0);
-    });
+      // Eruption: Letters shoot upward out of his head
+      fountainElements.forEach((el, index) => {
+        const angle = (index / fountainElements.length) * Math.PI * 1.6 - (Math.PI * 0.8);
+        const dist = 320 + Math.random() * 260;
+        const targetX = Math.cos(angle) * dist;
+        const targetY = -Math.sin(angle) * dist - 120;
 
-    // Step C: The video smoothly recedes and the clean sentence materializes in its place
-    mindTimeline.to(characterWrapper, { scale: 0.7, opacity: 0.15, filter: "blur(8px)", y: -60, duration: 1.5 }, 2.6);
-    mindTimeline.to(finalPhraseBox, { opacity: 1, y: -30, duration: 1.5, ease: "power2.out" }, 2.8);
+        tl.fromTo(el, 
+          { x: 0, y: -40, opacity: 0, scale: 0.4 },
+          { 
+            x: targetX, 
+            y: targetY, 
+            opacity: 1, 
+            scale: 1.6, 
+            duration: 1.4, 
+            ease: "power2.out" 
+          }, 
+          0.8 + (index * 0.02)
+        );
 
-    // 3. INTERACTIVE CURSOR REPULSION ON ASSEMBLED PHRASE
-    const letterSpans = document.querySelectorAll('.scatter-letter');
+        tl.to(el, { opacity: 0, scale: 0.3, duration: 0.6 }, 2.4);
+      });
 
-    interactiveHeadline.addEventListener('mousemove', (e) => {
-      letterSpans.forEach((letter) => {
+      // Video steps back and minimizes so the massive headline commands full visual hierarchy
+      tl.to(videoBox, { scale: 0.5, opacity: 0.15, y: -80, filter: "blur(5px)", duration: 1.5 }, 2.0);
+      tl.to(assembledCard, { opacity: 1, y: -80, duration: 1.5, ease: "power2.out" }, 2.2);
+    }
+
+    // 5. Scaled Interactive Mouse Evade Physics
+    const letters = document.querySelectorAll('.scatter-letter');
+
+    evadeTarget.addEventListener('mousemove', (e) => {
+      letters.forEach((letter) => {
         const rect = letter.getBoundingClientRect();
-        const letterX = rect.left + rect.width / 2;
-        const letterY = rect.top + rect.height / 2;
+        const letterCenterX = rect.left + rect.width / 2;
+        const letterCenterY = rect.top + rect.height / 2;
 
-        const deltaX = e.clientX - letterX;
-        const deltaY = e.clientY - letterY;
-        const dist = Math.hypot(deltaX, deltaY);
+        const dx = e.clientX - letterCenterX;
+        const dy = e.clientY - letterCenterY;
+        const dist = Math.hypot(dx, dy);
 
-        // Repel within 120px radius
-        if (dist < 120) {
-          const force = (120 - dist) / 120;
-          const pushX = -(deltaX / dist) * force * 35;
-          const pushY = -(deltaY / dist) * force * 35;
-          const rot = (deltaX > 0 ? -1 : 1) * force * 25;
+        // Expanded interaction radius (160px) for bigger letters
+        if (dist < 160) {
+          const force = (160 - dist) / 160;
+          const pushX = -(dx / dist) * force * 55;
+          const pushY = -(dy / dist) * force * 55;
+          const rotate = (dx > 0 ? -1 : 1) * force * 35;
 
-          letter.style.transform = `translate(${pushX}px, ${pushY}px) rotate(${rot}deg) scale(1.15)`;
-          letter.style.color = '#d4f038';
-        } else {
-          letter.style.transform = `translate(0px, 0px) rotate(0deg) scale(1)`;
+          letter.style.transform = `translate(${pushX}px, ${pushY}px) rotate(${rotate}deg) scale(1.18)`;
           letter.style.color = '#ffffff';
+          letter.style.textShadow = '0 10px 25px rgba(0,0,0,0.35)';
+        } else {
+          letter.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
+          letter.style.color = '#000000';
+          letter.style.textShadow = 'none';
         }
       });
     });
 
-    interactiveHeadline.addEventListener('mouseleave', () => {
-      letterSpans.forEach((letter) => {
-        letter.style.transform = `translate(0px, 0px) rotate(0deg) scale(1)`;
-        letter.style.color = '#ffffff';
+    evadeTarget.addEventListener('mouseleave', () => {
+      letters.forEach((letter) => {
+        letter.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
+        letter.style.color = '#000000';
+        letter.style.textShadow = 'none';
       });
     });
   </script>
