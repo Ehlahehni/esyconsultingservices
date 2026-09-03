@@ -1,375 +1,1744 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Numbers Not Making Sense? | Precision Bookkeeping</title>
+
+  <title>Numbers Not Making Sense?</title>
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
-  <!-- GSAP & ScrollTrigger -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
+
   <style>
+
+    /* =========================================================
+       YOUR ORIGINAL STYLES
+       ========================================================= */
+
     body {
-      background-color: #d4f038;
+      background-color: #0b0f14;
       font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
     }
+
     .font-headline {
       font-family: 'Bebas Neue', sans-serif;
     }
+
     .font-mono-code {
       font-family: 'Space Mono', monospace;
     }
+
     .font-signature {
       font-family: 'Caveat', cursive;
     }
+
     .solid-editorial {
       color: #ffffff;
       text-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
       line-height: 0.84;
       letter-spacing: -0.04em;
     }
-    .scatter-letter {
-      display: inline-block;
-      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s ease;
-      will-change: transform;
-    }
-  </style>
-</head>
-<body class="selection:bg-black selection:text-[#d4f038] text-slate-950">
 
-  <!-- Top spacer runway -->
-  <header class="h-[20vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
-    <span class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold">
-      ↓ Scroll down to start experience
-    </span>
-  </header>
 
-  <!-- ==================== SECTION 1: NUMBERS NOT MAKING SENSE? ==================== -->
-  <section id="parallax-stage" class="relative w-full min-h-[220vh] bg-[#d4f038] flex flex-col justify-start items-center">
-    <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
-      
-      <!-- Crisp Editorial Headline -->
-      <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
-        <h1 class="font-headline solid-editorial text-[19vw] uppercase">
-          Numbers Not<br/>
-          <span>Making Sense?</span>
-        </h1>
-      </div>
+    /* =========================================================
+       NEW SCROLL EXPERIENCE
+       ========================================================= */
 
-      <!-- ARTIFACT 1: Store Receipt -->
-      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
-           data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
-        <div class="w-64 sm:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.22)] border border-neutral-300/80">
-          <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
-            <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
-            <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
-          </div>
-          <div class="py-3 font-mono-code text-xs space-y-1.5">
-            <div class="flex justify-between"><span>Inventory Tier-A</span><span>$620.00</span></div>
-            <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
-            <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
-          </div>
-          <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
-            <span>TOTAL DUE</span>
-            <span>$796.17</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 2: Overdue Invoice -->
-      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
-           data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
-        <div class="w-72 sm:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.3)] border border-slate-800">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
-              OVERDUE 45 DAYS
-            </span>
-            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-3 font-medium">Q3 Retainer Balance Due</p>
-          <p class="text-3xl font-black text-white mt-1.5">$8,450.00</p>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 3: Bank Statement -->
-      <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
-           data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
-        <div class="w-72 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.18)] border border-slate-300">
-          <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
-            <span class="text-sm font-bold tracking-tight text-slate-900">Checking (...3810)</span>
-            <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
-          </div>
-          <div class="mt-3 space-y-2.5 font-mono-code text-xs">
-            <div class="flex justify-between text-rose-600 font-bold">
-              <span>Stripe Payout Reversal</span>
-              <span>-$2,450.00</span>
-            </div>
-            <div class="flex justify-between text-slate-600">
-              <span>Infrastructure Hosting</span>
-              <span>-$420.80</span>
-            </div>
-            <div class="flex justify-between text-emerald-600 font-bold">
-              <span>Client Wire (Cleared)</span>
-              <span>+$12,300.00</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 4: QuickBooks Alert -->
-      <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
-           data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
-        <div class="w-64 sm:w-76 bg-white/90 backdrop-blur-md rounded-2xl p-4.5 border border-amber-400 shadow-[0_24px_45px_rgba(0,0,0,0.12)]">
-          <div class="flex items-center gap-2.5">
-            <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
-            <span class="text-xs font-bold text-amber-950 uppercase tracking-wide">Sync Discrepancy</span>
-          </div>
-          <p class="text-xs text-amber-900 mt-2 font-mono-code">
-            142 unreconciled entries synced via QuickBooks & Xero.
-          </p>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 5: Shopify Dashboard -->
-      <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
-           data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
-        <div class="w-72 sm:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-neutral-800">
-          <div class="flex justify-between items-center text-xs text-neutral-400">
-            <span class="font-medium">Shopify Gross Margin</span>
-            <span class="text-rose-400 font-bold font-mono-code">↓ 18.2%</span>
-          </div>
-          <div class="mt-2.5 flex items-baseline gap-2">
-            <span class="text-3xl font-bold font-mono-code">$19,420</span>
-            <span class="text-xs text-neutral-500 font-mono-code">vs $23,750</span>
-          </div>
-          <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
-            <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 6: Business Check -->
-      <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
-           data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
-        <div class="w-76 sm:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-stone-300">
-          <div class="flex justify-between items-start">
-            <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
-            <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
-          </div>
-          <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
-            <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
-            <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
-            <span class="text-xs sm:text-sm font-mono-code font-bold">$4,850.00</span>
-          </div>
-          <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
-            <span>MEMO: Tax Accrual</span>
-            <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ==================== SECTION 2: VIDEO + EXPLODING LETTERS ==================== -->
-  <section id="meme-stage" class="relative w-full min-h-[290vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
-    <div id="meme-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
-      
-      <!-- Video Element: Matches your file name in the same folder -->
-      <div id="video-box" class="relative w-full max-w-lg aspect-video rounded-3xl overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.25)] border-4 border-black bg-white flex items-center justify-center">
-        <video id="head-video" class="w-full h-full object-contain" muted loop playsinline autoplay preload="auto">
-          <source src="Man_holding_head_with_numbers_202609032343.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <!-- Fountain Particle Container -->
-      <div id="particle-fountain" class="absolute w-full h-full pointer-events-none flex items-center justify-center"></div>
-
-      <!-- MASSIVE ASSEMBLED PHRASE (Display scale with mouse evasion) -->
-      <div id="assembled-phrase-card" class="relative z-30 mt-2 w-full max-w-7xl text-center opacity-0 pointer-events-auto">
-        <h2 id="evade-target" class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-black tracking-tight leading-[0.92] cursor-default select-none">
-          <!-- Populated dynamically -->
-        </h2>
-        <p class="text-black/80 font-mono-code text-xs sm:text-base mt-6 tracking-widest uppercase font-bold">
-          [ Hover cursor over letters to scatter ]
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="h-[60vh] bg-[#d4f038] text-black flex flex-col items-center justify-center p-8 border-t-2 border-black">
-    <h3 class="font-headline text-6xl md:text-8xl tracking-tight uppercase">Ready to get balanced?</h3>
-    <a href="mailto:hello@precisionbooks.com" class="mt-6 px-10 py-5 bg-black text-[#d4f038] font-bold font-mono-code text-sm rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
-      Schedule a Reconciliation Call →
-    </a>
-  </footer>
-
-  <!-- ==================== ANIMATION ENGINE ==================== -->
-  <script>
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Section 1 Parallax & Blur
-    const cards = gsap.utils.toArray('.scroll-card');
-    cards.forEach((card) => {
-      const targetY = parseFloat(card.getAttribute('data-y')) || -300;
-      const maxBlur = parseFloat(card.getAttribute('data-blur')) || 8;
-      const targetScale = parseFloat(card.getAttribute('data-scale')) || 1.1;
-      const baseRotation = parseFloat(card.getAttribute('data-rotate')) || 0;
-
-      gsap.set(card, {
-        rotationZ: baseRotation,
-        filter: "blur(0px)",
-        transformOrigin: "center center"
-      });
-
-      gsap.to(card, {
-        y: targetY,
-        scale: targetScale,
-        filter: `blur(${maxBlur}px)`,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: "#parallax-stage",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2
-        }
-      });
-    });
-
-    // Phrase Generator with Evasion Letters
-    const finalPhrase = "Let me handle your books with precision while you focus on your vision.";
-    const evadeTarget = document.getElementById('evade-target');
-
-    finalPhrase.split(' ').forEach((word) => {
-      const wordSpan = document.createElement('span');
-      wordSpan.className = 'inline-block whitespace-nowrap mr-3 sm:mr-5 md:mr-7 my-1';
-
-      word.split('').forEach((char) => {
-        const charSpan = document.createElement('span');
-        charSpan.textContent = char;
-        charSpan.className = 'scatter-letter';
-        wordSpan.appendChild(charSpan);
-      });
-
-      evadeTarget.appendChild(wordSpan);
-    });
-
-    // Fountain Token Generation
-    const fountainContainer = document.getElementById('particle-fountain');
-    const burstChars = "LETMEHANDLEYOURBOOKSWITHPRECISIONWHILEYOUFOCUSONYOURVISION$%#@&".split('');
-    const fountainElements = [];
-
-    for (let i = 0; i < 44; i++) {
-      const el = document.createElement('span');
-      el.className = 'absolute font-black text-2xl sm:text-4xl text-black pointer-events-none opacity-0 select-none';
-      el.textContent = burstChars[Math.floor(Math.random() * burstChars.length)];
-      fountainContainer.appendChild(el);
-      fountainElements.push(el);
+    #books-scroll-section {
+      position: relative;
+      width: 100%;
+      height: 500vh;
+      background: #d4f038;
     }
 
-    // Scroll Video & Explosion Sequence
-    const headVideo = document.getElementById('head-video');
-    const videoBox = document.getElementById('video-box');
-    const assembledCard = document.getElementById('assembled-phrase-card');
+    #books-scroll-sticky {
+      position: sticky;
+      top: 0;
 
-    // Force video play on user scroll interaction if browser suspended it
-    const playAttempt = () => {
-      headVideo.play().catch(() => {});
-      window.removeEventListener('scroll', playAttempt);
-      window.removeEventListener('click', playAttempt);
-    };
-    window.addEventListener('scroll', playAttempt, { passive: true });
-    window.addEventListener('click', playAttempt);
+      width: 100%;
+      height: 100vh;
 
-    const memeTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#meme-stage",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.2
-      }
-    });
+      overflow: hidden;
 
-    memeTl.fromTo(videoBox, { scale: 0.9, y: 30 }, { scale: 1.05, y: 0, duration: 1.2 });
+      background: #d4f038;
+    }
 
-    fountainElements.forEach((el, index) => {
-      const angle = (index / fountainElements.length) * Math.PI * 1.6 - (Math.PI * 0.8);
-      const dist = 320 + Math.random() * 280;
-      const targetX = Math.cos(angle) * dist;
-      const targetY = -Math.sin(angle) * dist - 140;
 
-      memeTl.fromTo(el, 
-        { x: 0, y: -20, opacity: 0, scale: 0.4 },
-        { 
-          x: targetX, 
-          y: targetY, 
-          opacity: 1, 
-          scale: 1.7, 
-          duration: 1.4, 
-          ease: "power2.out" 
-        }, 
-        0.8 + (index * 0.02)
+    /* =========================================================
+       GOOGLE FLOW VIDEO
+       ========================================================= */
+
+    #books-flow-video {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      /*
+       * The video has a white background.
+       * Multiply makes white visually disappear
+       * into the neon-green background.
+       */
+
+      mix-blend-mode: multiply;
+
+      opacity: 1;
+
+      pointer-events: none;
+
+      z-index: 5;
+    }
+
+
+    /* =========================================================
+       PARTICLE CANVAS
+       ========================================================= */
+
+    #books-particle-canvas {
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      z-index: 15;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       FINAL MESSAGE
+       ========================================================= */
+
+    #books-final-message {
+      position: absolute;
+
+      inset: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 5vw;
+
+      text-align: center;
+
+      font-family: 'Bebas Neue', sans-serif;
+
+      font-size: clamp(
+        55px,
+        9vw,
+        150px
       );
 
-      memeTl.to(el, { opacity: 0, scale: 0.3, duration: 0.6 }, 2.2);
-    });
+      line-height: 0.82;
 
-    memeTl.to(videoBox, { scale: 0.5, opacity: 0.15, y: -80, filter: "blur(5px)", duration: 1.5 }, 1.8);
-    memeTl.to(assembledCard, { opacity: 1, y: -90, duration: 1.5, ease: "power2.out" }, 2.0);
+      letter-spacing: -0.035em;
 
-    // Mouse Scatter on Big Text
-    const letters = document.querySelectorAll('.scatter-letter');
+      text-transform: uppercase;
 
-    evadeTarget.addEventListener('mousemove', (e) => {
-      letters.forEach((letter) => {
-        const rect = letter.getBoundingClientRect();
-        const letterCenterX = rect.left + rect.width / 2;
-        const letterCenterY = rect.top + rect.height / 2;
+      color: #080808;
 
-        const dx = e.clientX - letterCenterX;
-        const dy = e.clientY - letterCenterY;
-        const dist = Math.hypot(dx, dy);
+      opacity: 0;
 
-        if (dist < 160) {
-          const force = (160 - dist) / 160;
-          const pushX = -(dx / dist) * force * 55;
-          const pushY = -(dy / dist) * force * 55;
-          const rotate = (dx > 0 ? -1 : 1) * force * 35;
+      z-index: 20;
 
-          letter.style.transform = `translate(${pushX}px, ${pushY}px) rotate(${rotate}deg) scale(1.18)`;
-          letter.style.color = '#ffffff';
-          letter.style.textShadow = '0 10px 25px rgba(0,0,0,0.35)';
-        } else {
-          letter.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
-          letter.style.color = '#000000';
-          letter.style.textShadow = 'none';
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       CURSOR LIGHT
+       ========================================================= */
+
+    #books-cursor-light {
+      position: fixed;
+
+      width: 180px;
+      height: 180px;
+
+      border-radius: 50%;
+
+      pointer-events: none;
+
+      z-index: 9999;
+
+      opacity: 0;
+
+      transform: translate(-50%, -50%);
+
+      background:
+        radial-gradient(
+          circle,
+
+          rgba(255,255,255,0.30) 0%,
+
+          rgba(255,255,255,0.13) 25%,
+
+          rgba(255,255,255,0.05) 45%,
+
+          transparent 70%
+        );
+
+      mix-blend-mode: screen;
+
+      filter: blur(4px);
+    }
+
+
+    /* =========================================================
+       SCROLL HINT
+       ========================================================= */
+
+    #books-scroll-hint {
+      position: absolute;
+
+      bottom: 30px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      z-index: 30;
+
+      font-family: 'Space Mono', monospace;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.18em;
+
+      color: rgba(0,0,0,0.55);
+
+      transition: opacity 0.3s ease;
+
+      white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 768px) {
+
+      #books-scroll-section {
+        height: 400vh;
+      }
+
+      #books-final-message {
+        font-size: clamp(
+          48px,
+          13vw,
+          90px
+        );
+
+        padding: 8vw;
+      }
+
+      #books-cursor-light {
+        display: none;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body class="selection:bg-black selection:text-[#d4f038]">
+
+
+  <!-- =========================================================
+       YOUR ORIGINAL SECTION
+       ========================================================= -->
+
+
+  <!-- Top spacer to create initial scroll distance -->
+
+  <div class="h-[30vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
+
+    <span
+      class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold"
+    >
+      ↓ Scroll down to start scroll depth
+    </span>
+
+  </div>
+
+
+  <!-- ==================== MAIN PARALLAX STAGE ==================== -->
+
+  <section
+    id="parallax-stage"
+    class="relative w-full min-h-[230vh] bg-[#d4f038] flex flex-col justify-start items-center"
+  >
+
+    <!-- Sticky Full-Screen Viewport Window -->
+
+    <div
+      id="sticky-viewport"
+      class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden"
+    >
+
+
+      <!-- 1. MASSIVE CRISP EDITORIAL HEADLINE -->
+
+      <div
+        class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl"
+      >
+
+        <h1
+          class="font-headline solid-editorial text-[19vw] uppercase"
+        >
+
+          Numbers Not<br/>
+
+          <span>
+            Making Sense?
+          </span>
+
+        </h1>
+
+      </div>
+
+
+
+      <!-- ==================== ENLARGED ACCOUNTING ARTIFACTS ==================== -->
+
+
+      <!-- ARTIFACT 1: Store Receipt -->
+
+      <div
+        class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
+        data-y="-520"
+        data-blur="14"
+        data-scale="1.22"
+        data-rotate="-10"
+      >
+
+        <div
+          class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.3)] border border-neutral-200"
+        >
+
+          <div
+            class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs"
+          >
+
+            <p class="font-bold text-base tracking-tight">
+              WHOLESALE COMMERCE
+            </p>
+
+            <p class="text-[11px] text-slate-400">
+              Terminal #04 • Batch 8820
+            </p>
+
+          </div>
+
+
+          <div
+            class="py-3 font-mono-code text-xs space-y-1.5"
+          >
+
+            <div class="flex justify-between">
+              <span>Physical Stock Tier-A</span>
+              <span>$620.00</span>
+            </div>
+
+            <div class="flex justify-between">
+              <span>Express Freight</span>
+              <span>$115.50</span>
+            </div>
+
+            <div class="flex justify-between text-slate-400">
+              <span>State Tax (8.25%)</span>
+              <span>$60.67</span>
+            </div>
+
+          </div>
+
+
+          <div
+            class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm"
+          >
+
+            <span>
+              TOTAL DUE
+            </span>
+
+            <span>
+              $796.17
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ARTIFACT 2: Minimal Overdue Invoice Badge -->
+
+      <div
+        class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
+        data-y="-480"
+        data-blur="12"
+        data-scale="1.2"
+        data-rotate="8"
+      >
+
+        <div
+          class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.4)] border border-slate-800"
+        >
+
+          <div
+            class="flex items-center justify-between pb-3 border-b border-slate-800"
+          >
+
+            <span
+              class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30"
+            >
+              OVERDUE 45 DAYS
+            </span>
+
+            <span
+              class="text-slate-400 text-xs font-mono-code"
+            >
+              INV-2026-99
+            </span>
+
+          </div>
+
+
+          <p
+            class="text-xs text-slate-400 mt-3 font-medium"
+          >
+            Q3 Retainer Balance Due
+          </p>
+
+
+          <p
+            class="text-3xl font-black text-white mt-1.5"
+          >
+            $8,450.00
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ARTIFACT 3: Bank Statement Live Feed -->
+
+      <div
+        class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
+        data-y="-160"
+        data-blur="2"
+        data-scale="1.04"
+        data-rotate="-4"
+      >
+
+        <div
+          class="w-72 sm:w-88 md:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-slate-200"
+        >
+
+          <div
+            class="flex justify-between items-center pb-2.5 border-b border-slate-100"
+          >
+
+            <span
+              class="text-sm font-bold tracking-tight text-slate-900"
+            >
+              Checking (...3810)
+            </span>
+
+            <span
+              class="text-xs font-mono-code text-slate-400"
+            >
+              Live Feed
+            </span>
+
+          </div>
+
+
+          <div
+            class="mt-3 space-y-2.5 font-mono-code text-xs"
+          >
+
+            <div
+              class="flex justify-between text-rose-600 font-bold"
+            >
+
+              <span>
+                Stripe Payout Reversal
+              </span>
+
+              <span>
+                -$2,450.00
+              </span>
+
+            </div>
+
+
+            <div
+              class="flex justify-between text-slate-600"
+            >
+
+              <span>
+                Infrastructure Hosting
+              </span>
+
+              <span>
+                -$420.80
+              </span>
+
+            </div>
+
+
+            <div
+              class="flex justify-between text-emerald-600 font-bold"
+            >
+
+              <span>
+                Client Wire (Cleared)
+              </span>
+
+              <span>
+                +$12,300.00
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ARTIFACT 4: QuickBooks Alert Slip -->
+
+      <div
+        class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
+        data-y="-260"
+        data-blur="5"
+        data-scale="0.96"
+        data-rotate="7"
+      >
+
+        <div
+          class="w-64 sm:w-76 bg-amber-50 rounded-2xl p-4.5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.2)]"
+        >
+
+          <div class="flex items-center gap-2.5">
+
+            <span
+              class="w-3 h-3 rounded-full bg-amber-500 animate-ping"
+            ></span>
+
+            <span
+              class="text-xs font-bold text-amber-900 uppercase tracking-wide"
+            >
+              Sync Discrepancy
+            </span>
+
+          </div>
+
+
+          <p
+            class="text-xs text-amber-800 mt-2 font-mono-code"
+          >
+            142 unreconciled entries synced via QuickBooks & Xero.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard -->
+
+      <div
+        class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
+        data-y="-420"
+        data-blur="11"
+        data-scale="1.18"
+        data-rotate="-5"
+      >
+
+        <div
+          class="w-72 sm:w-84 md:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.45)] border border-neutral-800"
+        >
+
+          <div
+            class="flex justify-between items-center text-xs text-neutral-400"
+          >
+
+            <span class="font-medium">
+              Shopify Gross Margin
+            </span>
+
+            <span
+              class="text-rose-400 font-bold font-mono-code"
+            >
+              ↓ 18.2%
+            </span>
+
+          </div>
+
+
+          <div
+            class="mt-2.5 flex items-baseline gap-2"
+          >
+
+            <span
+              class="text-3xl font-bold font-mono-code"
+            >
+              $19,420
+            </span>
+
+            <span
+              class="text-xs text-neutral-500 font-mono-code"
+            >
+              vs $23,750
+            </span>
+
+          </div>
+
+
+          <div
+            class="mt-4 w-full h-10 flex items-end gap-2 pt-2"
+          >
+
+            <div
+              class="flex-1 bg-neutral-700 h-6 rounded-sm"
+            ></div>
+
+            <div
+              class="flex-1 bg-neutral-700 h-8 rounded-sm"
+            ></div>
+
+            <div
+              class="flex-1 bg-neutral-700 h-7 rounded-sm"
+            ></div>
+
+            <div
+              class="flex-1 bg-rose-500/80 h-4 rounded-sm"
+            ></div>
+
+            <div
+              class="flex-1 bg-rose-500 h-2.5 rounded-sm"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ARTIFACT 6: Business Check Slip -->
+
+      <div
+        class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
+        data-y="-340"
+        data-blur="8"
+        data-scale="1.12"
+        data-rotate="4"
+      >
+
+        <div
+          class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-stone-300"
+        >
+
+          <div
+            class="flex justify-between items-start"
+          >
+
+            <span
+              class="text-[11px] font-mono-code font-bold uppercase text-stone-500"
+            >
+              FIRST METRO COMMERCE
+            </span>
+
+            <span
+              class="font-mono-code text-xs text-stone-600"
+            >
+              NO. 3082
+            </span>
+
+          </div>
+
+
+          <div
+            class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5"
+          >
+
+            <span
+              class="text-[11px] font-mono-code text-stone-400"
+            >
+              PAY TO:
+            </span>
+
+            <span
+              class="text-xs sm:text-sm font-semibold"
+            >
+              Contractor Services
+            </span>
+
+            <span
+              class="text-xs sm:text-sm font-mono-code font-bold"
+            >
+              $4,850.00
+            </span>
+
+          </div>
+
+
+          <div
+            class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400"
+          >
+
+            <span>
+              MEMO: Tax Accrual
+            </span>
+
+            <span
+              class="font-signature text-stone-800 text-xl"
+            >
+              M. Kensington
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================================
+       NEW SECTION
+       GOOGLE FLOW → NUMBERS → TEXT → MOUSE INTERACTION
+       ========================================================= -->
+
+
+  <section id="books-scroll-section">
+
+    <div id="books-scroll-sticky">
+
+
+      <!-- GOOGLE FLOW VIDEO -->
+
+      <video
+        id="books-flow-video"
+        muted
+        playsinline
+        preload="auto"
+      >
+
+        <!-- VIDEO IS IN THE SAME FOLDER AS THIS HTML FILE -->
+
+        <source
+          src="./Man_holding_head_with_numbers_202609032343.mp4"
+          type="video/mp4"
+        >
+
+      </video>
+
+
+      <!-- PARTICLE CANVAS -->
+
+      <canvas
+        id="books-particle-canvas"
+      ></canvas>
+
+
+      <!-- FINAL MESSAGE -->
+
+      <div id="books-final-message">
+
+        LET ME HANDLE YOUR BOOKS WITH PRECISION
+        WHILE YOU FOCUS ON YOUR VISION
+
+      </div>
+
+
+      <!-- CURSOR LIGHT -->
+
+      <div id="books-cursor-light"></div>
+
+
+      <!-- SCROLL HINT -->
+
+      <div id="books-scroll-hint">
+
+        ↓ Keep scrolling
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =========================================================
+       YOUR ORIGINAL FOOTER
+       ========================================================= -->
+
+  <footer
+    class="h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8"
+  >
+
+    <h2
+      class="font-headline text-6xl md:text-7xl text-[#d4f038] tracking-tight"
+    >
+      Clarity Reclaimed.
+    </h2>
+
+    <p
+      class="text-neutral-400 mt-2 font-mono-code text-sm"
+    >
+      Monthly close, reconciliation, and peace of mind.
+    </p>
+
+  </footer>
+
+
+
+  <!-- =========================================================
+       ANIMATION ENGINE
+       ========================================================= -->
+
+  <script>
+
+    gsap.registerPlugin(ScrollTrigger);
+
+
+    /* =========================================================
+       YOUR ORIGINAL ANIMATION
+       ========================================================= */
+
+    const cards =
+      gsap.utils.toArray('.scroll-card');
+
+
+    cards.forEach((card) => {
+
+      const targetY =
+        parseFloat(
+          card.getAttribute('data-y')
+        ) || -300;
+
+      const maxBlur =
+        parseFloat(
+          card.getAttribute('data-blur')
+        ) || 8;
+
+      const targetScale =
+        parseFloat(
+          card.getAttribute('data-scale')
+        ) || 1.1;
+
+      const baseRotation =
+        parseFloat(
+          card.getAttribute('data-rotate')
+        ) || 0;
+
+
+      gsap.set(card, {
+
+        rotationZ: baseRotation,
+
+        filter: "blur(0px)",
+
+        transformOrigin:
+          "center center"
+
+      });
+
+
+      gsap.to(card, {
+
+        y: targetY,
+
+        scale: targetScale,
+
+        filter:
+          `blur(${maxBlur}px)`,
+
+        ease: "power1.out",
+
+        scrollTrigger: {
+
+          trigger:
+            "#parallax-stage",
+
+          start:
+            "top top",
+
+          end:
+            "bottom bottom",
+
+          scrub: 1.2
+
         }
+
       });
+
     });
 
-    evadeTarget.addEventListener('mouseleave', () => {
-      letters.forEach((letter) => {
-        letter.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
-        letter.style.color = '#000000';
-        letter.style.textShadow = 'none';
-      });
-    });
+
+
+    /* =========================================================
+       NEW EXPERIENCE
+       ========================================================= */
+
+    const booksSection =
+      document.querySelector(
+        "#books-scroll-section"
+      );
+
+    const booksSticky =
+      document.querySelector(
+        "#books-scroll-sticky"
+      );
+
+    const booksVideo =
+      document.querySelector(
+        "#books-flow-video"
+      );
+
+    const booksCanvas =
+      document.querySelector(
+        "#books-particle-canvas"
+      );
+
+    const booksMessage =
+      document.querySelector(
+        "#books-final-message"
+      );
+
+    const booksCursorLight =
+      document.querySelector(
+        "#books-cursor-light"
+      );
+
+    const booksScrollHint =
+      document.querySelector(
+        "#books-scroll-hint"
+      );
+
+
+    if (
+      booksSection &&
+      booksVideo &&
+      booksCanvas
+    ) {
+
+
+      /* =======================================================
+         CANVAS
+         ======================================================= */
+
+      const ctx =
+        booksCanvas.getContext("2d");
+
+
+      let canvasWidth =
+        window.innerWidth;
+
+      let canvasHeight =
+        window.innerHeight;
+
+
+      let particles = [];
+
+
+      let mouse = {
+
+        x: -1000,
+
+        y: -1000,
+
+        active: false
+
+      };
+
+
+
+      /* =======================================================
+         RESIZE
+         ======================================================= */
+
+      function resizeCanvas() {
+
+        const dpr =
+          Math.min(
+            window.devicePixelRatio || 1,
+            2
+          );
+
+
+        canvasWidth =
+          window.innerWidth;
+
+        canvasHeight =
+          window.innerHeight;
+
+
+        booksCanvas.width =
+          canvasWidth * dpr;
+
+        booksCanvas.height =
+          canvasHeight * dpr;
+
+
+        booksCanvas.style.width =
+          canvasWidth + "px";
+
+        booksCanvas.style.height =
+          canvasHeight + "px";
+
+
+        ctx.setTransform(
+          dpr,
+          0,
+          0,
+          dpr,
+          0,
+          0
+        );
+
+      }
+
+
+      resizeCanvas();
+
+
+
+      /* =======================================================
+         CREATE PARTICLE TEXT
+         ======================================================= */
+
+      function createParticles() {
+
+        particles = [];
+
+
+        const tempCanvas =
+          document.createElement(
+            "canvas"
+          );
+
+
+        const tempCtx =
+          tempCanvas.getContext(
+            "2d"
+          );
+
+
+        tempCanvas.width =
+          canvasWidth;
+
+        tempCanvas.height =
+          canvasHeight;
+
+
+        const fontSize =
+          Math.min(
+            canvasWidth * 0.085,
+            140
+          );
+
+
+        tempCtx.font =
+          `400 ${fontSize}px "Bebas Neue"`;
+
+
+        tempCtx.textAlign =
+          "center";
+
+
+        tempCtx.textBaseline =
+          "middle";
+
+
+        const line1 =
+          "LET ME HANDLE YOUR BOOKS";
+
+
+        const line2 =
+          "WITH PRECISION WHILE YOU";
+
+
+        const line3 =
+          "FOCUS ON YOUR VISION";
+
+
+        const lineSpacing =
+          fontSize * 0.76;
+
+
+        const centerY =
+          canvasHeight / 2;
+
+
+        tempCtx.fillText(
+          line1,
+          canvasWidth / 2,
+          centerY - lineSpacing
+        );
+
+
+        tempCtx.fillText(
+          line2,
+          canvasWidth / 2,
+          centerY
+        );
+
+
+        tempCtx.fillText(
+          line3,
+          canvasWidth / 2,
+          centerY + lineSpacing
+        );
+
+
+        const imageData =
+          tempCtx.getImageData(
+            0,
+            0,
+            canvasWidth,
+            canvasHeight
+          );
+
+
+        const data =
+          imageData.data;
+
+
+        /*
+         * Particle density.
+         *
+         * Desktop = more particles.
+         * Mobile = fewer particles.
+         */
+
+        const gap =
+          canvasWidth < 768
+            ? 6
+            : 4;
+
+
+        for (
+          let y = 0;
+          y < canvasHeight;
+          y += gap
+        ) {
+
+          for (
+            let x = 0;
+            x < canvasWidth;
+            x += gap
+          ) {
+
+
+            const index =
+              (
+                y * canvasWidth + x
+              ) * 4;
+
+
+            const alpha =
+              data[index + 3];
+
+
+            if (alpha > 150) {
+
+              particles.push({
+
+                x:
+                  Math.random() *
+                  canvasWidth,
+
+                y:
+                  Math.random() *
+                  canvasHeight,
+
+
+                targetX: x,
+
+                targetY: y,
+
+
+                vx: 0,
+
+                vy: 0,
+
+
+                size:
+                  Math.random() *
+                  1.5 + 0.8,
+
+
+                delay:
+                  Math.random(),
+
+
+                alpha: 0
+
+              });
+
+            }
+
+          }
+
+        }
+
+      }
+
+
+      createParticles();
+
+
+
+      /* =======================================================
+         RENDER PARTICLES
+         ======================================================= */
+
+      function renderParticles(progress) {
+
+        ctx.clearRect(
+          0,
+          0,
+          canvasWidth,
+          canvasHeight
+        );
+
+
+        /*
+         * Particles begin forming at
+         * approximately 48% scroll.
+         */
+
+        const formation =
+          gsap.utils.clamp(
+            0,
+            1,
+            (
+              progress - 0.48
+            ) / 0.30
+          );
+
+
+        particles.forEach(
+          (particle) => {
+
+
+            /*
+             * Stagger particle formation.
+             */
+
+            const particleProgress =
+              gsap.utils.clamp(
+                0,
+                1,
+                (
+                  formation -
+                  particle.delay * 0.22
+                ) / 0.78
+              );
+
+
+            /*
+             * Mouse repulsion.
+             */
+
+            let targetX =
+              particle.targetX;
+
+            let targetY =
+              particle.targetY;
+
+
+            if (mouse.active) {
+
+
+              const dx =
+                targetX - mouse.x;
+
+
+              const dy =
+                targetY - mouse.y;
+
+
+              const distance =
+                Math.sqrt(
+                  dx * dx +
+                  dy * dy
+                );
+
+
+              const radius = 155;
+
+
+              if (
+                distance < radius &&
+                distance > 0
+              ) {
+
+
+                const force =
+                  Math.pow(
+                    1 -
+                    distance / radius,
+                    2
+                  );
+
+
+                targetX +=
+                  (
+                    dx / distance
+                  ) *
+                  force *
+                  125;
+
+
+                targetY +=
+                  (
+                    dy / distance
+                  ) *
+                  force *
+                  125;
+
+              }
+
+            }
+
+
+            /*
+             * Smooth particle movement.
+             */
+
+            particle.x +=
+              (
+                targetX -
+                particle.x
+              ) *
+              0.085 *
+              particleProgress;
+
+
+            particle.y +=
+              (
+                targetY -
+                particle.y
+              ) *
+              0.085 *
+              particleProgress;
+
+
+            particle.alpha =
+              particleProgress;
+
+
+            /*
+             * Draw.
+             */
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+
+              particle.x,
+
+              particle.y,
+
+              particle.size,
+
+              0,
+
+              Math.PI * 2
+
+            );
+
+
+            ctx.fillStyle =
+              `rgba(
+                8,
+                8,
+                8,
+                ${particle.alpha}
+              )`;
+
+
+            ctx.fill();
+
+          }
+        );
+
+      }
+
+
+
+      /* =======================================================
+         VIDEO
+         ======================================================= */
+
+      function initializeVideo() {
+
+        if (!booksVideo.duration) {
+          return;
+        }
+
+
+        booksVideo.currentTime = 0;
+
+
+        gsap.set(
+          booksVideo,
+          {
+            opacity: 1
+          }
+        );
+
+      }
+
+
+      if (
+        booksVideo.readyState >= 1
+      ) {
+
+        initializeVideo();
+
+      } else {
+
+        booksVideo.addEventListener(
+          "loadedmetadata",
+          initializeVideo
+        );
+
+      }
+
+
+
+      /* =======================================================
+         SCROLL SEQUENCE
+         ======================================================= */
+
+      const booksSequence = {
+
+        progress: 0
+
+      };
+
+
+      gsap.to(
+        booksSequence,
+        {
+
+          progress: 1,
+
+          ease: "none",
+
+
+          scrollTrigger: {
+
+            trigger:
+              "#books-scroll-section",
+
+            start:
+              "top top",
+
+            end:
+              "bottom bottom",
+
+            scrub: 1,
+
+
+            onUpdate: (
+              self
+            ) => {
+
+
+              const progress =
+                self.progress;
+
+
+              booksSequence.progress =
+                progress;
+
+
+
+              /* ================================================
+                 VIDEO SCRUB
+                 ================================================ */
+
+              if (
+                booksVideo.readyState >= 2 &&
+                booksVideo.duration
+              ) {
+
+
+                /*
+                 * Video plays during the
+                 * first ~62% of this section.
+                 */
+
+                const videoProgress =
+                  gsap.utils.clamp(
+                    0,
+                    1,
+                    progress / 0.62
+                  );
+
+
+                booksVideo.currentTime =
+                  videoProgress *
+                  booksVideo.duration;
+
+              }
+
+
+
+              /* ================================================
+                 VIDEO FADE
+                 ================================================ */
+
+              const videoFade =
+                gsap.utils.clamp(
+                  0,
+                  1,
+                  (
+                    progress - 0.48
+                  ) / 0.18
+                );
+
+
+              booksVideo.style.opacity =
+                1 - videoFade;
+
+
+
+              /* ================================================
+                 PARTICLES
+                 ================================================ */
+
+              renderParticles(
+                progress
+              );
+
+
+
+              /* ================================================
+                 FINAL MESSAGE
+                 ================================================ */
+
+              const messageProgress =
+                gsap.utils.clamp(
+                  0,
+                  1,
+                  (
+                    progress - 0.68
+                  ) / 0.20
+                );
+
+
+              booksMessage.style.opacity =
+                messageProgress;
+
+
+
+              /* ================================================
+                 SCROLL HINT
+                 ================================================ */
+
+              if (
+                progress > 0.08
+              ) {
+
+                booksScrollHint.style.opacity =
+                  "0";
+
+              } else {
+
+                booksScrollHint.style.opacity =
+                  "1";
+
+              }
+
+            }
+
+          }
+
+        }
+      );
+
+
+
+      /* =======================================================
+         MOUSE
+         ======================================================= */
+
+      window.addEventListener(
+        "mousemove",
+        (event) => {
+
+
+          const rect =
+            booksCanvas.getBoundingClientRect();
+
+
+          mouse.x =
+            event.clientX -
+            rect.left;
+
+
+          mouse.y =
+            event.clientY -
+            rect.top;
+
+
+          mouse.active =
+            true;
+
+
+          /*
+           * Cursor light.
+           */
+
+          booksCursorLight.style.opacity =
+            "1";
+
+
+          gsap.to(
+            booksCursorLight,
+            {
+
+              x:
+                event.clientX,
+
+              y:
+                event.clientY,
+
+              duration:
+                0.18,
+
+              ease:
+                "power2.out",
+
+              overwrite:
+                true
+
+            }
+          );
+
+        }
+      );
+
+
+
+      /* =======================================================
+         MOUSE LEAVES WINDOW
+         ======================================================= */
+
+      document.addEventListener(
+        "mouseleave",
+        () => {
+
+
+          mouse.active =
+            false;
+
+
+          gsap.to(
+            booksCursorLight,
+            {
+
+              opacity: 0,
+
+              duration: 0.3
+
+            }
+          );
+
+        }
+      );
+
+
+
+      /* =======================================================
+         RESIZE
+         ======================================================= */
+
+      window.addEventListener(
+        "resize",
+        () => {
+
+          resizeCanvas();
+
+          createParticles();
+
+        }
+      );
+
+
+
+      /* =======================================================
+         RESET SCROLLTRIGGER ON LOAD
+         ======================================================= */
+
+      window.addEventListener(
+        "load",
+        () => {
+
+          ScrollTrigger.refresh();
+
+        }
+      );
+
+    }
+
   </script>
+
 </body>
 </html>
