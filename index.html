@@ -3,14 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll Hero Overload</title>
+  <title>3D Colorful Scroll Overload</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: #faf7f2;
       color: #111;
@@ -18,46 +13,43 @@
       overflow-x: hidden;
     }
 
-    /* Long track to allow scrolling */
-    .scroll-container {
-      height: 350vh;
-      position: relative;
-    }
+    /* Long track for scrolling distance */
+    .scroll-container { height: 400vh; position: relative; }
 
-    /* Locks the animation inside the viewport */
+    /* Locks the view in the viewport */
     .hero-viewport {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: sticky; top: 0;
+      height: 100vh; width: 100vw;
+      display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
 
-    canvas {
-      width: 100%;
-      max-width: 650px;
-      height: auto;
-      aspect-ratio: 1 / 1;
-      filter: url(#ink-boil); /* Real-time hand-drawn line jitter */
+    /* Standard canvas for the background meme (optional ink-boil filter) */
+    #background-meme {
+      position: absolute;
+      width: 100%; max-width: 650px; height: auto; aspect-ratio: 1/1;
+      filter: url(#ink-boil);
+      z-index: 1; /* Behind 3D */
+    }
+
+    /* WebGL canvas for Three.js (3D symbols) */
+    #three-canvas {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 2; /* In front of 2D meme */
     }
 
     .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-weight: 600;
-      color: #555;
+      position: absolute; bottom: 2rem;
+      font-size: 0.85rem; text-transform: uppercase;
+      letter-spacing: 0.15em; font-weight: 600; color: #555;
+      z-index: 3;
     }
   </style>
 </head>
 <body>
 
+  <!-- SVG Filter for the background meme jitter (optional) -->
   <svg style="position: absolute; width: 0; height: 0; pointer-events: none;">
     <filter id="ink-boil">
       <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" />
@@ -67,138 +59,207 @@
 
   <div class="scroll-container">
     <div class="hero-viewport">
-      <canvas id="stage" width="700" height="700"></canvas>
+      <!-- 2D Canvas for background image -->
+      <canvas id="background-meme" width="700" height="700"></canvas>
+      <!-- WebGL Canvas for Three.js -->
+      <canvas id="three-canvas"></canvas>
       <div class="scroll-hint">Scroll down to overload</div>
     </div>
   </div>
 
-  <script>
-    const canvas = document.getElementById("stage");
-    const ctx = canvas.getContext("2d");
-    const turbulence = document.getElementById("turbulence");
+  <!-- Include Three.js via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    // Load your transparent Jackie Chan meme cutout
+  <script>
+    /* --- 1. SETTING UP THE TWO CANVASES --- */
+
+    // 1A. Background 2D Meme
+    const bgCanvas = document.getElementById("background-meme");
+    const bgCtx = bgCanvas.getContext("2d");
+    const turbulence = document.getElementById("turbulence");
     const memeImg = new Image();
-    memeImg.src = "Snipaste_2026-09-04_03-21-35.png";
+    memeImg.src = "Snipaste_2026-09-04_03-21-35.png"; // <-- Replace with your image filename
+
+    // 1B. Three.js 3D Scene
+    const threeCanvas = document.getElementById("three-canvas");
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({ canvas: threeCanvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // 1C. Handle Resize
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    /* --- 2. THE 3D SYMBOL SYSTEM (Explosion) --- */
+
+    const symbolsData = [
+      { text: "π", color: 0x3ac1ef }, // Blue
+      { text: "∫", color: 0xff6b6b }, // Red
+      { text: "∑", color: 0x4caf50 }, // Green
+      { text: "{ }", color: 0xf5a623 }, // Orange
+      { text: "≠", color: 0x9c27b0 }, // Purple
+      { text: "01", color: 0xffeb3b }, // Yellow
+      { text: "∞", color: 0x3ac1ef }
+    ];
+
+    const symbolGroup = new THREE.Group();
+    scene.add(symbolGroup);
+
+    // Create 3D 'planes' using rendered canvas text as texture
+    symbolsData.forEach((data, index) => {
+      // 1. Create a texture by drawing text on a temporary canvas
+      const canvasText = document.createElement('canvas');
+      const ctxText = canvasText.getContext('2d');
+      canvasText.width = 128; // Power of 2 for efficiency
+      canvasText.height = 128;
+      ctxText.font = 'Bold 80px monospace';
+      ctxText.fillStyle = '#' + data.color.toString(16).padStart(6, '0');
+      ctxText.textAlign = 'center';
+      ctxText.textBaseline = 'middle';
+      ctxText.fillText(data.text, 64, 64);
+
+      const texture = new THREE.CanvasTexture(canvasText);
+      const material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.DoubleSide });
+      const geometry = new THREE.PlaneGeometry(0.8, 0.8);
+      const mesh = new THREE.Mesh(geometry, material);
+
+      // Random starting positions (clustered where his head will be)
+      mesh.position.set(
+        (Math.random() - 0.5) * 0.5,
+        0.5 + (Math.random() - 0.5) * 0.5, // Slightly higher
+        (Math.random() - 0.5) * 0.5
+      );
+
+      // Random rotation speed for each symbol
+      mesh.userData.rotationSpeed = {
+        x: (Math.random() - 0.5) * 0.05,
+        y: (Math.random() - 0.5) * 0.05,
+        z: (Math.random() - 0.5) * 0.02
+      };
+
+      symbolGroup.add(mesh);
+    });
+
+    // Also add jagged electric arcs as LineSegments (basic 3D lines)
+    const lightningCount = 5;
+    const lightningGroup = new THREE.Group();
+    scene.add(lightningGroup);
+    
+    for (let i = 0; i < lightningCount; i++) {
+        const material = new THREE.LineBasicMaterial({ color: 0x3ac1ef, linewidth: 2 });
+        const geometry = new THREE.BufferGeometry();
+        const positions = [];
+        for (let j = 0; j < 6; j++) { positions.push(0, 0, 0); } // Initial points at origin
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        const line = new THREE.Line(geometry, material);
+        lightningGroup.add(line);
+    }
+
+    /* --- 3. SCROLL INTEGRATION & RENDER LOOP --- */
 
     let scrollProgress = 0;
     let seed = 0;
 
-    // Symbol pool for the explosion
-    const chars = ["∑", "√", "π", "∫", "0", "1", "%", "≠", "{ }", "∂", "∞", "λ", "404", "NaN"];
-    const particles = [];
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        text: chars[Math.floor(Math.random() * chars.length)],
-        angle: Math.random() * Math.PI * 2,
-        dist: 40 + Math.random() * 260,
-        speed: 0.7 + Math.random() * 1.3,
-        size: 14 + Math.random() * 18
-      });
-    }
-
-    // Scroll normalization (0.0 to 1.0)
     window.addEventListener("scroll", () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       scrollProgress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
     });
 
-    // Draw jagged electric arcs
-    function drawLightning(x1, y1, x2, y2, segments = 5) {
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      for (let i = 1; i < segments; i++) {
-        const t = i / segments;
-        const nx = x1 + (x2 - x1) * t + (Math.random() - 0.5) * 24;
-        const ny = y1 + (y2 - y1) * t + (Math.random() - 0.5) * 24;
-        ctx.lineTo(nx, ny);
+    function animate() {
+      // Background Image Update (2D Jitter and Contortion)
+      if (memeImg.complete) {
+        seed += 0.05;
+        turbulence.setAttribute("seed", Math.floor(seed % 10));
+
+        bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+        const cx = bgCanvas.width / 2;
+        const cy = bgCanvas.height / 2;
+
+        const frustration = Math.min(scrollProgress / 0.55, 1);
+        const burst = Math.max((scrollProgress - 0.45) / 0.55, 0);
+
+        // Escalating vibration
+        const shakeIntensity = frustration * 14;
+        const shakeX = frustration > 0.1 ? (Math.random() - 0.5) * shakeIntensity : 0;
+        const shakeY = frustration > 0.1 ? (Math.random() - 0.5) * shakeIntensity : 0;
+
+        // Face squeeze contortion
+        const scaleX = 1 + frustration * 0.15;
+        const scaleY = 1 - frustration * 0.18;
+
+        bgCtx.save();
+        bgCtx.translate(cx + shakeX, cy + shakeY);
+
+        if (burst < 0.95) {
+          bgCtx.save();
+          bgCtx.scale(scaleX, scaleY);
+          bgCtx.globalAlpha = Math.max(0, 1 - burst * 1.3); // Fade out
+          const imgW = 460;
+          const imgH = (memeImg.naturalHeight / memeImg.naturalWidth) * imgW;
+          bgCtx.drawImage(memeImg, -imgW / 2, -imgH / 2, imgW, imgH);
+          bgCtx.restore();
+        }
+        bgCtx.restore();
       }
-      ctx.lineTo(x2, y2);
-      ctx.stroke();
-    }
 
-    function loop() {
-      // 1. Animate line-boil filter periodically
-      seed += 0.05;
-      turbulence.setAttribute("seed", Math.floor(seed % 10));
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
-
-      // Phase boundaries:
-      // 0.0 - 0.55: Escalating frustration & face contortion
-      // 0.45 - 1.0: Head burst, electricity & symbol scatter
-      const frustration = Math.min(scrollProgress / 0.55, 1);
+      /* --- 4. 3D SYMBOL ANIMATION DRIVEN BY SCROLL --- */
       const burst = Math.max((scrollProgress - 0.45) / 0.55, 0);
 
-      // Increasing head vibration
-      const shakeIntensity = frustration * 14;
-      const shakeX = frustration > 0.1 ? (Math.random() - 0.5) * shakeIntensity : 0;
-      const shakeY = frustration > 0.1 ? (Math.random() - 0.5) * shakeIntensity : 0;
-
-      // Squish/squeeze contortion as frustration mounts
-      const scaleX = 1 + frustration * 0.15;
-      const scaleY = 1 - frustration * 0.18;
-
-      ctx.save();
-      ctx.translate(cx + shakeX, cy + shakeY);
-
-      // Draw the meme head if not fully dispersed
-      if (burst < 0.95 && memeImg.complete) {
-        ctx.save();
-        ctx.scale(scaleX, scaleY);
-        ctx.globalAlpha = Math.max(0, 1 - burst * 1.3);
-
-        const imgW = 460;
-        const imgH = (memeImg.naturalHeight / memeImg.naturalWidth) * imgW;
-        ctx.drawImage(memeImg, -imgW / 2, -imgH / 2, imgW, imgH);
-        ctx.restore();
-      }
-
-      // 2. Draw jagged electrical bolts
       if (burst > 0.05) {
-        ctx.strokeStyle = "#111";
-        ctx.lineWidth = 2.2;
-        ctx.lineCap = "round";
+        symbolGroup.visible = true;
+        lightningGroup.visible = true;
+        
+        symbolGroup.children.forEach((mesh) => {
+          // Explode outwards and drift upwards
+          // We use burst^2 for non-linear explosion (starts fast, slows down)
+          const explodeDistance = (2 + burst * 8); 
+          const originalPos = mesh.userData.originalPosition || mesh.position.clone();
+          if(!mesh.userData.originalPosition) mesh.userData.originalPosition = originalPos;
 
-        const boltCount = Math.floor(burst * 10);
-        for (let i = 0; i < boltCount; i++) {
-          const angle = Math.random() * Math.PI * 2;
-          const r1 = 30;
-          const r2 = 120 + burst * 160;
-          drawLightning(
-            Math.cos(angle) * r1,
-            Math.sin(angle) * r1 - 40,
-            Math.cos(angle) * r2,
-            Math.sin(angle) * r2 - 40
-          );
-        }
+          // Push particles out from center (origin)
+          const direction = originalPos.clone().normalize();
+          mesh.position.addVectors(originalPos, direction.multiplyScalar(explodeDistance * Math.pow(burst, 1.5)));
+          mesh.position.y += burst * 3; // Float up
 
-        // 3. Exploding symbols & numbers
-        ctx.fillStyle = "#111";
-        ctx.font = "bold 20px monospace";
+          // Continuously rotate the 3D meshes
+          mesh.rotation.x += mesh.userData.rotationSpeed.x;
+          mesh.rotation.y += mesh.userData.rotationSpeed.y;
+          mesh.rotation.z += mesh.userData.rotationSpeed.z;
 
-        particles.forEach((p) => {
-          const currentDist = p.dist * burst * p.speed;
-          const px = Math.cos(p.angle) * currentDist;
-          const py = Math.sin(p.angle) * currentDist - burst * 60; // upward drift
-
-          ctx.save();
-          ctx.translate(px, py);
-          ctx.globalAlpha = Math.min(burst * 1.6, 1);
-          ctx.fillText(p.text, 0, 0);
-          ctx.restore();
+          // Fade in based on burst
+          mesh.material.opacity = Math.min(burst * 2, 1);
         });
+
+        // 5. 3D Lightning Update
+        lightningGroup.children.forEach(line => {
+            const positions = line.geometry.attributes.position.array;
+            const burstIntensity = burst * 5;
+            for (let i = 0; i < positions.length; i += 3) {
+                positions[i] = (Math.random() - 0.5) * burstIntensity;     // x
+                positions[i+1] = 0.5 + (Math.random() - 0.5) * burstIntensity; // y (starting high)
+                positions[i+2] = (Math.random() - 0.5) * burstIntensity;   // z
+            }
+            line.geometry.attributes.position.needsUpdate = true;
+            line.material.opacity = Math.random() > 0.8 ? 1 : 0.2; // flicker
+            line.material.transparent = true;
+        });
+
+      } else {
+        symbolGroup.visible = false;
+        lightningGroup.visible = false;
       }
 
-      ctx.restore();
-      requestAnimationFrame(loop);
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
     }
 
-    memeImg.onload = () => requestAnimationFrame(loop);
-    if (memeImg.complete) requestAnimationFrame(loop);
+    animate();
   </script>
 </body>
 </html>
