@@ -38,7 +38,6 @@
       line-height: 0.84;
       letter-spacing: -0.04em;
     }
-    /* Dynamic scattering letter tokens */
     .scatter-letter {
       display: inline-block;
       transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s ease;
@@ -51,17 +50,15 @@
   <!-- Top spacer runway -->
   <header class="h-[20vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
     <span class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold">
-      ↓ Scroll down to trigger sequence
+      ↓ Scroll down to start experience
     </span>
   </header>
 
   <!-- ==================== SECTION 1: NUMBERS NOT MAKING SENSE? ==================== -->
   <section id="parallax-stage" class="relative w-full min-h-[220vh] bg-[#d4f038] flex flex-col justify-start items-center">
-    
-    <!-- Sticky Full-Screen Viewport Window -->
     <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
       
-      <!-- Massive Crisp Editorial Headline -->
+      <!-- Crisp Editorial Headline -->
       <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
         <h1 class="font-headline solid-editorial text-[19vw] uppercase">
           Numbers Not<br/>
@@ -69,7 +66,7 @@
         </h1>
       </div>
 
-      <!-- ARTIFACT 1: Store Receipt (Top Left) -->
+      <!-- ARTIFACT 1: Store Receipt -->
       <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
            data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
         <div class="w-64 sm:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.22)] border border-neutral-300/80">
@@ -89,7 +86,7 @@
         </div>
       </div>
 
-      <!-- ARTIFACT 2: Minimal Overdue Invoice Badge (Top Right) -->
+      <!-- ARTIFACT 2: Overdue Invoice -->
       <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
            data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
         <div class="w-72 sm:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.3)] border border-slate-800">
@@ -104,7 +101,7 @@
         </div>
       </div>
 
-      <!-- ARTIFACT 3: Bank Statement Live Feed (Middle Right) -->
+      <!-- ARTIFACT 3: Bank Statement -->
       <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
            data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
         <div class="w-72 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.18)] border border-slate-300">
@@ -129,7 +126,7 @@
         </div>
       </div>
 
-      <!-- ARTIFACT 4: QuickBooks Alert Slip (Middle Left) -->
+      <!-- ARTIFACT 4: QuickBooks Alert -->
       <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
            data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
         <div class="w-64 sm:w-76 bg-white/90 backdrop-blur-md rounded-2xl p-4.5 border border-amber-400 shadow-[0_24px_45px_rgba(0,0,0,0.12)]">
@@ -143,7 +140,7 @@
         </div>
       </div>
 
-      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard (Bottom Left) -->
+      <!-- ARTIFACT 5: Shopify Dashboard -->
       <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
            data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
         <div class="w-72 sm:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-neutral-800">
@@ -165,7 +162,7 @@
         </div>
       </div>
 
-      <!-- ARTIFACT 6: Business Check Slip (Bottom Right) -->
+      <!-- ARTIFACT 6: Business Check -->
       <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
            data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
         <div class="w-76 sm:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-stone-300">
@@ -188,62 +185,24 @@
     </div>
   </section>
 
-  <!-- ==================== SECTION 2: VECTOR ILLUSTRATION + HEAD ERUPTION TO MASSIVE HEADLINE ==================== -->
-  <section id="meme-stage" class="relative w-full min-h-[280vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
-    
-    <!-- Sticky Full-Screen Viewport -->
+  <!-- ==================== SECTION 2: VIDEO + EXPLODING LETTERS ==================== -->
+  <section id="meme-stage" class="relative w-full min-h-[290vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
     <div id="meme-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
       
-      <!-- Native Vector Meme Illustration Container -->
-      <div id="illustration-container" class="relative w-72 sm:w-84 md:w-96 aspect-square flex items-center justify-center">
-        <svg viewBox="0 0 400 400" class="w-full h-full overflow-visible drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
-          <!-- Body & Shoulders -->
-          <path d="M70 380 Q130 290 200 290 Q270 290 330 380 Z" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
-          <path d="M170 290 L170 380 M230 290 L230 380" stroke="#000000" stroke-width="3" stroke-linecap="round"/>
-          <path d="M200 290 L185 330 L200 370 L215 330 Z" fill="#ffffff" stroke="#000000" stroke-width="3"/>
-          
-          <!-- Lower Face & Cheeks -->
-          <path d="M120 180 Q110 270 200 280 Q290 270 280 180 Z" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linejoin="round"/>
-          
-          <!-- Stressed Facial Expressions -->
-          <!-- Agonized Eyebrows -->
-          <path d="M140 160 Q170 180 185 170 M260 160 Q230 180 215 170" stroke="#000000" stroke-width="4" stroke-linecap="round" fill="none"/>
-          <!-- Squinting Wrinkled Eyes -->
-          <path d="M145 175 Q165 170 180 178 M255 175 Q235 170 220 178" stroke="#000000" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <path d="M150 177 Q165 183 178 178 M250 177 Q235 183 222 178" stroke="#000000" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          <!-- Nose Bridge & Lines -->
-          <path d="M195 175 Q200 210 188 220 L212 220 Q203 210 205 175" stroke="#000000" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-          <!-- Grimace Mouth with Clenched Teeth -->
-          <path d="M165 242 Q200 235 235 242 Q200 262 165 242 Z" fill="#ffffff" stroke="#000000" stroke-width="3.5"/>
-          <path d="M175 248 L225 248" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
-
-          <!-- Hands Clutching Head -->
-          <!-- Left Arm & Hand -->
-          <path d="M60 270 Q60 120 125 100 Q135 125 130 150" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
-          <path d="M125 100 C130 85 145 90 142 110 M135 90 C145 80 155 88 150 115" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- Right Arm & Hand -->
-          <path d="M340 270 Q340 120 275 100 Q265 125 270 150" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
-          <path d="M275 100 C270 85 255 90 258 110 M265 90 C255 80 245 88 250 115" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
-
-          <!-- HINGED HEAD LID (Separates and hinges open via GSAP) -->
-          <g id="head-lid" style="transform-origin: 270px 130px;">
-            <path d="M120 160 Q110 80 200 70 Q290 80 280 160 Q200 135 120 160 Z" fill="#111111" stroke="#000000" stroke-width="4"/>
-            <!-- Hair texture strokes -->
-            <path d="M130 110 Q160 85 190 100 M210 95 Q240 85 270 110" stroke="#333333" stroke-width="3" stroke-linecap="round" fill="none"/>
-          </g>
-
-          <!-- Exposed Brain Rim Base (Visible once lid lifts) -->
-          <ellipse id="brain-cavity" cx="200" cy="148" rx="72" ry="16" fill="#1a1a1a" stroke="#000000" stroke-width="3" class="opacity-0"/>
-        </svg>
+      <!-- Video Element: Matches your file name in the same folder -->
+      <div id="video-box" class="relative w-full max-w-lg aspect-video rounded-3xl overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.25)] border-4 border-black bg-white flex items-center justify-center">
+        <video id="head-video" class="w-full h-full object-contain" muted loop playsinline autoplay preload="auto">
+          <source src="Man_holding_head_with_numbers_202609032343.mp4" type="video/mp4">
+        </video>
       </div>
 
-      <!-- Dynamic Fountain Container for Letters Shooting Upward -->
+      <!-- Fountain Particle Container -->
       <div id="particle-fountain" class="absolute w-full h-full pointer-events-none flex items-center justify-center"></div>
 
-      <!-- MASSIVE ASSEMBLED PHRASE (Enlarged Hero Scale with Mouse Scatter) -->
+      <!-- MASSIVE ASSEMBLED PHRASE (Display scale with mouse evasion) -->
       <div id="assembled-phrase-card" class="relative z-30 mt-2 w-full max-w-7xl text-center opacity-0 pointer-events-auto">
         <h2 id="evade-target" class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-black tracking-tight leading-[0.92] cursor-default select-none">
-          <!-- Dynamically populated letters -->
+          <!-- Populated dynamically -->
         </h2>
         <p class="text-black/80 font-mono-code text-xs sm:text-base mt-6 tracking-widest uppercase font-bold">
           [ Hover cursor over letters to scatter ]
@@ -253,7 +212,7 @@
     </div>
   </section>
 
-  <!-- ==================== CALL TO ACTION SECTION ==================== -->
+  <!-- Footer -->
   <footer class="h-[60vh] bg-[#d4f038] text-black flex flex-col items-center justify-center p-8 border-t-2 border-black">
     <h3 class="font-headline text-6xl md:text-8xl tracking-tight uppercase">Ready to get balanced?</h3>
     <a href="mailto:hello@precisionbooks.com" class="mt-6 px-10 py-5 bg-black text-[#d4f038] font-bold font-mono-code text-sm rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
@@ -265,7 +224,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. SECTION 1 PARALLAX CARDS & DEPTH BLUR
+    // Section 1 Parallax & Blur
     const cards = gsap.utils.toArray('.scroll-card');
     cards.forEach((card) => {
       const targetY = parseFloat(card.getAttribute('data-y')) || -300;
@@ -293,7 +252,7 @@
       });
     });
 
-    // 2. PHRASE GENERATOR WITH INDIVIDUAL LETTER GLYPHS
+    // Phrase Generator with Evasion Letters
     const finalPhrase = "Let me handle your books with precision while you focus on your vision.";
     const evadeTarget = document.getElementById('evade-target');
 
@@ -311,7 +270,7 @@
       evadeTarget.appendChild(wordSpan);
     });
 
-    // 3. SPAWNING FOUNTAIN LETTER TOKENS
+    // Fountain Token Generation
     const fountainContainer = document.getElementById('particle-fountain');
     const burstChars = "LETMEHANDLEYOURBOOKSWITHPRECISIONWHILEYOUFOCUSONYOURVISION$%#@&".split('');
     const fountainElements = [];
@@ -324,13 +283,21 @@
       fountainElements.push(el);
     }
 
-    // 4. SCROLL TIMELINE: HEAD POPPING OPEN & FOUNTAIN ERUPTION
-    const illustrationBox = document.getElementById('illustration-container');
-    const headLid = document.getElementById('head-lid');
-    const brainCavity = document.getElementById('brain-cavity');
+    // Scroll Video & Explosion Sequence
+    const headVideo = document.getElementById('head-video');
+    const videoBox = document.getElementById('video-box');
     const assembledCard = document.getElementById('assembled-phrase-card');
 
-    const memeTimeline = gsap.timeline({
+    // Force video play on user scroll interaction if browser suspended it
+    const playAttempt = () => {
+      headVideo.play().catch(() => {});
+      window.removeEventListener('scroll', playAttempt);
+      window.removeEventListener('click', playAttempt);
+    };
+    window.addEventListener('scroll', playAttempt, { passive: true });
+    window.addEventListener('click', playAttempt);
+
+    const memeTl = gsap.timeline({
       scrollTrigger: {
         trigger: "#meme-stage",
         start: "top top",
@@ -339,54 +306,34 @@
       }
     });
 
-    // Step A: Character shakes with agony under stress
-    memeTimeline.to(illustrationBox, {
-      x: () => (Math.random() - 0.5) * 20,
-      yoyo: true,
-      repeat: 6,
-      duration: 0.8,
-      ease: "power1.inOut"
-    }, 0);
+    memeTl.fromTo(videoBox, { scale: 0.9, y: 30 }, { scale: 1.05, y: 0, duration: 1.2 });
 
-    // Step B: Head lid pops open & exposes the cavity
-    memeTimeline.to(headLid, {
-      rotation: 55,
-      x: 35,
-      y: -25,
-      duration: 1.2,
-      ease: "back.out(2)"
-    }, 0.8);
-    memeTimeline.to(brainCavity, { opacity: 1, duration: 0.3 }, 0.9);
-
-    // Step C: Letter fountain erupts upward out of the head
     fountainElements.forEach((el, index) => {
       const angle = (index / fountainElements.length) * Math.PI * 1.6 - (Math.PI * 0.8);
       const dist = 320 + Math.random() * 280;
       const targetX = Math.cos(angle) * dist;
-      const targetY = -Math.sin(angle) * dist - 160;
+      const targetY = -Math.sin(angle) * dist - 140;
 
-      memeTimeline.fromTo(el,
-        { x: 0, y: -20, opacity: 0, scale: 0.3 },
-        {
-          x: targetX,
-          y: targetY,
-          opacity: 1,
-          scale: 1.7,
-          duration: 1.4,
-          ease: "power2.out"
-        },
-        0.9 + (index * 0.02)
+      memeTl.fromTo(el, 
+        { x: 0, y: -20, opacity: 0, scale: 0.4 },
+        { 
+          x: targetX, 
+          y: targetY, 
+          opacity: 1, 
+          scale: 1.7, 
+          duration: 1.4, 
+          ease: "power2.out" 
+        }, 
+        0.8 + (index * 0.02)
       );
 
-      // Disperse outward as headline forms
-      memeTimeline.to(el, { opacity: 0, scale: 0.2, duration: 0.6 }, 2.4);
+      memeTl.to(el, { opacity: 0, scale: 0.3, duration: 0.6 }, 2.2);
     });
 
-    // Step D: Illustration scales down smoothly so the massive text takes center stage
-    memeTimeline.to(illustrationBox, { scale: 0.5, opacity: 0.2, y: -70, duration: 1.4 }, 2.0);
-    memeTimeline.to(assembledCard, { opacity: 1, y: -90, duration: 1.5, ease: "power2.out" }, 2.2);
+    memeTl.to(videoBox, { scale: 0.5, opacity: 0.15, y: -80, filter: "blur(5px)", duration: 1.5 }, 1.8);
+    memeTl.to(assembledCard, { opacity: 1, y: -90, duration: 1.5, ease: "power2.out" }, 2.0);
 
-    // 5. INTERACTIVE MOUSE EVADE ON ASSEMBLED LETTERS
+    // Mouse Scatter on Big Text
     const letters = document.querySelectorAll('.scatter-letter');
 
     evadeTarget.addEventListener('mousemove', (e) => {
