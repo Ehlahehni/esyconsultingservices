@@ -3,354 +3,219 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Numbers Not Making Sense?</title>
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
-
-  <!-- GSAP + ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-
+  <title>Pen & Ink Scroll Animation</title>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
-      background-color: #0b0f14;
-      font-family: 'Space Grotesk', sans-serif;
+      background-color: #f4efe6; /* Parchment ink paper feel */
+      font-family: monospace;
+      color: #1a1a1a;
       overflow-x: hidden;
     }
-    .font-headline { font-family: 'Bebas Neue', sans-serif; }
-    .font-mono-code { font-family: 'Space Mono', monospace; }
-    .font-signature { font-family: 'Caveat', cursive; }
-
-    .solid-editorial {
-      color: #ffffff;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-      line-height: 0.84;
-      letter-spacing: -0.04em;
-    }
-
-    .scatter-char {
-      display: inline-block;
-      white-space: pre;
+    /* Creates scroll distance */
+    .scroll-track {
+      height: 400vh;
       position: relative;
-      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2), color 0.2s;
-      will-change: transform;
+    }
+    /* Keeps the hero element locked in the viewport */
+    .sticky-container {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    canvas {
+      width: 100%;
+      max-width: 600px;
+      height: 600px;
+    }
+    .hud {
+      position: absolute;
+      bottom: 2rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.6;
     }
   </style>
 </head>
-<body class="selection:bg-black selection:text-[#d4f038]">
+<body>
 
-  <!-- Top spacer -->
-  <div class="h-[20vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
-    <span class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold">
-      ↓ Scroll down to trigger sequence
-    </span>
+  <div class="scroll-track">
+    <div class="sticky-container">
+      <canvas id="hero-canvas" width="600" height="600"></canvas>
+      <div class="hud">Scroll down to overload</div>
+    </div>
   </div>
 
-  <!-- ==================== PARALLAX STAGE ==================== -->
-  <section id="parallax-stage" class="relative w-full min-h-[200vh] bg-[#d4f038] flex flex-col justify-start items-center">
-    <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
-      
-      <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
-        <h1 class="font-headline solid-editorial text-[19vw] uppercase">
-          Numbers Not<br/>
-          <span>Making Sense?</span>
-        </h1>
-      </div>
-
-      <!-- Financial Artifacts -->
-      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30" data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
-        <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.3)] border border-neutral-200">
-          <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
-            <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
-            <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
-          </div>
-          <div class="py-3 font-mono-code text-xs space-y-1.5">
-            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
-            <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
-            <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
-          </div>
-          <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
-            <span>TOTAL DUE</span><span>$796.17</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25" data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
-        <div class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.4)] border border-slate-800">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
-              OVERDUE 45 DAYS
-            </span>
-            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-3 font-medium">Q3 Retainer Balance Due</p>
-          <p class="text-3xl font-black text-white mt-1.5">$8,450.00</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==================== CONTORTION & EXPLOSION SEQUENCE ==================== -->
-  <section id="breakdown-stage" class="relative w-full min-h-[300vh] bg-[#0d1117] text-white">
-    <div class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden">
-      
-      <!-- Electricity & Debris Canvas Layer -->
-      <canvas id="fx-canvas" class="absolute inset-0 pointer-events-none z-30"></canvas>
-
-      <!-- Meme Puppet SVG Layer -->
-      <div id="meme-puppet-container" class="relative z-20 w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center">
-        <svg id="meme-svg" viewBox="0 0 400 400" class="w-full h-full stroke-black fill-none stroke-[3.5] stroke-linecap-round stroke-linejoin-round bg-[#fafafa] rounded-full p-4 border-4 border-[#2ca01c] shadow-[0_0_50px_rgba(44,160,28,0.3)]">
-          <!-- Torso & Collar -->
-          <g id="body-group">
-            <path d="M120 370 C130 330, 160 300, 200 300 C240 300, 270 330, 280 370" fill="#ffffff" />
-            <path d="M170 305 L170 340 M230 305 L230 340 M170 340 L230 340" />
-            <path d="M70 380 C80 340, 110 320, 130 320" />
-            <path d="M330 380 C320 340, 290 320, 270 320" />
-          </g>
-
-          <!-- Cranium Group (Separates and explodes) -->
-          <g id="cranium-group">
-            <path d="M130 210 C100 130, 150 70, 200 70 C260 70, 300 130, 270 210" fill="#000000" />
-            <path d="M140 180 C170 140, 230 140, 260 180" stroke="#ffffff" stroke-width="2" />
-          </g>
-
-          <!-- Face Group (Contorts and squashes) -->
-          <g id="face-group">
-            <!-- Head Contour -->
-            <path d="M140 190 C130 250, 150 300, 200 300 C250 300, 270 250, 260 190" fill="#ffffff" />
-            <!-- Eyebrows (Angled in intense confusion) -->
-            <g id="eyebrows">
-              <path id="brow-left" d="M150 170 C165 180, 180 180, 185 175" stroke-width="5" />
-              <path id="brow-right" d="M215 175 C220 180, 235 180, 250 170" stroke-width="5" />
-            </g>
-            <!-- Eyes & Squint Creases -->
-            <g id="eyes">
-              <path d="M155 190 Q170 180 185 190" />
-              <path d="M155 190 Q170 200 185 190" />
-              <circle cx="170" cy="190" r="3" fill="#000000" />
-              
-              <path d="M215 190 Q230 180 245 190" />
-              <path d="M215 190 Q230 200 245 190" />
-              <circle cx="230" cy="190" r="3" fill="#000000" />
-              <!-- Stress Wrinkles -->
-              <path d="M195 175 L200 190 L205 175" stroke-width="2" />
-              <path d="M185 200 L195 205 L205 205 L215 200" stroke-width="2" />
-            </g>
-            <!-- Nose -->
-            <path id="nose" d="M200 190 L190 230 C195 240, 205 240, 210 230" stroke-width="3.5" />
-            <!-- Mouth Grimace -->
-            <path id="mouth" d="M180 260 Q190 245 200 255 Q210 245 220 260 Q200 270 180 260 Z" fill="#000000" />
-          </g>
-
-          <!-- Hands Gripping Cranium -->
-          <g id="left-hand">
-            <path d="M100 240 C110 180, 125 120, 150 100 C155 115, 140 140, 135 160" fill="#ffffff" />
-            <path d="M125 150 C110 120, 135 90, 155 85" fill="#ffffff" />
-            <path d="M100 240 C80 270, 50 320, 20 330" />
-          </g>
-          <g id="right-hand">
-            <path d="M300 240 C290 180, 275 120, 250 100 C245 115, 260 140, 265 160" fill="#ffffff" />
-            <path d="M275 150 C290 120, 265 90, 245 85" fill="#ffffff" />
-            <path d="M300 240 C320 270, 350 320, 380 330" />
-          </g>
-        </svg>
-      </div>
-
-      <p id="confusion-cue" class="mt-6 font-mono-code text-xs uppercase tracking-widest text-[#2ca01c]">
-        Synapses overloaded...[cite: 2]
-      </p>
-    </div>
-  </section>
-
-  <!-- ==================== RESOLUTION: SCATTER TYPOGRAPHY ==================== -->
-  <section id="clarity-section" class="relative min-h-screen bg-[#0d1117] flex flex-col items-center justify-center px-6 py-24 select-none overflow-hidden">
-    <!-- Glow Backdrop -->
-    <div class="absolute w-[500px] h-[500px] bg-[#2ca01c]/15 rounded-full blur-[140px] pointer-events-none"></div>
-
-    <div class="max-w-4xl text-center space-y-6 z-10">
-      <h2 id="scatter-line-1" class="font-headline text-4xl sm:text-6xl md:text-7xl text-white tracking-tight leading-tight">
-        Let me handle your books with precision
-      </h2>
-      <p id="scatter-line-2" class="font-mono-code text-xl sm:text-2xl md:text-3xl text-[#2ca01c] font-bold tracking-tight">
-        while you focus on your vision
-      </p>
-      <p class="font-mono-code text-xs uppercase text-slate-500 tracking-widest pt-8">
-        (Hover cursor over letters to trigger repulsion)[cite: 2]
-      </p>
-    </div>
-  </section>
-
-  <!-- ==================== SCRIPT & LOGIC ==================== -->
   <script>
-    gsap.registerPlugin(ScrollTrigger);
+    const canvas = document.getElementById("hero-canvas");
+    const ctx = canvas.getContext("2d");
 
-    // 1. Initial Hero Parallax
-    gsap.utils.toArray('.scroll-card').forEach((card) => {
-      gsap.to(card, {
-        y: parseFloat(card.getAttribute('data-y')),
-        scale: parseFloat(card.getAttribute('data-scale')),
-        filter: `blur(${card.getAttribute('data-blur')}px)`,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: "#parallax-stage",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2
-        }
-      });
-    });
-
-    // 2. Explosion Canvas FX (Electricity + Tax Symbols)
-    const canvas = document.getElementById('fx-canvas');
-    const ctx = canvas.getContext('2d');
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
-
-    const symbols = ['$', '%', '§', '#', '0', '1', '!', '?', '∑', 'Δ'];
+    let scrollProgress = 0;
+    const symbols = ["∑", "√", "π", "∫", "0", "1", "%", "≠", "{ }", "∂", "∞", "λ"];
     const particles = [];
-    const numParticles = 80;
 
-    for (let i = 0; i < numParticles; i++) {
+    // Initialize exploded particles
+    for (let i = 0; i < 45; i++) {
       particles.push({
-        x: width / 2,
-        y: height / 2,
-        vx: (Math.random() - 0.5) * 22,
-        vy: (Math.random() - 0.6) * 24,
         char: symbols[Math.floor(Math.random() * symbols.length)],
-        size: Math.random() * 22 + 14,
-        color: Math.random() > 0.4 ? '#2ca01c' : '#ffffff',
-        rot: Math.random() * Math.PI,
-        vRot: (Math.random() - 0.5) * 0.2,
-        alpha: 0
+        angle: Math.random() * Math.PI * 2,
+        dist: 30 + Math.random() * 220,
+        speed: 0.5 + Math.random() * 1.5,
+        size: 14 + Math.random() * 18
       });
     }
 
-    let burstProgress = { value: 0 };
+    // Track scroll depth normalized (0.0 to 1.0)
+    window.addEventListener("scroll", () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+    });
 
-    function drawFX() {
-      ctx.clearRect(0, 0, width, height);
-      const pVal = burstProgress.value;
+    // Ink hand-drawn jitter function
+    function jitter(val, amount = 1.5) {
+      return val + (Math.random() - 0.5) * amount;
+    }
 
-      if (pVal > 0.05) {
-        // Render electric arcs
-        if (pVal < 0.9) {
-          ctx.strokeStyle = '#2ca01c';
-          ctx.lineWidth = 2.5;
-          ctx.beginPath();
-          for (let a = 0; a < 6; a++) {
-            let cx = width / 2;
-            let cy = height / 2 - 40;
-            ctx.moveTo(cx, cy);
-            for (let j = 0; j < 5; j++) {
-              cx += (Math.random() - 0.5) * 70;
-              cy += (Math.random() - 0.7) * 60;
-              ctx.lineTo(cx, cy);
-            }
+    // Procedural jagged lightning line
+    function drawLightning(x1, y1, x2, y2, segments = 5) {
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      for (let i = 1; i < segments; i++) {
+        const t = i / segments;
+        const nx = x1 + (x2 - x1) * t + (Math.random() - 0.5) * 20;
+        const ny = y1 + (y2 - y1) * t + (Math.random() - 0.5) * 20;
+        ctx.lineTo(nx, ny);
+      }
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const cx = 300;
+      const cy = 300;
+
+      // Stage thresholds
+      // 0.0 - 0.5: Frustration / Contortion
+      // 0.5 - 1.0: Overload / Electric Explosion
+      const frustration = Math.min(scrollProgress / 0.5, 1);
+      const explosion = Math.max((scrollProgress - 0.45) / 0.55, 0);
+
+      // Frustration head vibration
+      const shakeX = frustration > 0.4 ? (Math.random() - 0.5) * (frustration * 10) : 0;
+      const shakeY = frustration > 0.4 ? (Math.random() - 0.5) * (frustration * 10) : 0;
+
+      ctx.save();
+      ctx.translate(cx + shakeX, cy + shakeY);
+      ctx.strokeStyle = "#111";
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.fillStyle = "#111";
+
+      // 1. HEAD BASE
+      if (explosion < 0.7) {
+        ctx.beginPath();
+        const headScale = 1 - explosion * 0.4;
+        ctx.ellipse(
+          jitter(0),
+          jitter(0),
+          jitter(75 * headScale),
+          jitter(95 * headScale),
+          0,
+          0,
+          Math.PI * 2
+        );
+        ctx.stroke();
+
+        // Cross-hatching shading (frustration tension)
+        if (frustration > 0.2) {
+          ctx.lineWidth = 1;
+          const lines = Math.floor(frustration * 12);
+          for (let i = 0; i < lines; i++) {
+            ctx.beginPath();
+            ctx.moveTo(jitter(-40 + i * 5), jitter(-70));
+            ctx.lineTo(jitter(-25 + i * 5), jitter(-50));
+            ctx.stroke();
           }
-          ctx.stroke();
+          ctx.lineWidth = 2.5;
         }
 
-        // Render bursting data particles
+        // 2. CONTORTING EYES & EYEBROWS
+        const browDrop = frustration * 12;
+        const eyeSquint = frustration * 4;
+
+        // Eyebrows (slanted down into an angry/frustrated V-shape)
+        ctx.beginPath();
+        ctx.moveTo(jitter(-45), jitter(-25 + browDrop));
+        ctx.lineTo(jitter(-10), jitter(-15 + browDrop * 1.8));
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(jitter(45), jitter(-25 + browDrop));
+        ctx.lineTo(jitter(10), jitter(-15 + browDrop * 1.8));
+        ctx.stroke();
+
+        // Pupils
+        ctx.beginPath();
+        ctx.arc(jitter(-25), jitter(-5), Math.max(1, 5 - eyeSquint), 0, Math.PI * 2);
+        ctx.arc(jitter(25), jitter(-5), Math.max(1, 5 - eyeSquint), 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3. MOUTH (from neutral line to grimace / open scream)
+        ctx.beginPath();
+        const mouthOpen = frustration * 22;
+        ctx.ellipse(jitter(0), jitter(45), jitter(20 + frustration * 10), jitter(2 + mouthOpen), 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // 4. ELECTRICITY & SYMBOLS EXPLOSION
+      if (explosion > 0.05) {
+        // Jagged electricity bolts
+        ctx.lineWidth = 1.8;
+        const boltCount = Math.floor(explosion * 8);
+        for (let i = 0; i < boltCount; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const r1 = 30;
+          const r2 = 90 + explosion * 90;
+          drawLightning(
+            Math.cos(angle) * r1,
+            Math.sin(angle) * r1,
+            Math.cos(angle) * r2,
+            Math.sin(angle) * r2
+          );
+        }
+
+        // Floating / expanding numbers and equations
+        ctx.font = "bold 18px monospace";
         particles.forEach((p) => {
+          const currentDist = p.dist * explosion * p.speed;
+          const px = Math.cos(p.angle) * currentDist;
+          const py = Math.sin(p.angle) * currentDist - explosion * 30; // rising drift
           ctx.save();
-          ctx.font = `bold ${p.size}px monospace`;
-          ctx.fillStyle = p.color;
-          ctx.globalAlpha = Math.max(0, 1 - pVal);
-          const px = (width / 2) + p.vx * pVal * 28;
-          const py = (height / 2 - 30) + p.vy * pVal * 28;
-          ctx.translate(px, py);
-          ctx.rotate(p.rot + p.vRot * pVal * 10);
+          ctx.translate(jitter(px, 2), jitter(py, 2));
+          ctx.globalAlpha = Math.min(explosion * 1.5, 1);
           ctx.fillText(p.char, 0, 0);
           ctx.restore();
         });
       }
-      requestAnimationFrame(drawFX);
-    }
-    drawFX();
 
-    // 3. Scroll Sequence: Contortion -> Explosion
-    const breakTL = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#breakdown-stage",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.8
-      }
-    });
-
-    breakTL
-      // Contort face in agony/confusion
-      .to("#face-group", { scaleY: 0.82, scaleX: 1.15, transformOrigin: "center bottom", duration: 2 })
-      .to("#brow-left", { rotation: 25, transformOrigin: "center right", duration: 2 }, 0)
-      .to("#brow-right", { rotation: -25, transformOrigin: "center left", duration: 2 }, 0)
-      .to("#mouth", { scaleY: 1.4, scaleX: 0.85, transformOrigin: "center center", duration: 2 }, 0)
-      .to(["#left-hand", "#right-hand"], { y: 15, duration: 2 }, 0)
-      
-      // Explosion threshold
-      .to("#cranium-group", { y: -220, rotation: 35, opacity: 0, duration: 1.5, ease: "power2.out" })
-      .to(burstProgress, { value: 1, duration: 2, ease: "power2.out" }, "<")
-      .to("#face-group", { y: 120, opacity: 0, duration: 1 }, "<")
-      .to(["#left-hand", "#right-hand", "#body-group"], { y: 180, opacity: 0, duration: 1.2 }, "<");
-
-    // 4. Interactive Scattering Typography Logic[cite: 2]
-    function splitToScatterSpans(element) {
-      const text = element.innerText;
-      element.innerHTML = '';
-      const spans = [];
-      for (const char of text) {
-        const span = document.createElement('span');
-        span.className = 'scatter-char';
-        span.innerText = char;
-        element.appendChild(span);
-        spans.push(span);
-      }
-      return spans;
+      ctx.restore();
+      requestAnimationFrame(render);
     }
 
-    const allSpans = [
-      ...splitToScatterSpans(document.getElementById('scatter-line-1')),
-      ...splitToScatterSpans(document.getElementById('scatter-line-2'))
-    ];
-
-    window.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX;
-      const mouseY = e.clientY;
-      const radius = 90; // Proximity threshold
-
-      allSpans.forEach((span) => {
-        const rect = span.getBoundingClientRect();
-        const charX = rect.left + rect.width / 2;
-        const charY = rect.top + rect.height / 2;
-
-        const dx = charX - mouseX;
-        const dy = charY - mouseY;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < radius) {
-          const power = (1 - dist / radius);
-          const pushX = (dx / dist) * power * 65;
-          const pushY = (dy / dist) * power * 65;
-          const rotate = (Math.random() - 0.5) * 45;
-
-          span.style.transform = `translate(${pushX}px, ${pushY}px) rotate(${rotate}deg)`;
-          span.style.color = '#ef4444'; // Tension red
-        } else {
-          span.style.transform = `translate(0px, 0px) rotate(0deg)`;
-          span.style.color = '';
-        }
-      });
-    });
+    render();
   </script>
 </body>
 </html>
