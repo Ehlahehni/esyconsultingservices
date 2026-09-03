@@ -1,473 +1,780 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Precision Books | Numbers Not Making Sense?</title>
+  <meta name="theme-color" content="#d7ff00" />
+  <title>Numbers Not Making Sense?</title>
 
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- GSAP & ScrollTrigger -->
+  <!-- GSAP: used only for scroll/mouse choreography -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
+    :root {
+      --acid: #d7ff00;
+      --ink: #0b0d0a;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: auto;
+      background: var(--white);
+    }
+
     body {
-      background-color: #d4f038;
-      font-family: 'Space Grotesk', sans-serif;
+      margin: 0;
       overflow-x: hidden;
-    }
-    .font-headline {
-      font-family: 'Bebas Neue', sans-serif;
-    }
-    .font-mono-code {
-      font-family: 'Space Mono', monospace;
-    }
-    .font-signature {
-      font-family: 'Caveat', cursive;
-    }
-    .solid-editorial {
-      color: #ffffff;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-      line-height: 0.84;
-      letter-spacing: -0.04em;
+      background: var(--white);
+      color: var(--ink);
+      font-family: "Space Grotesk", sans-serif;
     }
 
-    /* Head & Eyes Construction */
-    .character-stage {
+    body.is-green { background: var(--acid); }
+
+    .font-headline { font-family: "Bebas Neue", sans-serif; }
+    .font-mono { font-family: "Space Mono", monospace; }
+
+    /* ---------------------------------------------------------
+       HERO / SCROLL-SCRUBBED VIDEO
+       --------------------------------------------------------- */
+    .scrub-section {
       position: relative;
-      width: 440px;
-      height: 440px;
-      mix-blend-mode: multiply;
-    }
-    .head-base {
-      position: absolute;
-      inset: 0;
-      background: url('meme.jpg') center/contain no-repeat;
-      clip-path: polygon(0 40%, 100% 40%, 100% 100%, 0 100%);
-    }
-    .head-lid {
-      position: absolute;
-      inset: 0;
-      background: url('meme.jpg') center/contain no-repeat;
-      clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
-      transform-origin: 82% 40%;
-      will-change: transform;
+      height: 330vh;
+      background: #fff;
     }
 
-    /* Eye tracking overlay */
-    .eye-socket {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 15;
-    }
-    .pupil {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: #111111;
-      border-radius: 50%;
-      top: 4px;
-      left: 4px;
-      will-change: transform;
+    .sticky-stage {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      isolation: isolate;
     }
 
-    /* Cavity electric glow */
-    .cavity-glow {
+    .neon-bg {
       position: absolute;
-      top: 38%;
-      left: 26%;
-      width: 48%;
-      height: 9%;
-      border-radius: 50%;
-      background: radial-gradient(ellipse at center, #00ffff 0%, #38bdf8 50%, transparent 80%);
-      filter: blur(6px);
+      inset: 0;
+      z-index: 0;
+      background: var(--acid);
       opacity: 0;
+      transform: scale(1.04);
+      will-change: opacity, transform;
+    }
+
+    /* Grain makes the transition feel less sterile */
+    .grain {
+      position: absolute;
+      inset: -50%;
+      z-index: 20;
+      pointer-events: none;
+      opacity: .07;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+      animation: grain .18s steps(2) infinite;
+    }
+
+    @keyframes grain {
+      0% { transform: translate3d(0,0,0); }
+      25% { transform: translate3d(2%, -1%, 0); }
+      50% { transform: translate3d(-1%, 2%, 0); }
+      75% { transform: translate3d(1%, 1%, 0); }
+      100% { transform: translate3d(-2%, -1%, 0); }
+    }
+
+    .video-wrap {
+      position: absolute;
+      z-index: 5;
+      width: min(110vw, 1450px);
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      transform-style: preserve-3d;
+      will-change: transform, filter, opacity;
       pointer-events: none;
     }
 
-    /* Interactive avoidance glyphs */
-    .scatter-glyph {
-      display: inline-block;
-      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.15s ease, text-shadow 0.15s ease;
-      will-change: transform;
+    /*
+      Your Flow clip has a white background. "multiply" is intentional:
+      white becomes transparent-looking over the neon background while
+      the black illustration remains visible.
+    */
+    #scrubVideo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      filter: contrast(1.04) saturate(1.08);
+      will-change: transform, filter;
     }
 
-    /* Cursor Spotlight */
-    #cursor-light {
+    /* subtle glow behind the exploding symbols */
+    .electric-glow {
+      position: absolute;
+      width: 48vw;
+      height: 48vw;
+      max-width: 680px;
+      max-height: 680px;
+      border-radius: 50%;
+      z-index: 3;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,255,255,.75), rgba(0,255,255,.18) 25%, transparent 68%);
+      filter: blur(25px);
+      opacity: 0;
+      transform: scale(.55);
+      mix-blend-mode: screen;
+    }
+
+    /* ---------------------------------------------------------
+       HEADLINE
+       --------------------------------------------------------- */
+    .headline {
+      position: absolute;
+      z-index: 12;
+      width: min(1200px, 94vw);
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      mix-blend-mode: normal;
+    }
+
+    .headline h1 {
+      margin: 0;
+      color: #070907;
+      font-size: clamp(5.2rem, 15vw, 14rem);
+      line-height: .78;
+      letter-spacing: -.045em;
+      text-transform: uppercase;
+      text-shadow: 0 5px 0 rgba(255,255,255,.45);
+    }
+
+    .headline .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .headline .line span {
+      display: inline-block;
+      will-change: transform, opacity;
+    }
+
+    .eyebrow {
+      margin-bottom: 16px;
+      font: 700 11px/1 "Space Mono", monospace;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      opacity: .65;
+    }
+
+    /* ---------------------------------------------------------
+       FLOATING ACCOUNTING ARTIFACTS
+       --------------------------------------------------------- */
+    .artifact-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .artifact {
+      position: absolute;
+      padding: 15px 17px;
+      border-radius: 16px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.24);
+      font: 11px/1.35 "Space Mono", monospace;
+      will-change: transform, filter, opacity;
+    }
+
+    .receipt {
+      top: 8%;
+      left: 4%;
+      width: 260px;
+      background: #fff;
+      border: 1px solid #ddd;
+    }
+
+    .invoice {
+      top: 9%;
+      right: 4%;
+      width: 280px;
+      color: #fff;
+      background: #101512;
+      border: 1px solid #273029;
+    }
+
+    .statement {
+      top: 57%;
+      right: 3%;
+      width: 300px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid #ddd;
+    }
+
+    .discrepancy {
+      top: 58%;
+      left: 4%;
+      width: 250px;
+      background: #fff5d7;
+      border: 1px solid #e8bd4e;
+    }
+
+    .artifact strong {
+      display: block;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 15px;
+      margin-bottom: 9px;
+    }
+
+    .artifact .num {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 5px 0 10px;
+    }
+
+    /* ---------------------------------------------------------
+       SECOND MESSAGE
+       --------------------------------------------------------- */
+    .message-section {
+      position: relative;
+      min-height: 150vh;
+      background: var(--acid);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .message-inner {
+      position: relative;
+      width: min(1200px, 90vw);
+      padding: 18vh 0;
+      z-index: 2;
+    }
+
+    .message-kicker {
+      font: 700 11px/1 "Space Mono", monospace;
+      text-transform: uppercase;
+      letter-spacing: .2em;
+      margin-bottom: 28px;
+      opacity: .65;
+    }
+
+    .message {
+      margin: 0;
+      max-width: 1050px;
+      font-size: clamp(3.4rem, 8vw, 8rem);
+      line-height: .88;
+      letter-spacing: -.05em;
+      font-weight: 700;
+    }
+
+    .message .char {
+      display: inline-block;
+      position: relative;
+      will-change: transform, filter;
+      cursor: default;
+    }
+
+    .message .space {
+      display: inline-block;
+      width: .28em;
+    }
+
+    .message-sub {
+      margin-top: 45px;
+      max-width: 600px;
+      font: 400 14px/1.65 "Space Mono", monospace;
+      opacity: .72;
+    }
+
+    .cursor-light {
       position: fixed;
-      width: 320px;
-      height: 320px;
+      left: 0;
+      top: 0;
+      width: 190px;
+      height: 190px;
       border-radius: 50%;
       pointer-events: none;
-      z-index: 60;
+      z-index: 100;
       opacity: 0;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 40%, transparent 70%);
-      mix-blend-mode: overlay;
-      filter: blur(10px);
-      transition: opacity 0.3s ease;
+      background: radial-gradient(circle, rgba(255,255,255,.7), rgba(255,255,255,.13) 27%, transparent 67%);
+      mix-blend-mode: screen;
+      filter: blur(5px);
+    }
+
+    .floating-symbols {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .symbol {
+      position: absolute;
+      font: 700 clamp(18px, 3vw, 42px)/1 "Space Mono", monospace;
+      opacity: .14;
+      animation: float 7s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate3d(0,0,0) rotate(-5deg); }
+      50% { transform: translate3d(0,-28px,0) rotate(8deg); }
+    }
+
+    /* ---------------------------------------------------------
+       FINAL CTA
+       --------------------------------------------------------- */
+    .final-section {
+      min-height: 90vh;
+      padding: 12vw 7vw;
+      background: #090b09;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .final-section h2 {
+      margin: 0;
+      color: var(--acid);
+      font: 400 clamp(4rem, 11vw, 11rem)/.78 "Bebas Neue", sans-serif;
+      letter-spacing: -.025em;
+      max-width: 900px;
+    }
+
+    .final-section p {
+      max-width: 560px;
+      margin: 35px 0 0;
+      color: rgba(255,255,255,.65);
+      font: 14px/1.7 "Space Mono", monospace;
+    }
+
+    /* mobile */
+    @media (max-width: 700px) {
+      .scrub-section { height: 300vh; }
+      .video-wrap { width: 145vw; }
+      .headline h1 { font-size: 18vw; }
+      .artifact { transform: scale(.72); transform-origin: center; }
+      .receipt { left: -45px; }
+      .invoice { right: -55px; }
+      .statement { right: -75px; }
+      .discrepancy { left: -50px; }
+      .message-section { min-height: 125vh; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .grain, .symbol { animation: none; }
     }
   </style>
 </head>
-<body class="selection:bg-black selection:text-[#d4f038] text-slate-950">
 
-  <!-- Interactive Spotlight -->
-  <div id="cursor-light"></div>
+<body>
 
-  <!-- ==================== STAGE 1: LANDING & HEAD EXPLOSION ==================== -->
-  <section id="head-stage" class="relative w-full min-h-[260vh] bg-[#d4f038] flex flex-col justify-start items-center">
-    <div id="head-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4">
-      
-      <!-- Character Stage with Eye Tracking -->
-      <div id="character-wrapper" class="character-stage flex items-center justify-center">
-        <div class="head-base"></div>
-        <div id="head-lid" class="head-lid"></div>
-        <div id="cavity-glow" class="cavity-glow"></div>
+  <!-- =========================================================
+       1. HERO: the video is scrubbed by scroll, NOT played normally
+       ========================================================= -->
+  <section class="scrub-section" id="scrubSection">
+    <div class="sticky-stage" id="stickyStage">
 
-        <!-- Eye Trackers placed over pupils -->
-        <div id="left-eye" class="eye-socket" style="top: 48%; left: 41%;">
-          <div class="pupil" id="left-pupil"></div>
-        </div>
-        <div id="right-eye" class="eye-socket" style="top: 47%; left: 54%;">
-          <div class="pupil" id="right-pupil"></div>
-        </div>
+      <div class="neon-bg" id="neonBg"></div>
+      <div class="electric-glow" id="electricGlow"></div>
+
+      <div class="video-wrap" id="videoWrap">
+        <video
+          id="scrubVideo"
+          src="./numbers-not-making-sense.mp4"
+          muted
+          playsinline
+          preload="auto"
+          aria-hidden="true">
+        </video>
       </div>
 
-      <!-- Fountain Particle Container for symbols and electricity -->
-      <div id="head-fountain" class="absolute inset-0 pointer-events-none flex items-center justify-center z-20"></div>
-
-      <p id="scroll-prompt" class="absolute bottom-8 font-mono-code text-xs font-bold uppercase tracking-widest text-black/70">
-        ↓ Scroll down to release the pressure
-      </p>
-    </div>
-  </section>
-
-  <!-- ==================== STAGE 2: NUMBERS NOT MAKING SENSE? PARALLAX ==================== -->
-  <section id="parallax-stage" class="relative w-full min-h-[240vh] bg-[#d4f038] flex flex-col justify-start items-center">
-    <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
-      
-      <!-- Crisp Editorial Headline -->
-      <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
-        <h1 class="font-headline solid-editorial text-[19vw] uppercase">
-          Numbers Not<br/>
-          <span>Making Sense?</span>
+      <div class="headline" id="headline">
+        <div class="eyebrow">the numbers are talking. you're not listening.</div>
+        <h1 class="font-headline">
+          <span class="line"><span>Numbers Not</span></span>
+          <span class="line"><span>Making Sense?</span></span>
         </h1>
       </div>
 
-      <!-- ARTIFACT 1: Store Receipt -->
-      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
-           data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
-        <div class="w-64 sm:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.22)] border border-neutral-300/80">
-          <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
-            <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
-            <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
-          </div>
-          <div class="py-3 font-mono-code text-xs space-y-1.5">
-            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
-            <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
-            <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
-          </div>
-          <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
-            <span>TOTAL DUE</span>
-            <span>$796.17</span>
-          </div>
+      <div class="artifact-layer" id="artifactLayer">
+        <div class="artifact receipt">
+          <strong>WHOLESALE COMMERCE</strong>
+          <div>Physical Stock Tier-A ........ $620.00</div>
+          <div>Express Freight .............. $115.50</div>
+          <div>State Tax ..................... $60.67</div>
+          <hr>
+          <b>TOTAL DUE ................... $796.17</b>
+        </div>
+
+        <div class="artifact invoice">
+          <strong>OVERDUE 45 DAYS</strong>
+          <div>Q3 Retainer Balance Due</div>
+          <div class="num">$8,450.00</div>
+          <div>INV-2026-99</div>
+        </div>
+
+        <div class="artifact statement">
+          <strong>CHECKING (...3810)</strong>
+          <div>Stripe Payout Reversal .... -$2,450</div>
+          <div>Infrastructure Hosting ..... -$420</div>
+          <div>Client Wire (Cleared) ..... +$12,300</div>
+        </div>
+
+        <div class="artifact discrepancy">
+          <strong>⚠ SYNC DISCREPANCY</strong>
+          <div>142 unreconciled entries synced via QuickBooks &amp; Xero.</div>
         </div>
       </div>
 
-      <!-- ARTIFACT 2: Minimal Overdue Invoice Badge -->
-      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
-           data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
-        <div class="w-72 sm:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.3)] border border-slate-800">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
-              OVERDUE 45 DAYS
-            </span>
-            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-3 font-medium">Q3 Retainer Balance Due</p>
-          <p class="text-3xl font-black text-white mt-1.5">$8,450.00</p>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 3: Bank Statement Live Feed -->
-      <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
-           data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
-        <div class="w-72 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.18)] border border-slate-300">
-          <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
-            <span class="text-sm font-bold tracking-tight text-slate-900">Checking (...3810)</span>
-            <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
-          </div>
-          <div class="mt-3 space-y-2.5 font-mono-code text-xs">
-            <div class="flex justify-between text-rose-600 font-bold">
-              <span>Stripe Payout Reversal</span>
-              <span>-$2,450.00</span>
-            </div>
-            <div class="flex justify-between text-slate-600">
-              <span>Infrastructure Hosting</span>
-              <span>-$420.80</span>
-            </div>
-            <div class="flex justify-between text-emerald-600 font-bold">
-              <span>Client Wire (Cleared)</span>
-              <span>+$12,300.00</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 4: QuickBooks Alert Slip -->
-      <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
-           data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
-        <div class="w-64 sm:w-76 bg-white/90 backdrop-blur-md rounded-2xl p-4.5 border border-amber-400 shadow-[0_24px_45px_rgba(0,0,0,0.12)]">
-          <div class="flex items-center gap-2.5">
-            <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
-            <span class="text-xs font-bold text-amber-950 uppercase tracking-wide">Sync Discrepancy</span>
-          </div>
-          <p class="text-xs text-amber-900 mt-2 font-mono-code">
-            142 unreconciled entries synced via QuickBooks & Xero.
-          </p>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard -->
-      <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
-           data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
-        <div class="w-72 sm:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-neutral-800">
-          <div class="flex justify-between items-center text-xs text-neutral-400">
-            <span class="font-medium">Shopify Gross Margin</span>
-            <span class="text-rose-400 font-bold font-mono-code">↓ 18.2%</span>
-          </div>
-          <div class="mt-2.5 flex items-baseline gap-2">
-            <span class="text-3xl font-bold font-mono-code">$19,420</span>
-            <span class="text-xs text-neutral-500 font-mono-code">vs $23,750</span>
-          </div>
-          <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
-            <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 6: Business Check Slip -->
-      <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
-           data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
-        <div class="w-76 sm:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-stone-300">
-          <div class="flex justify-between items-start">
-            <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
-            <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
-          </div>
-          <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
-            <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
-            <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
-            <span class="text-xs sm:text-sm font-mono-code font-bold">$4,850.00</span>
-          </div>
-          <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
-            <span>MEMO: Tax Accrual</span>
-            <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
-          </div>
-        </div>
-      </div>
-
+      <div class="grain"></div>
     </div>
   </section>
 
-  <!-- ==================== STAGE 3: RESOLUTION & SCATTER TYPOGRAPHY ==================== -->
-  <section id="resolution-stage" class="relative w-full min-h-[160vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
-    <div class="sticky top-0 w-full h-screen flex flex-col items-center justify-center px-4 md:px-8 text-center">
-      
-      <div class="max-w-7xl">
-        <h2 id="evade-container" class="font-headline text-[8.5vw] leading-[0.85] text-black tracking-tight uppercase cursor-default select-none">
-          <!-- Populated by script into interactive letter spans -->
-        </h2>
-        <p class="text-black/80 font-mono-code text-xs sm:text-sm mt-6 uppercase tracking-widest font-bold">
-          [ Hover cursor over letters to scatter ]
-        </p>
-      </div>
-
+  <!-- =========================================================
+       2. MESSAGE: mouse-reactive typography
+       ========================================================= -->
+  <section class="message-section" id="messageSection">
+    <div class="floating-symbols" aria-hidden="true">
+      <span class="symbol" style="left:7%;top:14%">$</span>
+      <span class="symbol" style="left:82%;top:18%">%</span>
+      <span class="symbol" style="left:16%;top:70%">∑</span>
+      <span class="symbol" style="left:89%;top:67%">#</span>
+      <span class="symbol" style="left:54%;top:10%">01</span>
+      <span class="symbol" style="left:67%;top:82%">+</span>
+      <span class="symbol" style="left:34%;top:87%">∞</span>
     </div>
+
+    <div class="message-inner">
+      <div class="message-kicker">you don't need another spreadsheet</div>
+
+      <h2 class="message" id="scatterText">
+        Let me handle your books with precision while you focus on your vision
+      </h2>
+
+      <p class="message-sub">
+        Hover over the words. The type reacts to you — because your books shouldn't.
+      </p>
+    </div>
+
+    <div class="cursor-light" id="cursorLight"></div>
   </section>
 
-  <!-- Footer -->
-  <footer class="h-[60vh] bg-[#d4f038] text-black flex flex-col items-center justify-center p-8 border-t-2 border-black">
-    <h3 class="font-headline text-6xl md:text-8xl tracking-tight uppercase">Ready to get balanced?</h3>
-    <a href="mailto:hello@precisionbooks.com" class="mt-6 px-10 py-5 bg-black text-[#d4f038] font-bold font-mono-code text-sm rounded-full shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:scale-105 transition-transform">
-      Schedule a Reconciliation Call →
-    </a>
-  </footer>
+  <!-- =========================================================
+       3. END
+       ========================================================= -->
+  <section class="final-section">
+    <h2>Clarity<br>Reclaimed.</h2>
+    <p>
+      Monthly close. Reconciliation. Clean numbers. Less noise.
+      You focus on the business. I handle the books.
+    </p>
+  </section>
 
-  <!-- ==================== ANIMATION ENGINE ==================== -->
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. Interactive Eyes Tracking Mouse (Only active when near top)
-    const leftPupil = document.getElementById('left-pupil');
-    const rightPupil = document.getElementById('right-pupil');
-    let isTracking = true;
+    const video = document.getElementById("scrubVideo");
+    const scrubSection = document.getElementById("scrubSection");
+    const neonBg = document.getElementById("neonBg");
+    const videoWrap = document.getElementById("videoWrap");
+    const electricGlow = document.getElementById("electricGlow");
+    const headline = document.getElementById("headline");
+    const headlineLines = headline.querySelectorAll(".line span");
+    const artifactLayer = document.getElementById("artifactLayer");
+    const artifacts = artifactLayer.querySelectorAll(".artifact");
 
-    window.addEventListener('scroll', () => {
-      isTracking = window.scrollY < 200;
-    });
+    let duration = 10;
+    let targetTime = 0;
+    let renderedTime = 0;
+    let userHasScrolled = false;
 
-    window.addEventListener('mousemove', (e) => {
-      if (!isTracking) return;
+    /*
+      IMPORTANT:
+      currentTime is used instead of video.play().
+      Scroll position -> video timestamp.
+      That makes the Flow animation behave like a physical animation
+      that the visitor scrubs through.
+    */
+    function scrubLoop() {
+      renderedTime += (targetTime - renderedTime) * 0.16;
 
-      [leftPupil, rightPupil].forEach((pupil) => {
-        const rect = pupil.getBoundingClientRect();
-        const eyeX = rect.left + rect.width / 2;
-        const eyeY = rect.top + rect.height / 2;
-        const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
-        const distance = Math.min(4, Math.hypot(e.clientX - eyeX, e.clientY - eyeY) / 30);
+      if (Math.abs(video.currentTime - renderedTime) > 0.012) {
+        try { video.currentTime = renderedTime; } catch (e) {}
+      }
 
-        pupil.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px)`;
-      });
-    });
-
-    // 2. Stage 1: Head Explodes with Numbers, Letters, and Electricity
-    const headFountain = document.getElementById('head-fountain');
-    const burstItems = ["$", "%", "#", "Σ", "404", "TAX", "DEBIT", "&", "84%", "INV", "+", "√", "ERR", "NET", "0.00", "⚡", "↯"];
-    const fountainSpans = [];
-
-    for (let i = 0; i < 50; i++) {
-      const el = document.createElement('span');
-      el.className = 'absolute font-mono-code font-black text-xl sm:text-3xl text-black pointer-events-none opacity-0 select-none';
-      el.textContent = burstItems[Math.floor(Math.random() * burstItems.length)];
-      headFountain.appendChild(el);
-      fountainSpans.push(el);
+      requestAnimationFrame(scrubLoop);
     }
 
-    const headTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#head-stage",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.0
+    video.addEventListener("loadedmetadata", () => {
+      duration = video.duration || 10;
+      video.currentTime = 0;
+      scrubLoop();
+      ScrollTrigger.refresh();
+    });
+
+    /*
+      Initial mouse tilt.
+      It is intentionally disabled once the user starts scrolling,
+      so the face feels alive at the entrance but the scroll animation
+      takes over afterward.
+    */
+    let mouseX = 0;
+    let mouseY = 0;
+
+    window.addEventListener("mousemove", (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5);
+      mouseY = (e.clientY / window.innerHeight - 0.5);
+    }, { passive: true });
+
+    gsap.ticker.add(() => {
+      if (!userHasScrolled) {
+        gsap.to(videoWrap, {
+          rotationY: mouseX * 5,
+          rotationX: -mouseY * 4,
+          x: mouseX * 8,
+          y: mouseY * 6,
+          duration: 0.5,
+          overwrite: true,
+          ease: "power2.out"
+        });
       }
     });
 
-    headTl.to('#head-lid', { rotate: 50, x: 30, y: -40, duration: 1.2, ease: "back.out(1.8)" }, 0.2);
-    headTl.to('#cavity-glow', { opacity: 1, scale: 1.2, duration: 0.6 }, 0.3);
+    const heroTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: scrubSection,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.25,
+        onUpdate: (self) => {
+          userHasScrolled = self.progress > 0.015;
+          targetTime = duration * self.progress;
+        }
+      }
+    });
 
-    fountainSpans.forEach((token, index) => {
-      const angle = (index / fountainSpans.length) * Math.PI * 1.6 - (Math.PI * 0.8);
-      const dist = 280 + Math.random() * 320;
-      headTl.fromTo(token,
-        { x: 0, y: -20, opacity: 0, scale: 0.3 },
-        { 
-          x: Math.cos(angle) * dist, 
-          y: -Math.sin(angle) * dist - 160, 
-          opacity: 1, 
-          scale: 1.6, 
-          duration: 1.4, 
-          ease: "power2.out" 
-        }, 
-        0.4 + (index * 0.015)
+    /*
+      0% -> 18%:
+      White intro. Face is huge and calm.
+
+      18% -> 55%:
+      Video gets increasingly intense as Flow generates the
+      exploding symbols.
+
+      42% -> 78%:
+      Neon background arrives and the headline assembles.
+
+      65% -> 100%:
+      Headline and accounting artifacts become the visual focus.
+    */
+
+    heroTimeline
+      .to(neonBg, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.42,
+        ease: "power2.inOut"
+      }, 0.18)
+
+      .to(videoWrap, {
+        scale: 1.08,
+        duration: 0.22,
+        ease: "power2.out"
+      }, 0.08)
+
+      .to(videoWrap, {
+        scale: 0.92,
+        rotationZ: -2,
+        filter: "blur(0.7px) contrast(1.12) saturate(1.2)",
+        duration: 0.36,
+        ease: "power2.inOut"
+      }, 0.42)
+
+      .to(electricGlow, {
+        opacity: 0.8,
+        scale: 1.2,
+        duration: 0.22
+      }, 0.25)
+
+      .to(electricGlow, {
+        opacity: 0,
+        scale: 1.8,
+        duration: 0.38
+      }, 0.56)
+
+      .to(headline, {
+        opacity: 1,
+        duration: 0.22,
+        ease: "power2.out"
+      }, 0.56)
+
+      .fromTo(headlineLines[0],
+        { yPercent: 110, rotate: 4, filter: "blur(12px)" },
+        { yPercent: 0, rotate: 0, filter: "blur(0px)", duration: 0.22 },
+        0.58
+      )
+
+      .fromTo(headlineLines[1],
+        { yPercent: 110, rotate: -4, filter: "blur(12px)" },
+        { yPercent: 0, rotate: 0, filter: "blur(0px)", duration: 0.22 },
+        0.64
+      )
+
+      .to(videoWrap, {
+        scale: 0.74,
+        opacity: 0.72,
+        filter: "blur(3px) contrast(1.1) saturate(1.15)",
+        duration: 0.35
+      }, 0.67)
+
+      .to(artifactLayer, {
+        opacity: 1,
+        duration: 0.2
+      }, 0.66);
+
+    // Give each artifact its own chaotic entrance.
+    gsap.utils.toArray(".artifact").forEach((card, i) => {
+      gsap.fromTo(card,
+        {
+          y: i % 2 ? 80 : -80,
+          x: i % 2 ? 40 : -40,
+          rotation: i % 2 ? 8 : -8,
+          scale: 0.72,
+          filter: "blur(10px)"
+        },
+        {
+          y: 0,
+          x: 0,
+          rotation: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          ease: "none",
+          scrollTrigger: {
+            trigger: scrubSection,
+            start: `${54 + i * 3}% top`,
+            end: `${76 + i * 3}% top`,
+            scrub: 0.8
+          }
+        }
       );
-      headTl.to(token, { opacity: 0, scale: 0.2, duration: 0.6 }, 2.0);
     });
 
-    headTl.to('#character-wrapper', { scale: 0.6, opacity: 0, y: -100, duration: 1.2 }, 1.8);
-    headTl.to('#scroll-prompt', { opacity: 0, duration: 0.4 }, 0.2);
-
-    // 3. Stage 2: Parallax Cards with Depth Blur
-    const cards = gsap.utils.toArray('.scroll-card');
-    cards.forEach((card) => {
-      const targetY = parseFloat(card.getAttribute('data-y')) || -300;
-      const maxBlur = parseFloat(card.getAttribute('data-blur')) || 8;
-      const targetScale = parseFloat(card.getAttribute('data-scale')) || 1.1;
-      const baseRotation = parseFloat(card.getAttribute('data-rotate')) || 0;
-
-      gsap.set(card, {
-        rotationZ: baseRotation,
-        filter: "blur(0px)",
-        transformOrigin: "center center"
-      });
-
-      gsap.to(card, {
-        y: targetY,
-        scale: targetScale,
-        filter: `blur(${maxBlur}px)`,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: "#parallax-stage",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2
-        }
-      });
+    // Fade the first scene away as the next section approaches.
+    gsap.to("#stickyStage", {
+      opacity: 0,
+      scale: 0.97,
+      scrollTrigger: {
+        trigger: scrubSection,
+        start: "86% top",
+        end: "100% top",
+        scrub: true
+      }
     });
 
-    // 4. Stage 3: Sentence Formation & Light Avoidance Evasion
-    const finalPhrase = "LET ME HANDLE YOUR BOOKS WITH PRECISION WHILE YOU FOCUS ON YOUR VISION";
-    const evadeContainer = document.getElementById('evade-container');
+    // ---------------------------------------------------------
+    // Mouse-reactive text: characters avoid the cursor.
+    // ---------------------------------------------------------
+    const text = document.getElementById("scatterText");
+    const original = text.textContent.trim();
+    text.textContent = "";
 
-    finalPhrase.split(' ').forEach((word) => {
-      const wordWrap = document.createElement('span');
-      wordWrap.className = 'inline-block whitespace-nowrap mr-[1.8vw] my-1';
+    const chars = [];
 
-      word.split('').forEach((char) => {
-        const charWrap = document.createElement('span');
-        charWrap.textContent = char;
-        charWrap.className = 'scatter-glyph';
-        wordWrap.appendChild(charWrap);
-      });
+    [...original].forEach((char) => {
+      if (char === " ") {
+        const span = document.createElement("span");
+        span.className = "space";
+        span.innerHTML = "&nbsp;";
+        text.appendChild(span);
+        return;
+      }
 
-      evadeContainer.appendChild(wordWrap);
+      const span = document.createElement("span");
+      span.className = "char";
+      span.textContent = char;
+      text.appendChild(span);
+      chars.push(span);
     });
 
-    const glyphs = document.querySelectorAll('.scatter-glyph');
-    const spotlight = document.getElementById('cursor-light');
+    const cursorLight = document.getElementById("cursorLight");
+    let pointerX = -9999;
+    let pointerY = -9999;
 
-    window.addEventListener('mousemove', (e) => {
-      spotlight.style.opacity = '1';
-      spotlight.style.left = `${e.clientX}px`;
-      spotlight.style.top = `${e.clientY}px`;
+    window.addEventListener("mousemove", (e) => {
+      pointerX = e.clientX;
+      pointerY = e.clientY;
 
-      glyphs.forEach((glyph) => {
-        const rect = glyph.getBoundingClientRect();
-        const glyphCenterX = rect.left + rect.width / 2;
-        const glyphCenterY = rect.top + rect.height / 2;
+      gsap.to(cursorLight, {
+        x: pointerX,
+        y: pointerY,
+        opacity: 1,
+        duration: 0.35,
+        overwrite: true
+      });
 
-        const deltaX = e.clientX - glyphCenterX;
-        const deltaY = e.clientY - glyphCenterY;
-        const distance = Math.hypot(deltaX, deltaY);
+      chars.forEach((char) => {
+        const r = char.getBoundingClientRect();
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const dx = cx - pointerX;
+        const dy = cy - pointerY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const radius = 125;
 
-        if (distance < 140) {
-          const force = (140 - distance) / 140;
-          const pushX = -(deltaX / distance) * force * 50;
-          const pushY = -(deltaY / distance) * force * 50;
-          const rotate = (deltaX > 0 ? -1 : 1) * force * 32;
+        if (distance < radius) {
+          const force = Math.pow(1 - distance / radius, 2);
+          const angle = Math.atan2(dy, dx);
 
-          glyph.style.transform = `translate(${pushX}px, ${pushY}px) rotate(${rotate}deg) scale(1.15)`;
-          glyph.style.color = '#ffffff';
-          glyph.style.textShadow = '0 10px 25px rgba(0,0,0,0.35)';
+          gsap.to(char, {
+            x: Math.cos(angle) * force * 42,
+            y: Math.sin(angle) * force * 42,
+            rotation: (Math.random() - 0.5) * force * 30,
+            filter: `drop-shadow(0 0 ${8 + force * 18}px rgba(255,255,255,.9))`,
+            duration: 0.28,
+            overwrite: true,
+            ease: "power3.out"
+          });
         } else {
-          glyph.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
-          glyph.style.color = '#000000';
-          glyph.style.textShadow = 'none';
+          gsap.to(char, {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            filter: "drop-shadow(0 0 0 rgba(255,255,255,0))",
+            duration: 0.7,
+            overwrite: true,
+            ease: "power3.out"
+          });
         }
       });
+    }, { passive: true });
+
+    window.addEventListener("mouseleave", () => {
+      gsap.to(cursorLight, { opacity: 0, duration: 0.4 });
     });
 
-    document.addEventListener('mouseleave', () => {
-      spotlight.style.opacity = '0';
-      glyphs.forEach((glyph) => {
-        glyph.style.transform = 'translate(0px, 0px) rotate(0deg) scale(1)';
-        glyph.style.color = '#000000';
-        glyph.style.textShadow = 'none';
-      });
-    });
+    // Respect reduced-motion preferences.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      ScrollTrigger.getAll().forEach(st => st.disable());
+      video.currentTime = duration * 0.45;
+    }
   </script>
 </body>
 </html>
