@@ -8,7 +8,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -22,6 +22,7 @@
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
     }
+    html { scroll-behavior: smooth; }
     body {
       background-color: #d4f038;
       font-family: 'Space Grotesk', sans-serif;
@@ -29,51 +30,67 @@
       margin: 0;
       padding: 0;
     }
-    .font-headline {
-      font-family: 'Bebas Neue', sans-serif;
-    }
-    .font-mono-code {
-      font-family: 'Space Mono', monospace;
-    }
-    .font-signature {
-      font-family: 'Caveat', cursive;
-    }
+    .font-headline { font-family: 'Bebas Neue', sans-serif; }
+    .font-mono-code { font-family: 'Space Mono', monospace; }
+    .font-signature { font-family: 'Caveat', cursive; }
+
     .solid-editorial {
       color: #ffffff;
       text-shadow: 0 14px 45px rgba(0, 0, 0, 0.16);
       line-height: 0.85;
       letter-spacing: -0.04em;
     }
+
+    /* Cheap-to-animate hint: only transform + opacity get GPU acceleration promises here.
+       We deliberately do NOT scrub `filter: blur()` every frame anymore — that was
+       the single biggest cause of scroll jank. Blur is now applied once, as a
+       simple CSS transition, not recalculated on every scroll tick. */
     .gpu {
       will-change: transform, opacity;
       transform: translateZ(0);
+      backface-visibility: hidden;
     }
-    /* Ambient cloud mist */
+
+    .card-blur-in {
+      transition: filter 0.6s ease-out;
+    }
+
     .mist-layer {
-      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 45%, rgba(212,240,56,0.95) 75%, #d4f038 100%);
-      filter: blur(24px);
+      background: radial-gradient(circle at 50% 50%,
+        rgba(255,255,255,1) 0%,
+        rgba(255,255,255,0.9) 40%,
+        rgba(212,240,56,0.96) 72%,
+        #d4f038 100%);
+    }
+
+    /* Simple loading state so a slow video doesn't just look "broken" */
+    #video-loading {
+      transition: opacity 0.4s ease;
     }
   </style>
 </head>
 <body class="selection:bg-black selection:text-[#d4f038] text-slate-900">
 
-  <!-- ==================== STAGE 1: SMOOTH AUTO-PLAY VIDEO & 3D MOUSE TILT ==================== -->
+  <!-- ==================== STAGE 1: HERO VIDEO + 3D MOUSE TILT ==================== -->
   <section id="hero-section" class="relative w-full h-[100vh] bg-white flex items-center justify-center overflow-hidden [perspective:1200px]">
-    
-    <!-- 3D Tilting Video Container -->
+
+    <!-- Loading indicator while the video buffers on slower connections -->
+    <div id="video-loading" class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+      <div class="w-10 h-10 border-[3px] border-slate-200 border-t-slate-900 rounded-full animate-spin"></div>
+    </div>
+
     <div id="video-tilt-wrapper" class="relative w-full h-full flex items-center justify-center gpu transition-transform duration-100 ease-out">
-      <video 
-        id="head-video" 
-        src="Man_holding_head_with_numbers_202609032343 - original.mp4" 
-        autoplay 
-        muted 
-        playsinline 
+      <video
+        id="head-video"
+        src="hero-video.mp4"
+        autoplay
+        muted
+        playsinline
         preload="auto"
         class="w-full h-full object-contain max-w-4xl select-none pointer-events-none">
       </video>
     </div>
 
-    <!-- Scroll Down Indicator -->
     <div id="scroll-prompt" class="absolute bottom-8 flex flex-col items-center pointer-events-none z-20">
       <span class="text-[11px] uppercase tracking-widest font-mono-code text-slate-500 font-bold mb-2">
         ↓ Scroll down to unpack
@@ -83,16 +100,15 @@
       </div>
     </div>
 
-    <!-- Cloudy Misty Dissolve Overlay -->
-    <div id="mist-overlay" class="absolute inset-0 mist-layer opacity-0 pointer-events-none z-30 transition-opacity duration-1000 ease-in-out"></div>
+    <!-- Cloudy mist that dissolves the video into the neon green scene -->
+    <div id="mist-overlay" class="absolute inset-0 mist-layer opacity-0 pointer-events-none z-30"></div>
   </section>
 
-  <!-- ==================== STAGE 2: CONTINUOUS NEON PARALLAX STAGE ==================== -->
-  <section id="parallax-stage" class="relative w-full min-h-[260vh] bg-[#d4f038] flex flex-col justify-start items-center">
-    
+  <!-- ==================== STAGE 2: PARALLAX STAGE (pinned, continuous) ==================== -->
+  <section id="parallax-stage" class="relative w-full min-h-[240vh] bg-[#d4f038] flex flex-col justify-start items-center">
+
     <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
-      
-      <!-- CRISP HEADLINE -->
+
       <div id="main-headline" class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl gpu">
         <h1 class="font-headline solid-editorial text-[18vw] uppercase">
           Numbers Not<br/>
@@ -100,10 +116,10 @@
         </h1>
       </div>
 
-      <!-- ARTIFACT 1: Store Receipt (Top Left) -->
-      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30 gpu"
-           data-y="-480" data-blur="12" data-scale="1.2" data-rotate="-10">
-        <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.18)] border border-neutral-200">
+      <!-- Card 1: Receipt -->
+      <div class="scroll-card card-blur-in absolute top-[8%] left-[2%] sm:left-[6%] z-30 gpu"
+           data-y="-420" data-blur="6" data-scale="1.15" data-rotate="-10">
+        <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_24px_48px_rgba(20,38,26,0.14)] border border-neutral-200">
           <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
             <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
             <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
@@ -120,86 +136,83 @@
         </div>
       </div>
 
-      <!-- ARTIFACT 2: Overdue Invoice Badge (Top Right) -->
-      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25 gpu"
-           data-y="-440" data-blur="10" data-scale="1.18" data-rotate="8">
-        <div class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.25)] border border-slate-800">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
-              OVERDUE 45 DAYS
+      <!-- Card 2: Overdue Invoice (kept dark — this is the one "bold" dark card) -->
+      <div class="scroll-card card-blur-in absolute top-[7%] right-[2%] sm:right-[7%] z-25 gpu"
+           data-y="-380" data-blur="5" data-scale="1.12" data-rotate="8">
+        <div class="w-72 sm:w-80 md:w-88 bg-[#14261a] text-white rounded-2xl p-5 shadow-[0_28px_56px_rgba(20,38,26,0.22)] border border-white/10">
+          <div class="flex items-center justify-between pb-3 border-b border-white/10">
+            <span class="text-[11px] font-mono-code px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 font-bold border border-rose-400/30">
+              Overdue 45 days
             </span>
-            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
+            <span class="text-white/40 text-xs font-mono-code">INV-2026-99</span>
           </div>
-          <p class="text-xs text-slate-400 mt-3 font-medium">Q3 Retainer Balance Due</p>
+          <p class="text-xs text-white/50 mt-3 font-medium">Q3 Retainer Balance Due</p>
           <p class="text-3xl font-black text-white mt-1.5">$8,450.00</p>
         </div>
       </div>
 
-      <!-- ARTIFACT 3: Bank Statement Live Feed (Middle Right) -->
-      <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35 gpu"
-           data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
-        <div class="w-72 sm:w-88 md:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.18)] border border-slate-200">
+      <!-- Card 3: Bank feed -->
+      <div class="scroll-card card-blur-in absolute top-[44%] right-[1%] sm:right-[5%] z-35 gpu"
+           data-y="-140" data-blur="0" data-scale="1.03" data-rotate="-4">
+        <div class="w-72 sm:w-88 md:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_24px_48px_rgba(20,38,26,0.14)] border border-slate-200">
           <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
             <span class="text-sm font-bold tracking-tight text-slate-900">Checking (...3810)</span>
             <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
           </div>
           <div class="mt-3 space-y-2.5 font-mono-code text-xs">
             <div class="flex justify-between text-rose-600 font-bold">
-              <span>Stripe Payout Reversal</span>
-              <span>-$2,450.00</span>
+              <span>Stripe Payout Reversal</span><span>-$2,450.00</span>
             </div>
             <div class="flex justify-between text-slate-600">
-              <span>Infrastructure Hosting</span>
-              <span>-$420.80</span>
+              <span>Infrastructure Hosting</span><span>-$420.80</span>
             </div>
             <div class="flex justify-between text-emerald-600 font-bold">
-              <span>Client Wire (Cleared)</span>
-              <span>+$12,300.00</span>
+              <span>Client Wire (Cleared)</span><span>+$12,300.00</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ARTIFACT 4: QuickBooks Alert Slip (Middle Left) -->
-      <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20 gpu"
-           data-y="-240" data-blur="4" data-scale="0.98" data-rotate="7">
-        <div class="w-64 sm:w-76 bg-amber-50 rounded-2xl p-4.5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.18)]">
+      <!-- Card 4: Sync alert -->
+      <div class="scroll-card card-blur-in absolute top-[48%] left-[2%] sm:left-[5%] z-20 gpu"
+           data-y="-220" data-blur="3" data-scale="0.98" data-rotate="7">
+        <div class="w-64 sm:w-76 bg-amber-50 rounded-2xl p-4.5 border border-amber-300 shadow-[0_18px_36px_rgba(180,120,10,0.14)]">
           <div class="flex items-center gap-2.5">
             <span class="w-3 h-3 rounded-full bg-amber-500 animate-ping"></span>
             <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Sync Discrepancy</span>
           </div>
           <p class="text-xs text-amber-800 mt-2 font-mono-code">
-            142 unreconciled entries synced via QuickBooks & Xero.
+            142 unreconciled entries synced via QuickBooks &amp; Xero.
           </p>
         </div>
       </div>
 
-      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard (Bottom Left) -->
-      <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30 gpu"
-           data-y="-380" data-blur="10" data-scale="1.15" data-rotate="-5">
-        <div class="w-72 sm:w-84 md:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-neutral-800">
-          <div class="flex justify-between items-center text-xs text-neutral-400">
+      <!-- Card 5: Margin dashboard -->
+      <div class="scroll-card card-blur-in absolute bottom-[6%] left-[4%] sm:left-[12%] z-30 gpu"
+           data-y="-340" data-blur="6" data-scale="1.1" data-rotate="-5">
+        <div class="w-72 sm:w-84 md:w-92 bg-white text-slate-900 rounded-3xl p-5 shadow-[0_28px_56px_rgba(20,38,26,0.16)] border border-slate-200">
+          <div class="flex justify-between items-center text-xs text-slate-500">
             <span class="font-medium">Shopify Gross Margin</span>
-            <span class="text-rose-400 font-bold font-mono-code">↓ 18.2%</span>
+            <span class="text-rose-500 font-bold font-mono-code">↓ 18.2%</span>
           </div>
           <div class="mt-2.5 flex items-baseline gap-2">
             <span class="text-3xl font-bold font-mono-code">$19,420</span>
-            <span class="text-xs text-neutral-500 font-mono-code">vs $23,750</span>
+            <span class="text-xs text-slate-400 font-mono-code">vs $23,750</span>
           </div>
           <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
-            <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
+            <div class="flex-1 bg-slate-200 h-6 rounded-sm"></div>
+            <div class="flex-1 bg-slate-200 h-8 rounded-sm"></div>
+            <div class="flex-1 bg-slate-200 h-7 rounded-sm"></div>
+            <div class="flex-1 bg-rose-400 h-4 rounded-sm"></div>
             <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
           </div>
         </div>
       </div>
 
-      <!-- ARTIFACT 6: Business Check Slip (Bottom Right) -->
-      <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25 gpu"
-           data-y="-300" data-blur="7" data-scale="1.1" data-rotate="4">
-        <div class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.18)] border border-stone-300">
+      <!-- Card 6: Check slip -->
+      <div class="scroll-card card-blur-in absolute bottom-[5%] right-[4%] sm:right-[12%] z-25 gpu"
+           data-y="-260" data-blur="4" data-scale="1.08" data-rotate="4">
+        <div class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_24px_48px_rgba(20,38,26,0.14)] border border-stone-300">
           <div class="flex justify-between items-start">
             <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
             <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
@@ -219,20 +232,19 @@
     </div>
   </section>
 
-  <!-- ==================== STAGE 3: CONTINUOUS NEON SCATTER TEXT SECTION ==================== -->
-  <section class="relative min-h-screen bg-[#d4f038] text-slate-900 flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden border-t border-black/10">
-    
+  <!-- ==================== STAGE 3: SCATTER TEXT — SOLID NEON GREEN ==================== -->
+  <section class="relative min-h-screen bg-[#d4f038] text-slate-900 flex flex-col items-center justify-center p-6 sm:p-12 overflow-hidden">
+
     <div class="relative z-10 w-full max-w-6xl text-center flex flex-col items-center">
-      <span class="inline-block text-xs uppercase tracking-widest font-mono-code text-black bg-black/10 border border-black/20 px-4 py-1.5 rounded-full mb-8 font-bold">
-        QuickBooks & Strategic Financial Reconciliation
+      <span class="inline-block text-xs uppercase tracking-widest font-mono-code text-black bg-black/10 border border-black/20 px-4 py-1.5 rounded-full mb-10 font-bold">
+        QuickBooks &amp; Strategic Financial Reconciliation
       </span>
 
-      <!-- Interactive 2-Line Dynamic Typography Canvas -->
-      <div class="relative w-full h-[320px] sm:h-[260px] flex items-center justify-center">
+      <div class="relative w-full h-[380px] sm:h-[300px] flex items-center justify-center">
         <canvas id="interactive-text-canvas" class="w-full h-full cursor-default"></canvas>
       </div>
 
-      <p class="font-mono-code text-xs sm:text-sm text-black/60 max-w-xl mx-auto mt-4 font-semibold">
+      <p class="font-mono-code text-xs sm:text-sm text-black/60 max-w-xl mx-auto mt-6 font-semibold">
         Hover or drag across the text to scatter the distraction.
       </p>
 
@@ -247,45 +259,43 @@
     </div>
   </section>
 
-  <!-- ==================== LOGIC & ANIMATIONS ==================== -->
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
     // -------------------------------------------------------------
-    // 1. VIDEO AUTO-PLAY & MIST TIMING
+    // 1. VIDEO: single source of truth for the mist reveal
+    //    (previously two different triggers fought over this — removed)
     // -------------------------------------------------------------
     const video = document.getElementById('head-video');
     const mistOverlay = document.getElementById('mist-overlay');
     const scrollPrompt = document.getElementById('scroll-prompt');
+    const videoLoading = document.getElementById('video-loading');
 
-    // Trigger mist transition automatically near video completion
-    video.addEventListener('timeupdate', () => {
-      if (video.duration && (video.duration - video.currentTime) < 2.0) {
-        mistOverlay.style.opacity = '1';
-      }
+    video.addEventListener('loadeddata', () => {
+      videoLoading.style.opacity = '0';
+    });
+    // Fallback in case the browser is slow to fire loadeddata
+    video.addEventListener('playing', () => {
+      videoLoading.style.opacity = '0';
     });
 
-    // Also trigger the mist smoothly when user begins scrolling
+    // The mist is controlled ONLY by scroll now — one predictable source.
     gsap.to(mistOverlay, {
       opacity: 1,
-      ease: 'power2.inOut',
+      ease: 'none',
       scrollTrigger: {
         trigger: '#hero-section',
         start: 'top top',
-        end: 'bottom 60%',
-        scrub: true,
+        end: 'bottom 55%',
+        scrub: 0.6,
         onUpdate: (self) => {
-          if (self.progress > 0.1) {
-            scrollPrompt.style.opacity = '0';
-          } else {
-            scrollPrompt.style.opacity = '1';
-          }
+          scrollPrompt.style.opacity = self.progress > 0.08 ? '0' : '1';
         }
       }
     });
 
     // -------------------------------------------------------------
-    // 2. 3D MOUSE TILT (BEFORE SCROLLING AWAY)
+    // 2. 3D MOUSE TILT — only active before the user starts scrolling
     // -------------------------------------------------------------
     const videoTiltWrapper = document.getElementById('video-tilt-wrapper');
     let mouseX = 0, mouseY = 0;
@@ -297,62 +307,67 @@
     });
 
     const updateTilt = () => {
-      if (window.scrollY < window.innerHeight * 0.7) {
-        targetRotX += ((-mouseY * 14) - targetRotX) * 0.08;
-        targetRotY += ((mouseX * 18) - targetRotY) * 0.08;
+      if (window.scrollY < window.innerHeight * 0.5) {
+        targetRotX += ((-mouseY * 12) - targetRotX) * 0.08;
+        targetRotY += ((mouseX * 16) - targetRotY) * 0.08;
         videoTiltWrapper.style.transform = `rotateX(${targetRotX}deg) rotateY(${targetRotY}deg)`;
-      } else {
-        videoTiltWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      } else if (targetRotX !== 0 || targetRotY !== 0) {
+        targetRotX += (0 - targetRotX) * 0.1;
+        targetRotY += (0 - targetRotY) * 0.1;
+        videoTiltWrapper.style.transform = `rotateX(${targetRotX}deg) rotateY(${targetRotY}deg)`;
       }
       requestAnimationFrame(updateTilt);
     };
     updateTilt();
 
     // -------------------------------------------------------------
-    // 3. PARALLAX CARDS & TITLE SCROLL
+    // 3. PARALLAX CARDS — transform + opacity only (no scrubbed blur)
+    //    Blur is set ONCE via a cheap CSS transition, not recalculated
+    //    every scroll frame. This is the main lag fix.
     // -------------------------------------------------------------
     const cards = gsap.utils.toArray('.scroll-card');
 
     cards.forEach((card) => {
       const targetY = parseFloat(card.getAttribute('data-y')) || -300;
-      const maxBlur = parseFloat(card.getAttribute('data-blur')) || 8;
+      const maxBlur = parseFloat(card.getAttribute('data-blur')) || 0;
       const targetScale = parseFloat(card.getAttribute('data-scale')) || 1.1;
       const baseRotation = parseFloat(card.getAttribute('data-rotate')) || 0;
 
       gsap.set(card, {
         rotationZ: baseRotation,
-        filter: "blur(0px)",
-        transformOrigin: "center center"
+        transformOrigin: 'center center'
       });
 
       gsap.to(card, {
         y: targetY,
         scale: targetScale,
-        filter: `blur(${maxBlur}px)`,
-        ease: "power1.out",
+        ease: 'power1.out',
         scrollTrigger: {
-          trigger: "#parallax-stage",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2
+          trigger: '#parallax-stage',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1,
+          onUpdate: (self) => {
+            card.style.filter = `blur(${maxBlur * self.progress}px)`;
+          }
         }
       });
     });
 
-    gsap.to("#main-headline", {
+    gsap.to('#main-headline', {
       scale: 1.06,
-      y: -140,
-      ease: "power1.out",
+      y: -120,
+      ease: 'power1.out',
       scrollTrigger: {
-        trigger: "#parallax-stage",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.2
+        trigger: '#parallax-stage',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1
       }
     });
 
     // -------------------------------------------------------------
-    // 4. INTERACTIVE SCATTER TEXT ENGINE (STACKED LINES)
+    // 4. INTERACTIVE SCATTER TEXT — bigger, modern, clearly two lines
     // -------------------------------------------------------------
     const canvas = document.getElementById('interactive-text-canvas');
     const ctx = canvas.getContext('2d');
@@ -382,7 +397,6 @@
         const dy = this.y - mouse.y;
         const distance = Math.hypot(dx, dy);
 
-        // Repel away from mouse
         if (distance < mouse.radius && distance > 0) {
           const force = (mouse.radius - distance) / mouse.radius;
           const angle = Math.atan2(dy, dx);
@@ -390,7 +404,6 @@
           this.vy += Math.sin(angle) * force * 16;
         }
 
-        // Return spring
         const springDx = this.originX - this.x;
         const springDy = this.originY - this.y;
 
@@ -408,10 +421,10 @@
         const displacement = Math.hypot(this.x - this.originX, this.y - this.originY);
         if (displacement > 3) {
           context.fillStyle = "#ffffff";
-          context.shadowColor = "rgba(0,0,0,0.3)";
+          context.shadowColor = "rgba(20,38,26,0.35)";
           context.shadowBlur = Math.min(displacement * 2, 20);
         } else {
-          context.fillStyle = "#0f172a";
+          context.fillStyle = "#14261a"; // deep forest green-black — reads dark but stays warm, not corporate navy
           context.shadowColor = "transparent";
           context.shadowBlur = 0;
         }
@@ -425,15 +438,16 @@
 
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
 
       glyphs = [];
-      const fontSize = window.innerWidth < 640 ? 22 : 36;
+      const fontSize = window.innerWidth < 640 ? 32 : 58;
       ctx.font = `800 ${fontSize}px 'Space Grotesk', sans-serif`;
       ctx.textBaseline = 'middle';
 
       const lines = [line1, line2];
-      const lineHeight = fontSize * 1.5;
+      const lineHeight = fontSize * 1.7;
       const totalHeight = lines.length * lineHeight;
       const startY = (rect.height - totalHeight) / 2 + lineHeight / 2;
 
@@ -471,7 +485,6 @@
       canvasMouse.y = -9999;
     });
 
-    // Touch support for mobile
     canvas.addEventListener('touchmove', (e) => {
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
@@ -485,7 +498,11 @@
       canvasMouse.y = -9999;
     });
 
-    window.addEventListener('resize', layoutGlyphs);
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(layoutGlyphs, 150);
+    });
 
     document.fonts.ready.then(() => {
       layoutGlyphs();
