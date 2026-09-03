@@ -1,780 +1,743 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#d7ff00" />
-  <title>Numbers Not Making Sense?</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numbers Not Making Sense?</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- GSAP: used only for scroll/mouse choreography -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <style>
-    :root {
-      --acid: #d7ff00;
-      --ink: #0b0d0a;
-      --white: #ffffff;
-    }
+<style>
+:root{
+  --acid:#d9ff00;
+  --ink:#090b09;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;overflow-x:hidden}
+body{font-family:"Space Grotesk",sans-serif;background:#fff;color:var(--ink)}
+.font-headline{font-family:"Bebas Neue",sans-serif}
+.font-mono{font-family:"Space Mono",monospace}
 
-    * { box-sizing: border-box; }
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero{
+  position:relative;
+  height:360vh;
+  background:#fff;
+}
 
-    html {
-      scroll-behavior: auto;
-      background: var(--white);
-    }
+.hero-sticky{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:#fff;
+  perspective:1400px;
+}
 
-    body {
-      margin: 0;
-      overflow-x: hidden;
-      background: var(--white);
-      color: var(--ink);
-      font-family: "Space Grotesk", sans-serif;
-    }
+/* Green only arrives AFTER the video has disappeared. */
+.green{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:var(--acid);
+  opacity:0;
+  transform:scale(1.03);
+  will-change:opacity,transform;
+}
 
-    body.is-green { background: var(--acid); }
+/* A white fog creates the "hazy disappearance". */
+.fog{
+  position:absolute;
+  inset:-12%;
+  z-index:8;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(255,255,255,1) 0%,
+      rgba(255,255,255,.96) 25%,
+      rgba(255,255,255,.75) 55%,
+      rgba(255,255,255,1) 100%);
+  filter:blur(24px);
+  opacity:0;
+  transform:scale(1.1);
+  will-change:opacity,transform;
+}
 
-    .font-headline { font-family: "Bebas Neue", sans-serif; }
-    .font-mono { font-family: "Space Mono", monospace; }
+/*
+  The video is deliberately ALONE during the first part of
+  the scroll. No title. No cards. No green. No clutter.
+*/
+.video-wrap{
+  position:absolute;
+  z-index:5;
+  width:min(112vw,1500px);
+  aspect-ratio:16/9;
+  display:grid;
+  place-items:center;
+  transform-style:preserve-3d;
+  will-change:transform,opacity,filter;
+  pointer-events:none;
+}
 
-    /* ---------------------------------------------------------
-       HERO / SCROLL-SCRUBBED VIDEO
-       --------------------------------------------------------- */
-    .scrub-section {
-      position: relative;
-      height: 330vh;
-      background: #fff;
-    }
+#scrubVideo{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  background:#fff;
+  will-change:transform,filter;
+}
 
-    .sticky-stage {
-      position: sticky;
-      top: 0;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
-      background: #fff;
-      isolation: isolate;
-    }
+/* Small label at the very beginning */
+.scroll-hint{
+  position:absolute;
+  z-index:30;
+  bottom:6vh;
+  left:50%;
+  transform:translateX(-50%);
+  font:700 10px/1 "Space Mono",monospace;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  opacity:.48;
+  transition:opacity .2s;
+  white-space:nowrap;
+}
 
-    .neon-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background: var(--acid);
-      opacity: 0;
-      transform: scale(1.04);
-      will-change: opacity, transform;
-    }
+/* =========================================================
+   TITLE — appears only after video is COMPLETELY GONE
+   ========================================================= */
+.title{
+  position:absolute;
+  z-index:15;
+  width:min(1250px,92vw);
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  will-change:opacity,transform;
+}
 
-    /* Grain makes the transition feel less sterile */
-    .grain {
-      position: absolute;
-      inset: -50%;
-      z-index: 20;
-      pointer-events: none;
-      opacity: .07;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-      animation: grain .18s steps(2) infinite;
-    }
+.title-kicker{
+  margin:0 0 22px;
+  font:700 11px/1 "Space Mono",monospace;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  opacity:.58;
+}
 
-    @keyframes grain {
-      0% { transform: translate3d(0,0,0); }
-      25% { transform: translate3d(2%, -1%, 0); }
-      50% { transform: translate3d(-1%, 2%, 0); }
-      75% { transform: translate3d(1%, 1%, 0); }
-      100% { transform: translate3d(-2%, -1%, 0); }
-    }
+.title h1{
+  margin:0;
+  font:400 clamp(6rem,13.5vw,13rem)/.78 "Bebas Neue",sans-serif;
+  letter-spacing:-.045em;
+  text-transform:uppercase;
+  color:#070907;
+}
 
-    .video-wrap {
-      position: absolute;
-      z-index: 5;
-      width: min(110vw, 1450px);
-      aspect-ratio: 16 / 9;
-      display: grid;
-      place-items: center;
-      transform-style: preserve-3d;
-      will-change: transform, filter, opacity;
-      pointer-events: none;
-    }
+.title-line{
+  display:block;
+  overflow:hidden;
+}
+.title-line span{
+  display:inline-block;
+  will-change:transform,filter,opacity;
+}
 
-    /*
-      Your Flow clip has a white background. "multiply" is intentional:
-      white becomes transparent-looking over the neon background while
-      the black illustration remains visible.
-    */
-    #scrubVideo {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      mix-blend-mode: multiply;
-      filter: contrast(1.04) saturate(1.08);
-      will-change: transform, filter;
-    }
+/* =========================================================
+   FLOATING ACCOUNTING OBJECTS
+   They enter AFTER the title, not on top of the face.
+   ========================================================= */
+.artifacts{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  opacity:0;
+  pointer-events:none;
+}
 
-    /* subtle glow behind the exploding symbols */
-    .electric-glow {
-      position: absolute;
-      width: 48vw;
-      height: 48vw;
-      max-width: 680px;
-      max-height: 680px;
-      border-radius: 50%;
-      z-index: 3;
-      pointer-events: none;
-      background: radial-gradient(circle, rgba(255,255,255,.75), rgba(0,255,255,.18) 25%, transparent 68%);
-      filter: blur(25px);
-      opacity: 0;
-      transform: scale(.55);
-      mix-blend-mode: screen;
-    }
+.artifact{
+  position:absolute;
+  border-radius:18px;
+  padding:17px;
+  font:11px/1.45 "Space Mono",monospace;
+  box-shadow:0 25px 70px rgba(0,0,0,.22);
+  will-change:transform,filter,opacity;
+}
 
-    /* ---------------------------------------------------------
-       HEADLINE
-       --------------------------------------------------------- */
-    .headline {
-      position: absolute;
-      z-index: 12;
-      width: min(1200px, 94vw);
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      pointer-events: none;
-      opacity: 0;
-      mix-blend-mode: normal;
-    }
+.artifact strong{
+  display:block;
+  margin-bottom:10px;
+  font:700 14px/1.1 "Space Grotesk",sans-serif;
+}
 
-    .headline h1 {
-      margin: 0;
-      color: #070907;
-      font-size: clamp(5.2rem, 15vw, 14rem);
-      line-height: .78;
-      letter-spacing: -.045em;
-      text-transform: uppercase;
-      text-shadow: 0 5px 0 rgba(255,255,255,.45);
-    }
+.receipt{
+  left:4%;
+  top:9%;
+  width:270px;
+  background:#fff;
+  border:1px solid #ddd;
+}
+.invoice{
+  right:4%;
+  top:9%;
+  width:290px;
+  color:#fff;
+  background:#101512;
+  border:1px solid #273029;
+}
+.statement{
+  right:4%;
+  bottom:12%;
+  width:305px;
+  background:#fff;
+  border:1px solid #ddd;
+}
+.discrepancy{
+  left:4%;
+  bottom:13%;
+  width:270px;
+  background:#fff4d3;
+  border:1px solid #e6bc48;
+}
 
-    .headline .line {
-      display: block;
-      overflow: hidden;
-    }
+.artifact .big{
+  font-size:25px;
+  font-weight:700;
+  margin:7px 0 10px;
+}
 
-    .headline .line span {
-      display: inline-block;
-      will-change: transform, opacity;
-    }
+/* =========================================================
+   SECOND SECTION
+   ========================================================= */
+.message-section{
+  min-height:145vh;
+  position:relative;
+  overflow:hidden;
+  background:var(--acid);
+  display:grid;
+  place-items:center;
+}
 
-    .eyebrow {
-      margin-bottom: 16px;
-      font: 700 11px/1 "Space Mono", monospace;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      opacity: .65;
-    }
+.message-inner{
+  width:min(1200px,88vw);
+  position:relative;
+  z-index:3;
+  padding:15vh 0;
+}
 
-    /* ---------------------------------------------------------
-       FLOATING ACCOUNTING ARTIFACTS
-       --------------------------------------------------------- */
-    .artifact-layer {
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      pointer-events: none;
-      opacity: 0;
-    }
+.message-kicker{
+  font:700 11px/1 "Space Mono",monospace;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  opacity:.58;
+  margin-bottom:28px;
+}
 
-    .artifact {
-      position: absolute;
-      padding: 15px 17px;
-      border-radius: 16px;
-      box-shadow: 0 25px 70px rgba(0,0,0,.24);
-      font: 11px/1.35 "Space Mono", monospace;
-      will-change: transform, filter, opacity;
-    }
+.message{
+  margin:0;
+  max-width:1100px;
+  font-size:clamp(3.3rem,7.6vw,8rem);
+  line-height:.88;
+  letter-spacing:-.055em;
+}
 
-    .receipt {
-      top: 8%;
-      left: 4%;
-      width: 260px;
-      background: #fff;
-      border: 1px solid #ddd;
-    }
+.char{
+  display:inline-block;
+  position:relative;
+  will-change:transform,filter;
+}
 
-    .invoice {
-      top: 9%;
-      right: 4%;
-      width: 280px;
-      color: #fff;
-      background: #101512;
-      border: 1px solid #273029;
-    }
+.word-space{
+  display:inline-block;
+  width:.28em;
+}
 
-    .statement {
-      top: 57%;
-      right: 3%;
-      width: 300px;
-      background: rgba(255,255,255,.94);
-      border: 1px solid #ddd;
-    }
+.message-sub{
+  max-width:560px;
+  margin-top:45px;
+  font:14px/1.65 "Space Mono",monospace;
+  opacity:.65;
+}
 
-    .discrepancy {
-      top: 58%;
-      left: 4%;
-      width: 250px;
-      background: #fff5d7;
-      border: 1px solid #e8bd4e;
-    }
+.cursor-light{
+  position:fixed;
+  width:210px;
+  height:210px;
+  left:0;
+  top:0;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:100;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  background:radial-gradient(circle,
+    rgba(255,255,255,.75) 0%,
+    rgba(255,255,255,.15) 28%,
+    transparent 68%);
+  mix-blend-mode:screen;
+  filter:blur(5px);
+}
 
-    .artifact strong {
-      display: block;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 15px;
-      margin-bottom: 9px;
-    }
+.symbols{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+.symbol{
+  position:absolute;
+  font:700 clamp(18px,3vw,44px)/1 "Space Mono",monospace;
+  opacity:.13;
+  animation:float 7s ease-in-out infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-4deg)}
+  50%{transform:translateY(-28px) rotate(7deg)}
+}
 
-    .artifact .num {
-      font-size: 24px;
-      font-weight: 700;
-      margin: 5px 0 10px;
-    }
+/* =========================================================
+   FINAL
+   ========================================================= */
+.final{
+  min-height:85vh;
+  background:#090b09;
+  color:#fff;
+  padding:12vw 7vw;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.final h2{
+  margin:0;
+  max-width:900px;
+  color:var(--acid);
+  font:400 clamp(5rem,11vw,11rem)/.78 "Bebas Neue",sans-serif;
+}
+.final p{
+  margin-top:35px;
+  max-width:560px;
+  color:rgba(255,255,255,.62);
+  font:14px/1.7 "Space Mono",monospace;
+}
 
-    /* ---------------------------------------------------------
-       SECOND MESSAGE
-       --------------------------------------------------------- */
-    .message-section {
-      position: relative;
-      min-height: 150vh;
-      background: var(--acid);
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-    }
+/* =========================================================
+   MOBILE
+   ========================================================= */
+@media(max-width:700px){
+  .hero{height:330vh}
+  .video-wrap{width:145vw}
+  .title h1{font-size:18vw}
+  .artifact{transform:scale(.7);transform-origin:center}
+  .receipt{left:-55px}
+  .invoice{right:-65px}
+  .statement{right:-75px}
+  .discrepancy{left:-60px}
+  .message-section{min-height:125vh}
+}
 
-    .message-inner {
-      position: relative;
-      width: min(1200px, 90vw);
-      padding: 18vh 0;
-      z-index: 2;
-    }
-
-    .message-kicker {
-      font: 700 11px/1 "Space Mono", monospace;
-      text-transform: uppercase;
-      letter-spacing: .2em;
-      margin-bottom: 28px;
-      opacity: .65;
-    }
-
-    .message {
-      margin: 0;
-      max-width: 1050px;
-      font-size: clamp(3.4rem, 8vw, 8rem);
-      line-height: .88;
-      letter-spacing: -.05em;
-      font-weight: 700;
-    }
-
-    .message .char {
-      display: inline-block;
-      position: relative;
-      will-change: transform, filter;
-      cursor: default;
-    }
-
-    .message .space {
-      display: inline-block;
-      width: .28em;
-    }
-
-    .message-sub {
-      margin-top: 45px;
-      max-width: 600px;
-      font: 400 14px/1.65 "Space Mono", monospace;
-      opacity: .72;
-    }
-
-    .cursor-light {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255,255,255,.7), rgba(255,255,255,.13) 27%, transparent 67%);
-      mix-blend-mode: screen;
-      filter: blur(5px);
-    }
-
-    .floating-symbols {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .symbol {
-      position: absolute;
-      font: 700 clamp(18px, 3vw, 42px)/1 "Space Mono", monospace;
-      opacity: .14;
-      animation: float 7s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translate3d(0,0,0) rotate(-5deg); }
-      50% { transform: translate3d(0,-28px,0) rotate(8deg); }
-    }
-
-    /* ---------------------------------------------------------
-       FINAL CTA
-       --------------------------------------------------------- */
-    .final-section {
-      min-height: 90vh;
-      padding: 12vw 7vw;
-      background: #090b09;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .final-section h2 {
-      margin: 0;
-      color: var(--acid);
-      font: 400 clamp(4rem, 11vw, 11rem)/.78 "Bebas Neue", sans-serif;
-      letter-spacing: -.025em;
-      max-width: 900px;
-    }
-
-    .final-section p {
-      max-width: 560px;
-      margin: 35px 0 0;
-      color: rgba(255,255,255,.65);
-      font: 14px/1.7 "Space Mono", monospace;
-    }
-
-    /* mobile */
-    @media (max-width: 700px) {
-      .scrub-section { height: 300vh; }
-      .video-wrap { width: 145vw; }
-      .headline h1 { font-size: 18vw; }
-      .artifact { transform: scale(.72); transform-origin: center; }
-      .receipt { left: -45px; }
-      .invoice { right: -55px; }
-      .statement { right: -75px; }
-      .discrepancy { left: -50px; }
-      .message-section { min-height: 125vh; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .grain, .symbol { animation: none; }
-    }
-  </style>
+@media(prefers-reduced-motion:reduce){
+  .symbol{animation:none}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =========================================================
-       1. HERO: the video is scrubbed by scroll, NOT played normally
-       ========================================================= -->
-  <section class="scrub-section" id="scrubSection">
-    <div class="sticky-stage" id="stickyStage">
+<!-- =========================================================
+     SCENE 1: VIDEO
+     ========================================================= -->
+<section class="hero" id="hero">
+  <div class="hero-sticky" id="heroSticky">
 
-      <div class="neon-bg" id="neonBg"></div>
-      <div class="electric-glow" id="electricGlow"></div>
+    <div class="green" id="green"></div>
 
-      <div class="video-wrap" id="videoWrap">
-        <video
-          id="scrubVideo"
-          src="./numbers-not-making-sense.mp4"
-          muted
-          playsinline
-          preload="auto"
-          aria-hidden="true">
-        </video>
-      </div>
-
-      <div class="headline" id="headline">
-        <div class="eyebrow">the numbers are talking. you're not listening.</div>
-        <h1 class="font-headline">
-          <span class="line"><span>Numbers Not</span></span>
-          <span class="line"><span>Making Sense?</span></span>
-        </h1>
-      </div>
-
-      <div class="artifact-layer" id="artifactLayer">
-        <div class="artifact receipt">
-          <strong>WHOLESALE COMMERCE</strong>
-          <div>Physical Stock Tier-A ........ $620.00</div>
-          <div>Express Freight .............. $115.50</div>
-          <div>State Tax ..................... $60.67</div>
-          <hr>
-          <b>TOTAL DUE ................... $796.17</b>
-        </div>
-
-        <div class="artifact invoice">
-          <strong>OVERDUE 45 DAYS</strong>
-          <div>Q3 Retainer Balance Due</div>
-          <div class="num">$8,450.00</div>
-          <div>INV-2026-99</div>
-        </div>
-
-        <div class="artifact statement">
-          <strong>CHECKING (...3810)</strong>
-          <div>Stripe Payout Reversal .... -$2,450</div>
-          <div>Infrastructure Hosting ..... -$420</div>
-          <div>Client Wire (Cleared) ..... +$12,300</div>
-        </div>
-
-        <div class="artifact discrepancy">
-          <strong>⚠ SYNC DISCREPANCY</strong>
-          <div>142 unreconciled entries synced via QuickBooks &amp; Xero.</div>
-        </div>
-      </div>
-
-      <div class="grain"></div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       2. MESSAGE: mouse-reactive typography
-       ========================================================= -->
-  <section class="message-section" id="messageSection">
-    <div class="floating-symbols" aria-hidden="true">
-      <span class="symbol" style="left:7%;top:14%">$</span>
-      <span class="symbol" style="left:82%;top:18%">%</span>
-      <span class="symbol" style="left:16%;top:70%">∑</span>
-      <span class="symbol" style="left:89%;top:67%">#</span>
-      <span class="symbol" style="left:54%;top:10%">01</span>
-      <span class="symbol" style="left:67%;top:82%">+</span>
-      <span class="symbol" style="left:34%;top:87%">∞</span>
+    <div class="video-wrap" id="videoWrap">
+      <video
+        id="scrubVideo"
+        src="./numbers-not-making-sense.mp4"
+        muted
+        playsinline
+        preload="auto"
+        aria-hidden="true">
+      </video>
     </div>
 
-    <div class="message-inner">
-      <div class="message-kicker">you don't need another spreadsheet</div>
+    <div class="fog" id="fog"></div>
 
-      <h2 class="message" id="scatterText">
-        Let me handle your books with precision while you focus on your vision
-      </h2>
-
-      <p class="message-sub">
-        Hover over the words. The type reacts to you — because your books shouldn't.
-      </p>
+    <div class="title" id="title">
+      <div class="title-kicker">the numbers are talking. you're not listening.</div>
+      <h1>
+        <span class="title-line"><span>Numbers Not</span></span>
+        <span class="title-line"><span>Making Sense?</span></span>
+      </h1>
     </div>
 
-    <div class="cursor-light" id="cursorLight"></div>
-  </section>
+    <div class="artifacts" id="artifacts">
 
-  <!-- =========================================================
-       3. END
-       ========================================================= -->
-  <section class="final-section">
-    <h2>Clarity<br>Reclaimed.</h2>
-    <p>
-      Monthly close. Reconciliation. Clean numbers. Less noise.
-      You focus on the business. I handle the books.
+      <div class="artifact receipt">
+        <strong>WHOLESALE COMMERCE</strong>
+        Physical Stock Tier-A ........ $620.00<br>
+        Express Freight .............. $115.50<br>
+        State Tax ..................... $60.67
+        <hr>
+        <b>TOTAL DUE ................... $796.17</b>
+      </div>
+
+      <div class="artifact invoice">
+        <strong>OVERDUE 45 DAYS</strong>
+        Q3 Retainer Balance Due
+        <div class="big">$8,450.00</div>
+        INV-2026-99
+      </div>
+
+      <div class="artifact statement">
+        <strong>CHECKING (...3810)</strong>
+        Stripe Payout Reversal .... -$2,450<br>
+        Infrastructure Hosting ..... -$420<br>
+        Client Wire (Cleared) ..... +$12,300
+      </div>
+
+      <div class="artifact discrepancy">
+        <strong>⚠ SYNC DISCREPANCY</strong>
+        142 unreconciled entries synced via QuickBooks &amp; Xero.
+      </div>
+
+    </div>
+
+    <div class="scroll-hint" id="scrollHint">↓ scroll</div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SCENE 2: MESSAGE
+     ========================================================= -->
+<section class="message-section">
+
+  <div class="symbols" aria-hidden="true">
+    <span class="symbol" style="left:7%;top:14%">$</span>
+    <span class="symbol" style="left:82%;top:18%">%</span>
+    <span class="symbol" style="left:16%;top:70%">∑</span>
+    <span class="symbol" style="left:89%;top:67%">#</span>
+    <span class="symbol" style="left:54%;top:10%">01</span>
+    <span class="symbol" style="left:67%;top:82%">+</span>
+    <span class="symbol" style="left:34%;top:87%">∞</span>
+  </div>
+
+  <div class="message-inner">
+    <div class="message-kicker">you don't need another spreadsheet</div>
+
+    <h2 class="message" id="scatterText">
+      Let me handle your books with precision while you focus on your vision
+    </h2>
+
+    <p class="message-sub">
+      Hover over the words. The type reacts to you — because your books shouldn't.
     </p>
-  </section>
+  </div>
 
-  <script>
-    gsap.registerPlugin(ScrollTrigger);
+  <div class="cursor-light" id="cursorLight"></div>
+</section>
 
-    const video = document.getElementById("scrubVideo");
-    const scrubSection = document.getElementById("scrubSection");
-    const neonBg = document.getElementById("neonBg");
-    const videoWrap = document.getElementById("videoWrap");
-    const electricGlow = document.getElementById("electricGlow");
-    const headline = document.getElementById("headline");
-    const headlineLines = headline.querySelectorAll(".line span");
-    const artifactLayer = document.getElementById("artifactLayer");
-    const artifacts = artifactLayer.querySelectorAll(".artifact");
+<section class="final">
+  <h2>Clarity<br>Reclaimed.</h2>
+  <p>
+    Monthly close. Reconciliation. Clean numbers. Less noise.
+    You focus on the business. I handle the books.
+  </p>
+</section>
 
-    let duration = 10;
-    let targetTime = 0;
-    let renderedTime = 0;
-    let userHasScrolled = false;
+<script>
+gsap.registerPlugin(ScrollTrigger);
 
-    /*
-      IMPORTANT:
-      currentTime is used instead of video.play().
-      Scroll position -> video timestamp.
-      That makes the Flow animation behave like a physical animation
-      that the visitor scrubs through.
-    */
-    function scrubLoop() {
-      renderedTime += (targetTime - renderedTime) * 0.16;
+const video = document.getElementById("scrubVideo");
+const hero = document.getElementById("hero");
+const videoWrap = document.getElementById("videoWrap");
+const green = document.getElementById("green");
+const fog = document.getElementById("fog");
+const title = document.getElementById("title");
+const titleLines = title.querySelectorAll(".title-line span");
+const artifacts = document.getElementById("artifacts");
+const scrollHint = document.getElementById("scrollHint");
 
-      if (Math.abs(video.currentTime - renderedTime) > 0.012) {
-        try { video.currentTime = renderedTime; } catch (e) {}
-      }
+let duration = 10;
+let targetTime = 0;
+let renderedTime = 0;
+let hasScrolled = false;
 
-      requestAnimationFrame(scrubLoop);
+/* ---------------------------------------------------------
+   VIDEO SCRUB
+   --------------------------------------------------------- */
+function smoothScrub(){
+  renderedTime += (targetTime - renderedTime) * 0.18;
+
+  if(Math.abs(video.currentTime - renderedTime) > 0.01){
+    try { video.currentTime = renderedTime; } catch(e){}
+  }
+
+  requestAnimationFrame(smoothScrub);
+}
+
+video.addEventListener("loadedmetadata", () => {
+  duration = video.duration || 10;
+  video.currentTime = 0;
+  smoothScrub();
+  ScrollTrigger.refresh();
+});
+
+/* ---------------------------------------------------------
+   STRONGER IDLE 3D FACE TILT
+   IMPORTANT: once scrolling begins, GSAP owns the transform.
+   --------------------------------------------------------- */
+let mouseX = 0;
+let mouseY = 0;
+
+window.addEventListener("mousemove", e => {
+  mouseX = e.clientX / window.innerWidth - .5;
+  mouseY = e.clientY / window.innerHeight - .5;
+});
+
+gsap.ticker.add(() => {
+  if(!hasScrolled){
+    gsap.to(videoWrap,{
+      rotationY:mouseX * 12,
+      rotationX:-mouseY * 8,
+      rotationZ:mouseX * 1.5,
+      x:mouseX * 14,
+      y:mouseY * 10,
+      duration:.45,
+      overwrite:true,
+      ease:"power3.out"
+    });
+  }
+});
+
+/* ---------------------------------------------------------
+   MASTER SCROLL STORY
+   --------------------------------------------------------- */
+const tl = gsap.timeline({
+  scrollTrigger:{
+    trigger:hero,
+    start:"top top",
+    end:"bottom bottom",
+    scrub:.2,
+    onUpdate:self=>{
+      hasScrolled = self.progress > .008;
+      targetTime = duration * self.progress;
+      scrollHint.style.opacity = self.progress > .03 ? "0" : ".48";
     }
+  }
+});
 
-    video.addEventListener("loadedmetadata", () => {
-      duration = video.duration || 10;
-      video.currentTime = 0;
-      scrubLoop();
-      ScrollTrigger.refresh();
-    });
+/*
+  PHASES:
 
-    /*
-      Initial mouse tilt.
-      It is intentionally disabled once the user starts scrolling,
-      so the face feels alive at the entrance but the scroll animation
-      takes over afterward.
-    */
-    let mouseX = 0;
-    let mouseY = 0;
+  0.00 - 0.46
+      PURE VIDEO. Nothing else competes with it.
 
-    window.addEventListener("mousemove", (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5);
-      mouseY = (e.clientY / window.innerHeight - 0.5);
-    }, { passive: true });
+  0.46 - 0.56
+      Video gets hazy and fades out.
 
-    gsap.ticker.add(() => {
-      if (!userHasScrolled) {
-        gsap.to(videoWrap, {
-          rotationY: mouseX * 5,
-          rotationX: -mouseY * 4,
-          x: mouseX * 8,
-          y: mouseY * 6,
-          duration: 0.5,
-          overwrite: true,
-          ease: "power2.out"
-        });
+  0.53 - 0.65
+      Green background arrives.
+
+  0.63 - 0.82
+      "Numbers Not Making Sense?" assembles.
+
+  0.78 - 1.00
+      Accounting artifacts drift into the scene.
+*/
+
+tl
+  /* Face remains the hero */
+  .to(videoWrap,{
+    scale:1.08,
+    duration:.16,
+    ease:"power2.out"
+  },.04)
+
+  /* Tiny chaos push near the explosion */
+  .to(videoWrap,{
+    scale:1.14,
+    rotationZ:-2.5,
+    duration:.12,
+    ease:"power2.inOut"
+  },.36)
+
+  /* THE IMPORTANT PART:
+     completely remove the video before the title appears. */
+  .to(videoWrap,{
+    scale:1.2,
+    opacity:0,
+    filter:"blur(24px)",
+    duration:.13,
+    ease:"power2.in"
+  },.46)
+
+  /* White haze bridges the disappearance */
+  .to(fog,{
+    opacity:1,
+    scale:1,
+    duration:.10,
+    ease:"power2.inOut"
+  },.45)
+
+  /* Green appears behind the haze */
+  .to(green,{
+    opacity:1,
+    scale:1,
+    duration:.16,
+    ease:"power2.inOut"
+  },.54)
+
+  /* Haze dissolves INTO the green */
+  .to(fog,{
+    opacity:0,
+    scale:1.08,
+    duration:.14,
+    ease:"power2.out"
+  },.61)
+
+  /* Title appears only after the face is gone */
+  .to(title,{
+    opacity:1,
+    duration:.10,
+    ease:"power2.out"
+  },.62)
+
+  .fromTo(titleLines[0],
+    {yPercent:120,filter:"blur(14px)",rotation:3},
+    {yPercent:0,filter:"blur(0px)",rotation:0,duration:.10},
+    .63
+  )
+
+  .fromTo(titleLines[1],
+    {yPercent:120,filter:"blur(14px)",rotation:-3},
+    {yPercent:0,filter:"blur(0px)",rotation:0,duration:.10},
+    .69
+  )
+
+  /* Then the cards arrive, gently */
+  .to(artifacts,{
+    opacity:1,
+    duration:.12
+  },.76);
+
+/* Individual cards have different drift paths. */
+gsap.utils.toArray(".artifact").forEach((card,i)=>{
+  const directions=[
+    {x:-90,y:-65,r:-8},
+    {x:90,y:-55,r:8},
+    {x:80,y:70,r:-6},
+    {x:-85,y:75,r:7}
+  ][i];
+
+  gsap.fromTo(card,
+    {
+      x:directions.x,
+      y:directions.y,
+      rotation:directions.r,
+      scale:.82,
+      filter:"blur(12px)"
+    },
+    {
+      x:0,y:0,rotation:0,scale:1,filter:"blur(0px)",
+      ease:"none",
+      scrollTrigger:{
+        trigger:hero,
+        start:`${68 + i*3}% top`,
+        end:`${84 + i*3}% top`,
+        scrub:.8
       }
-    });
-
-    const heroTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: scrubSection,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 0.25,
-        onUpdate: (self) => {
-          userHasScrolled = self.progress > 0.015;
-          targetTime = duration * self.progress;
-        }
-      }
-    });
-
-    /*
-      0% -> 18%:
-      White intro. Face is huge and calm.
-
-      18% -> 55%:
-      Video gets increasingly intense as Flow generates the
-      exploding symbols.
-
-      42% -> 78%:
-      Neon background arrives and the headline assembles.
-
-      65% -> 100%:
-      Headline and accounting artifacts become the visual focus.
-    */
-
-    heroTimeline
-      .to(neonBg, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.42,
-        ease: "power2.inOut"
-      }, 0.18)
-
-      .to(videoWrap, {
-        scale: 1.08,
-        duration: 0.22,
-        ease: "power2.out"
-      }, 0.08)
-
-      .to(videoWrap, {
-        scale: 0.92,
-        rotationZ: -2,
-        filter: "blur(0.7px) contrast(1.12) saturate(1.2)",
-        duration: 0.36,
-        ease: "power2.inOut"
-      }, 0.42)
-
-      .to(electricGlow, {
-        opacity: 0.8,
-        scale: 1.2,
-        duration: 0.22
-      }, 0.25)
-
-      .to(electricGlow, {
-        opacity: 0,
-        scale: 1.8,
-        duration: 0.38
-      }, 0.56)
-
-      .to(headline, {
-        opacity: 1,
-        duration: 0.22,
-        ease: "power2.out"
-      }, 0.56)
-
-      .fromTo(headlineLines[0],
-        { yPercent: 110, rotate: 4, filter: "blur(12px)" },
-        { yPercent: 0, rotate: 0, filter: "blur(0px)", duration: 0.22 },
-        0.58
-      )
-
-      .fromTo(headlineLines[1],
-        { yPercent: 110, rotate: -4, filter: "blur(12px)" },
-        { yPercent: 0, rotate: 0, filter: "blur(0px)", duration: 0.22 },
-        0.64
-      )
-
-      .to(videoWrap, {
-        scale: 0.74,
-        opacity: 0.72,
-        filter: "blur(3px) contrast(1.1) saturate(1.15)",
-        duration: 0.35
-      }, 0.67)
-
-      .to(artifactLayer, {
-        opacity: 1,
-        duration: 0.2
-      }, 0.66);
-
-    // Give each artifact its own chaotic entrance.
-    gsap.utils.toArray(".artifact").forEach((card, i) => {
-      gsap.fromTo(card,
-        {
-          y: i % 2 ? 80 : -80,
-          x: i % 2 ? 40 : -40,
-          rotation: i % 2 ? 8 : -8,
-          scale: 0.72,
-          filter: "blur(10px)"
-        },
-        {
-          y: 0,
-          x: 0,
-          rotation: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          ease: "none",
-          scrollTrigger: {
-            trigger: scrubSection,
-            start: `${54 + i * 3}% top`,
-            end: `${76 + i * 3}% top`,
-            scrub: 0.8
-          }
-        }
-      );
-    });
-
-    // Fade the first scene away as the next section approaches.
-    gsap.to("#stickyStage", {
-      opacity: 0,
-      scale: 0.97,
-      scrollTrigger: {
-        trigger: scrubSection,
-        start: "86% top",
-        end: "100% top",
-        scrub: true
-      }
-    });
-
-    // ---------------------------------------------------------
-    // Mouse-reactive text: characters avoid the cursor.
-    // ---------------------------------------------------------
-    const text = document.getElementById("scatterText");
-    const original = text.textContent.trim();
-    text.textContent = "";
-
-    const chars = [];
-
-    [...original].forEach((char) => {
-      if (char === " ") {
-        const span = document.createElement("span");
-        span.className = "space";
-        span.innerHTML = "&nbsp;";
-        text.appendChild(span);
-        return;
-      }
-
-      const span = document.createElement("span");
-      span.className = "char";
-      span.textContent = char;
-      text.appendChild(span);
-      chars.push(span);
-    });
-
-    const cursorLight = document.getElementById("cursorLight");
-    let pointerX = -9999;
-    let pointerY = -9999;
-
-    window.addEventListener("mousemove", (e) => {
-      pointerX = e.clientX;
-      pointerY = e.clientY;
-
-      gsap.to(cursorLight, {
-        x: pointerX,
-        y: pointerY,
-        opacity: 1,
-        duration: 0.35,
-        overwrite: true
-      });
-
-      chars.forEach((char) => {
-        const r = char.getBoundingClientRect();
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        const dx = cx - pointerX;
-        const dy = cy - pointerY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const radius = 125;
-
-        if (distance < radius) {
-          const force = Math.pow(1 - distance / radius, 2);
-          const angle = Math.atan2(dy, dx);
-
-          gsap.to(char, {
-            x: Math.cos(angle) * force * 42,
-            y: Math.sin(angle) * force * 42,
-            rotation: (Math.random() - 0.5) * force * 30,
-            filter: `drop-shadow(0 0 ${8 + force * 18}px rgba(255,255,255,.9))`,
-            duration: 0.28,
-            overwrite: true,
-            ease: "power3.out"
-          });
-        } else {
-          gsap.to(char, {
-            x: 0,
-            y: 0,
-            rotation: 0,
-            filter: "drop-shadow(0 0 0 rgba(255,255,255,0))",
-            duration: 0.7,
-            overwrite: true,
-            ease: "power3.out"
-          });
-        }
-      });
-    }, { passive: true });
-
-    window.addEventListener("mouseleave", () => {
-      gsap.to(cursorLight, { opacity: 0, duration: 0.4 });
-    });
-
-    // Respect reduced-motion preferences.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      ScrollTrigger.getAll().forEach(st => st.disable());
-      video.currentTime = duration * 0.45;
     }
-  </script>
+  );
+});
+
+/* ---------------------------------------------------------
+   MESSAGE: LETTERS AVOID THE CURSOR
+   --------------------------------------------------------- */
+const text = document.getElementById("scatterText");
+const original = text.textContent.trim();
+text.textContent = "";
+
+const chars=[];
+
+[...original].forEach(ch=>{
+  if(ch===" "){
+    const s=document.createElement("span");
+    s.className="word-space";
+    s.innerHTML="&nbsp;";
+    text.appendChild(s);
+    return;
+  }
+
+  const s=document.createElement("span");
+  s.className="char";
+  s.textContent=ch;
+  text.appendChild(s);
+  chars.push(s);
+});
+
+const cursorLight=document.getElementById("cursorLight");
+
+window.addEventListener("mousemove",e=>{
+  const px=e.clientX;
+  const py=e.clientY;
+
+  gsap.to(cursorLight,{
+    x:px,y:py,opacity:1,
+    duration:.35,
+    overwrite:true
+  });
+
+  chars.forEach(char=>{
+    const r=char.getBoundingClientRect();
+    const cx=r.left+r.width/2;
+    const cy=r.top+r.height/2;
+    const dx=cx-px;
+    const dy=cy-py;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    const radius=145;
+
+    if(d<radius){
+      const force=Math.pow(1-d/radius,2);
+      const angle=Math.atan2(dy,dx);
+
+      gsap.to(char,{
+        x:Math.cos(angle)*force*48,
+        y:Math.sin(angle)*force*48,
+        rotation:(Math.random()-.5)*force*35,
+        filter:`drop-shadow(0 0 ${8+force*20}px rgba(255,255,255,.95))`,
+        duration:.25,
+        overwrite:true,
+        ease:"power3.out"
+      });
+    }else{
+      gsap.to(char,{
+        x:0,y:0,rotation:0,
+        filter:"drop-shadow(0 0 0 rgba(255,255,255,0))",
+        duration:.65,
+        overwrite:true,
+        ease:"power3.out"
+      });
+    }
+  });
+},{passive:true});
+
+window.addEventListener("mouseleave",()=>{
+  gsap.to(cursorLight,{opacity:0,duration:.4});
+});
+</script>
+
 </body>
 </html>
