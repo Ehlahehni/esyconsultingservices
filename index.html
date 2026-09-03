@@ -8,7 +8,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Bebas Neue & Space Grotesk / Space Mono -->
+  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@600;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
@@ -49,9 +49,9 @@
 <body class="selection:bg-black selection:text-[#d4f038] text-slate-950">
 
   <!-- Top spacer runway -->
-  <header class="h-[25vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
+  <header class="h-[20vh] bg-[#d4f038] flex items-center justify-center border-b border-black/10">
     <span class="text-xs uppercase tracking-widest font-mono-code text-black/70 font-bold">
-      ↓ Scroll down to start scroll depth
+      ↓ Scroll down to trigger sequence
     </span>
   </header>
 
@@ -61,7 +61,7 @@
     <!-- Sticky Full-Screen Viewport Window -->
     <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
       
-      <!-- MASSIVE CRISP EDITORIAL HEADLINE -->
+      <!-- Massive Crisp Editorial Headline -->
       <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
         <h1 class="font-headline solid-editorial text-[19vw] uppercase">
           Numbers Not<br/>
@@ -188,30 +188,65 @@
     </div>
   </section>
 
-  <!-- ==================== SECTION 2: CONTINUOUS LIME CANVAS + MEME VIDEO + LETTER EXPLOSION ==================== -->
-  <section id="meme-stage" class="relative w-full min-h-[260vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
+  <!-- ==================== SECTION 2: VECTOR ILLUSTRATION + HEAD ERUPTION TO MASSIVE HEADLINE ==================== -->
+  <section id="meme-stage" class="relative w-full min-h-[280vh] bg-[#d4f038] flex flex-col justify-start items-center border-t border-black/10">
     
-    <!-- Sticky Full-Screen Viewport for Video & Explosive Typography -->
+    <!-- Sticky Full-Screen Viewport -->
     <div id="meme-viewport" class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-4 md:px-8">
       
-      <!-- Video Container Styled to blend directly into the Neon Lime Canvas -->
-      <div id="video-box" class="relative w-full max-w-xl aspect-video rounded-3xl overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.25)] border-4 border-black bg-white flex items-center justify-center">
-        <video id="head-video" class="w-full h-full object-contain" muted playsinline preload="auto">
-          <!-- Local video asset -->
-          <source src="Man_holding_head_with_numbers_202609032343.mp4" type="video/mp4">
-        </video>
+      <!-- Native Vector Meme Illustration Container -->
+      <div id="illustration-container" class="relative w-72 sm:w-84 md:w-96 aspect-square flex items-center justify-center">
+        <svg viewBox="0 0 400 400" class="w-full h-full overflow-visible drop-shadow-xl" xmlns="http://www.w3.org/2000/svg">
+          <!-- Body & Shoulders -->
+          <path d="M70 380 Q130 290 200 290 Q270 290 330 380 Z" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
+          <path d="M170 290 L170 380 M230 290 L230 380" stroke="#000000" stroke-width="3" stroke-linecap="round"/>
+          <path d="M200 290 L185 330 L200 370 L215 330 Z" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+          
+          <!-- Lower Face & Cheeks -->
+          <path d="M120 180 Q110 270 200 280 Q290 270 280 180 Z" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linejoin="round"/>
+          
+          <!-- Stressed Facial Expressions -->
+          <!-- Agonized Eyebrows -->
+          <path d="M140 160 Q170 180 185 170 M260 160 Q230 180 215 170" stroke="#000000" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <!-- Squinting Wrinkled Eyes -->
+          <path d="M145 175 Q165 170 180 178 M255 175 Q235 170 220 178" stroke="#000000" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <path d="M150 177 Q165 183 178 178 M250 177 Q235 183 222 178" stroke="#000000" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <!-- Nose Bridge & Lines -->
+          <path d="M195 175 Q200 210 188 220 L212 220 Q203 210 205 175" stroke="#000000" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+          <!-- Grimace Mouth with Clenched Teeth -->
+          <path d="M165 242 Q200 235 235 242 Q200 262 165 242 Z" fill="#ffffff" stroke="#000000" stroke-width="3.5"/>
+          <path d="M175 248 L225 248" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+
+          <!-- Hands Clutching Head -->
+          <!-- Left Arm & Hand -->
+          <path d="M60 270 Q60 120 125 100 Q135 125 130 150" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
+          <path d="M125 100 C130 85 145 90 142 110 M135 90 C145 80 155 88 150 115" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- Right Arm & Hand -->
+          <path d="M340 270 Q340 120 275 100 Q265 125 270 150" fill="#ffffff" stroke="#000000" stroke-width="4" stroke-linecap="round"/>
+          <path d="M275 100 C270 85 255 90 258 110 M265 90 C255 80 245 88 250 115" stroke="#000000" stroke-width="3.5" stroke-linecap="round"/>
+
+          <!-- HINGED HEAD LID (Separates and hinges open via GSAP) -->
+          <g id="head-lid" style="transform-origin: 270px 130px;">
+            <path d="M120 160 Q110 80 200 70 Q290 80 280 160 Q200 135 120 160 Z" fill="#111111" stroke="#000000" stroke-width="4"/>
+            <!-- Hair texture strokes -->
+            <path d="M130 110 Q160 85 190 100 M210 95 Q240 85 270 110" stroke="#333333" stroke-width="3" stroke-linecap="round" fill="none"/>
+          </g>
+
+          <!-- Exposed Brain Rim Base (Visible once lid lifts) -->
+          <ellipse id="brain-cavity" cx="200" cy="148" rx="72" ry="16" fill="#1a1a1a" stroke="#000000" stroke-width="3" class="opacity-0"/>
+        </svg>
       </div>
 
       <!-- Dynamic Fountain Container for Letters Shooting Upward -->
       <div id="particle-fountain" class="absolute w-full h-full pointer-events-none flex items-center justify-center"></div>
 
-      <!-- MASSIVE ASSEMBLED PHRASE (Enlarged to Hero Display Scale) -->
-      <div id="assembled-phrase-card" class="relative z-30 mt-4 w-full max-w-7xl text-center opacity-0 pointer-events-auto">
+      <!-- MASSIVE ASSEMBLED PHRASE (Enlarged Hero Scale with Mouse Scatter) -->
+      <div id="assembled-phrase-card" class="relative z-30 mt-2 w-full max-w-7xl text-center opacity-0 pointer-events-auto">
         <h2 id="evade-target" class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-black tracking-tight leading-[0.92] cursor-default select-none">
           <!-- Dynamically populated letters -->
         </h2>
         <p class="text-black/80 font-mono-code text-xs sm:text-base mt-6 tracking-widest uppercase font-bold">
-          [ Hover cursor over letters to interact ]
+          [ Hover cursor over letters to scatter ]
         </p>
       </div>
 
@@ -230,7 +265,7 @@
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
-    // 1. Section 1 Parallax Cards & Depth Blur
+    // 1. SECTION 1 PARALLAX CARDS & DEPTH BLUR
     const cards = gsap.utils.toArray('.scroll-card');
     cards.forEach((card) => {
       const targetY = parseFloat(card.getAttribute('data-y')) || -300;
@@ -258,7 +293,7 @@
       });
     });
 
-    // 2. Phrase Generator with Individual Letter Glyphs
+    // 2. PHRASE GENERATOR WITH INDIVIDUAL LETTER GLYPHS
     const finalPhrase = "Let me handle your books with precision while you focus on your vision.";
     const evadeTarget = document.getElementById('evade-target');
 
@@ -276,12 +311,12 @@
       evadeTarget.appendChild(wordSpan);
     });
 
-    // 3. Spawning the Letter Explosion Fountain Tokens
+    // 3. SPAWNING FOUNTAIN LETTER TOKENS
     const fountainContainer = document.getElementById('particle-fountain');
     const burstChars = "LETMEHANDLEYOURBOOKSWITHPRECISIONWHILEYOUFOCUSONYOURVISION$%#@&".split('');
     const fountainElements = [];
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 44; i++) {
       const el = document.createElement('span');
       el.className = 'absolute font-black text-2xl sm:text-4xl text-black pointer-events-none opacity-0 select-none';
       el.textContent = burstChars[Math.floor(Math.random() * burstChars.length)];
@@ -289,68 +324,69 @@
       fountainElements.push(el);
     }
 
-    // 4. Scroll-Bound Timeline for the Video & Explosion
-    const headVideo = document.getElementById('head-video');
-    const videoBox = document.getElementById('video-box');
+    // 4. SCROLL TIMELINE: HEAD POPPING OPEN & FOUNTAIN ERUPTION
+    const illustrationBox = document.getElementById('illustration-container');
+    const headLid = document.getElementById('head-lid');
+    const brainCavity = document.getElementById('brain-cavity');
     const assembledCard = document.getElementById('assembled-phrase-card');
 
-    headVideo.addEventListener('loadedmetadata', () => {
-      initMemeTimeline();
+    const memeTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#meme-stage",
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2
+      }
     });
-    if (headVideo.readyState >= 1) {
-      initMemeTimeline();
-    }
 
-    function initMemeTimeline() {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#meme-stage",
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2,
-          onUpdate: (self) => {
-            if (headVideo.duration) {
-              headVideo.currentTime = self.progress * headVideo.duration;
-            }
-          }
-        }
-      });
+    // Step A: Character shakes with agony under stress
+    memeTimeline.to(illustrationBox, {
+      x: () => (Math.random() - 0.5) * 20,
+      yoyo: true,
+      repeat: 6,
+      duration: 0.8,
+      ease: "power1.inOut"
+    }, 0);
 
-      // Video scales slightly up during stress build-up
-      tl.fromTo(videoBox, 
-        { scale: 0.9, y: 30 }, 
-        { scale: 1.05, y: -10, duration: 1.5 }
+    // Step B: Head lid pops open & exposes the cavity
+    memeTimeline.to(headLid, {
+      rotation: 55,
+      x: 35,
+      y: -25,
+      duration: 1.2,
+      ease: "back.out(2)"
+    }, 0.8);
+    memeTimeline.to(brainCavity, { opacity: 1, duration: 0.3 }, 0.9);
+
+    // Step C: Letter fountain erupts upward out of the head
+    fountainElements.forEach((el, index) => {
+      const angle = (index / fountainElements.length) * Math.PI * 1.6 - (Math.PI * 0.8);
+      const dist = 320 + Math.random() * 280;
+      const targetX = Math.cos(angle) * dist;
+      const targetY = -Math.sin(angle) * dist - 160;
+
+      memeTimeline.fromTo(el,
+        { x: 0, y: -20, opacity: 0, scale: 0.3 },
+        {
+          x: targetX,
+          y: targetY,
+          opacity: 1,
+          scale: 1.7,
+          duration: 1.4,
+          ease: "power2.out"
+        },
+        0.9 + (index * 0.02)
       );
 
-      // Eruption: Letters shoot upward out of his head
-      fountainElements.forEach((el, index) => {
-        const angle = (index / fountainElements.length) * Math.PI * 1.6 - (Math.PI * 0.8);
-        const dist = 320 + Math.random() * 260;
-        const targetX = Math.cos(angle) * dist;
-        const targetY = -Math.sin(angle) * dist - 120;
+      // Disperse outward as headline forms
+      memeTimeline.to(el, { opacity: 0, scale: 0.2, duration: 0.6 }, 2.4);
+    });
 
-        tl.fromTo(el, 
-          { x: 0, y: -40, opacity: 0, scale: 0.4 },
-          { 
-            x: targetX, 
-            y: targetY, 
-            opacity: 1, 
-            scale: 1.6, 
-            duration: 1.4, 
-            ease: "power2.out" 
-          }, 
-          0.8 + (index * 0.02)
-        );
+    // Step D: Illustration scales down smoothly so the massive text takes center stage
+    memeTimeline.to(illustrationBox, { scale: 0.5, opacity: 0.2, y: -70, duration: 1.4 }, 2.0);
+    memeTimeline.to(assembledCard, { opacity: 1, y: -90, duration: 1.5, ease: "power2.out" }, 2.2);
 
-        tl.to(el, { opacity: 0, scale: 0.3, duration: 0.6 }, 2.4);
-      });
-
-      // Video steps back and minimizes so the massive headline commands full visual hierarchy
-      tl.to(videoBox, { scale: 0.5, opacity: 0.15, y: -80, filter: "blur(5px)", duration: 1.5 }, 2.0);
-      tl.to(assembledCard, { opacity: 1, y: -80, duration: 1.5, ease: "power2.out" }, 2.2);
-    }
-
-    // 5. Scaled Interactive Mouse Evade Physics
+    // 5. INTERACTIVE MOUSE EVADE ON ASSEMBLED LETTERS
     const letters = document.querySelectorAll('.scatter-letter');
 
     evadeTarget.addEventListener('mousemove', (e) => {
@@ -363,7 +399,6 @@
         const dy = e.clientY - letterCenterY;
         const dist = Math.hypot(dx, dy);
 
-        // Expanded interaction radius (160px) for bigger letters
         if (dist < 160) {
           const force = (160 - dist) / 160;
           const pushX = -(dx / dist) * force * 55;
