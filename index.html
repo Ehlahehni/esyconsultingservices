@@ -8,7 +8,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Press Start 2P (8-Bit Retro), Caveat -->
+  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Press Start 2P, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Press+Start+2P&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
 
     .font-pixel {
       font-family: 'Press Start 2P', monospace;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.04em;
     }
 
     .font-signature {
@@ -70,16 +70,16 @@
       backface-visibility: hidden;
     }
 
-    /* Floating on Water: 10-Second Lazy Recoil Physics */
+    /* Floating on Water: 30-Second Lazy Recoil Physics */
     .scatter-char {
       display: inline-block;
       position: relative;
       will-change: transform, text-shadow, filter;
       transform: translate3d(0, 0, 0);
-      /* Extremely languid 10-second buoyant water return */
-      transition: transform 10.0s cubic-bezier(0.02, 0.98, 0.15, 1.0),
-                  text-shadow 2.5s ease-out,
-                  filter 2.5s ease-out;
+      /* 30-Second ultra-buoyant water decay */
+      transition: transform 30.0s cubic-bezier(0.01, 0.99, 0.1, 1.0),
+                  text-shadow 3.5s ease-out,
+                  filter 3.5s ease-out;
       pointer-events: auto;
       cursor: default;
       user-select: none;
@@ -90,7 +90,7 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* 70% Transparent Frosted Glass Card Boundary */
+    /* 70% Transparent Frosted Glass Card */
     .glass-metrics-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(24px);
@@ -100,18 +100,34 @@
                   0 25px 60px -15px rgba(0, 0, 0, 0.85);
     }
 
-    /* 8-Bit Tumbling Slot Machine Letter Styles */
-    .slot-machine-reel {
+    /* TRUE SLOT MACHINE TUMBLING REEL ARCHITECTURE */
+    .reel-window {
       display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 2rem;
+      line-height: 2rem;
       overflow: hidden;
-      perspective: 800px;
+      vertical-align: middle;
+    }
+    @media (min-width: 640px) { .reel-window { height: 2.5rem; line-height: 2.5rem; } }
+    @media (min-width: 768px) { .reel-window { height: 3rem; line-height: 3rem; } }
+
+    .reel-strip {
+      display: inline-flex;
+      flex-direction: column;
+      will-change: transform;
+      transform: translateY(0);
     }
 
-    .tumble-digit {
-      display: inline-block;
-      transform-style: preserve-3d;
-      will-change: transform, opacity;
+    .reel-digit {
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    @media (min-width: 640px) { .reel-digit { height: 2.5rem; } }
+    @media (min-width: 768px) { .reel-digit { height: 3rem; } }
 
     .film-grain {
       position: fixed;
@@ -261,10 +277,10 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== FINAL SECTION: STATEMENTS & FROSTED 8-BIT METRICS ==================== -->
+  <!-- ==================== FINAL SECTION ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 overflow-hidden">
     
-    <!-- 80% Opacity Full Background Video -->
+    <!-- 80% Opacity Background Video -->
     <video 
       autoplay 
       loop 
@@ -275,13 +291,12 @@
       <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
     </video>
 
-    <!-- Compact Ambient Spotlight -->
+    <!-- Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/5 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-10 sm:space-y-14">
+    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-10 sm:space-y-12">
       
-      <!-- 1. EDITORIAL STATEMENT: 3 CLEAN LINES WITHOUT FROSTED GLASS -->
+      <!-- 1. 3-LINE STATEMENT (NO FROSTED GLASS) -->
       <div class="text-center max-w-5xl px-4">
         <h2 id="scatter-statement" class="font-statement-grotesk text-center text-white text-4xl sm:text-6xl md:text-7xl lg:text-[5.2vw] leading-[1.08] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
           <span class="block">Let me handle your</span>
@@ -289,40 +304,34 @@
           <span class="block">while you focus on your mission</span>
         </h2>
 
-        <!-- Subheadline below main statement -->
+        <!-- Subheadline -->
         <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 sm:mt-6 max-w-2xl mx-auto opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
           Clean books. Zero stress. More time to build what matters.
         </p>
       </div>
 
-      <!-- 2. KEY METRICS: ONLY ELEMENT ON 70% FROSTED GLASS -->
+      <!-- 2. KEY METRICS: 70% FROSTED GLASS WITH 8-BIT SLOT ROLLER -->
       <div id="metrics-card" class="w-full max-w-5xl rounded-3xl glass-metrics-card py-8 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15">
         
-        <!-- Metric 1: 3000+ Transactions -->
+        <!-- Metric 1: 3000+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
-          <div class="slot-machine-reel font-pixel text-xl sm:text-2xl md:text-3xl lg:text-[28px] text-[#d4f038] drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="3000+">
-            <!-- Dynamically populated tumble spans -->
-          </div>
+          <div class="slot-reel-container font-pixel text-[#d4f038] text-xl sm:text-2xl md:text-3xl drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="3000+"></div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[200px]">
             Transactions Categorized
           </p>
         </div>
 
-        <!-- Metric 2: 200+ Accounts -->
+        <!-- Metric 2: 200+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-machine-reel font-pixel text-xl sm:text-2xl md:text-3xl lg:text-[28px] text-[#d4f038] drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="200+">
-            <!-- Dynamically populated tumble spans -->
-          </div>
+          <div class="slot-reel-container font-pixel text-[#d4f038] text-xl sm:text-2xl md:text-3xl drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="200+"></div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[200px]">
             Accounts Reconciled
           </p>
         </div>
 
-        <!-- Metric 3: +1000 Invoices -->
+        <!-- Metric 3: +1000 -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-machine-reel font-pixel text-xl sm:text-2xl md:text-3xl lg:text-[28px] text-[#d4f038] drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="+1000">
-            <!-- Dynamically populated tumble spans -->
-          </div>
+          <div class="slot-reel-container font-pixel text-[#d4f038] text-xl sm:text-2xl md:text-3xl drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="+1000"></div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[230px]">
             Invoices, bills &amp; checks accurately recorded
           </p>
@@ -505,14 +514,13 @@
 
     })();
 
-    // 4. WATER-BUOYANCY SCATTER (10-SECOND FLOATING RECOIL)
+    // 4. WATER-BUOYANCY SCATTER (30-SECOND RECOIL DECAY)
     (function () {
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
       const cursorGlow = document.getElementById('cursor-glow');
       const lines = statement.querySelectorAll('span');
 
-      // Break each line into individual interactive glyphs while preserving spaces
       lines.forEach(line => {
         const text = line.innerText.trim();
         const words = text.split(' ');
@@ -567,13 +575,13 @@
             const pushY = Math.sin(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 14;
             const pushRot = (Math.random() - 0.5) * 38 * force;
 
-            // Swift push deflection
+            // Swift push away
             item.el.style.transition = 'transform 0.22s cubic-bezier(0.1, 0.9, 0.2, 1), text-shadow 0.3s ease-out, filter 0.3s ease-out';
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
-            // 10-Second Aquatic Recoil
-            item.el.style.transition = 'transform 10.0s cubic-bezier(0.02, 0.98, 0.15, 1.0), text-shadow 2.5s ease-out, filter 2.5s ease-out';
+            // 30-SECOND EXTENDED LAZY RECOIL
+            item.el.style.transition = 'transform 30.0s cubic-bezier(0.01, 0.99, 0.1, 1.0), text-shadow 3.5s ease-out, filter 3.5s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
           }
@@ -583,52 +591,119 @@
       section.addEventListener('mouseleave', () => {
         cursorGlow.style.opacity = '0';
         charData.forEach(item => {
-          item.el.style.transition = 'transform 10.0s cubic-bezier(0.02, 0.98, 0.15, 1.0), text-shadow 2.5s ease-out, filter 2.5s ease-out';
+          item.el.style.transition = 'transform 30.0s cubic-bezier(0.01, 0.99, 0.1, 1.0), text-shadow 3.5s ease-out, filter 3.5s ease-out';
           item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
           item.el.classList.remove('active-scatter');
         });
       });
     })();
 
-    // 5. 8-BIT RETRO GAMING TUMBLING ENTRY ANIMATION (SLOT MACHINE REEL)
+    // 5. MECHANICAL SLOT-MACHINE TUMBLING CYLINDER REELS
     (function () {
-      const reels = document.querySelectorAll('.slot-machine-reel');
+      const reelContainers = document.querySelectorAll('.slot-reel-container');
+      const allStrips = [];
 
-      reels.forEach(reel => {
-        const val = reel.getAttribute('data-val') || '';
-        reel.innerHTML = val.split('').map((char, i) => `
-          <span class="tumble-digit inline-block" data-char="${char}">
-            ${char}
-          </span>
-        `).join('');
+      reelContainers.forEach(container => {
+        const targetString = container.getAttribute('data-val') || '';
+        container.innerHTML = '';
+
+        targetString.split('').forEach((char, colIndex) => {
+          const windowEl = document.createElement('div');
+          windowEl.className = 'reel-window';
+
+          const stripEl = document.createElement('div');
+          stripEl.className = 'reel-strip';
+
+          if (char >= '0' && char <= '9') {
+            // Numbers roll through multiple cycles before locking on the real number
+            const targetNum = parseInt(char, 10);
+            const rollCount = 2; // Number of full 0-9 revolutions before stopping
+            
+            for (let cycle = 0; cycle < rollCount; cycle++) {
+              for (let d = 0; d <= 9; d++) {
+                const digitEl = document.createElement('div');
+                digitEl.className = 'reel-digit';
+                digitEl.textContent = d;
+                stripEl.appendChild(digitEl);
+              }
+            }
+            // Append target final number
+            for (let d = 0; d <= targetNum; d++) {
+              const digitEl = document.createElement('div');
+              digitEl.className = 'reel-digit';
+              digitEl.textContent = d;
+              stripEl.appendChild(digitEl);
+            }
+
+            const totalStops = (rollCount * 10) + targetNum;
+            allStrips.push({ el: stripEl, stops: totalStops, isSymbol: false, col: colIndex });
+
+          } else {
+            // Symbols (+, etc.) tumble directly from below
+            const blankEl = document.createElement('div');
+            blankEl.className = 'reel-digit';
+            blankEl.textContent = ' ';
+            stripEl.appendChild(blankEl);
+
+            const symEl = document.createElement('div');
+            symEl.className = 'reel-digit';
+            symEl.textContent = char;
+            stripEl.appendChild(symEl);
+
+            allStrips.push({ el: stripEl, stops: 1, isSymbol: true, col: colIndex });
+          }
+
+          windowEl.appendChild(stripEl);
+          container.appendChild(windowEl);
+        });
       });
 
-      const allDigits = document.querySelectorAll('.tumble-digit');
+      // Measure height of a single digit item dynamically
+      function getDigitHeight() {
+        const sample = document.querySelector('.reel-digit');
+        return sample ? sample.offsetHeight : 32;
+      }
 
-      // Initial state: flipped backwards & shifted down
-      gsap.set(allDigits, {
-        opacity: 0,
-        y: 45,
-        rotationX: -90,
-        transformOrigin: "50% 50% -25px"
-      });
+      let animationTriggered = false;
 
-      // Trigger tumbling slot-machine roll when section scrolls into view
+      function triggerSlotReel() {
+        if (animationTriggered) return;
+        animationTriggered = true;
+
+        const h = getDigitHeight();
+
+        allStrips.forEach((strip) => {
+          const finalY = -strip.stops * h;
+          const duration = 1.4 + (strip.col * 0.22); // Staggered reel stop like real slot machine
+
+          gsap.fromTo(strip.el, 
+            { y: 0 },
+            {
+              y: finalY,
+              duration: duration,
+              ease: "back.out(1.4)", // Snaps back into place like a mechanical reel lock
+              delay: 0.15 + (strip.col * 0.08)
+            }
+          );
+        });
+      }
+
+      // Trigger spin when section enters viewport
       ScrollTrigger.create({
         trigger: "#metrics-card",
         start: "top 85%",
-        onEnter: () => {
-          gsap.to(allDigits, {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 1.1,
-            ease: "back.out(2.2)",
-            stagger: 0.08,
-            overwrite: "auto"
-          });
-        }
+        onEnter: triggerSlotReel,
+        onEnterBack: triggerSlotReel
       });
+
+      // Safety fallback: if user is already at the bottom, spin immediately
+      setTimeout(() => {
+        const rect = document.getElementById('metrics-card').getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          triggerSlotReel();
+        }
+      }, 500);
+
     })();
   </script>
 </body>
