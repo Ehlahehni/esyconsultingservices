@@ -199,7 +199,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
+          142 unreconciled entries synced via QuickBooks &amp; Xero.
         </p>
       </div>
     </div>
@@ -285,7 +285,7 @@
         
         <!-- Metric 1: 3000+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="3000+">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[48px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="3000+">
             0000
           </div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[210px] leading-relaxed">
@@ -295,7 +295,7 @@
 
         <!-- Metric 2: 200+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="200+">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[48px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="200+">
             000
           </div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[210px] leading-relaxed">
@@ -305,7 +305,7 @@
 
         <!-- Metric 3: 1000+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="1000+">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[48px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="1000+">
             0000
           </div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[230px] leading-relaxed">
@@ -429,7 +429,6 @@
         allFrames[CHAR_COUNT + j] = img;
       }
 
-      // Master Scroll Scrub
       const masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: '#master-scroll-track',
@@ -555,7 +554,6 @@
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
-            // 30-Second Lazy Recoil
             item.el.style.transition = 'transform 30.0s cubic-bezier(0.01, 0.99, 0.1, 1.0), text-shadow 3.5s ease-out, filter 3.5s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
@@ -573,27 +571,28 @@
       });
     })();
 
-    // 4. 8-BIT RETRO 3-SECOND NUMBER SCRAMBLER & REEL LOCK
+    // 4. 8-BIT RETRO 2-SECOND ARCADE ROLLER (RE-TRIGGERS ON EVERY ENTRY)
     (function () {
       const counters = document.querySelectorAll('.slot-counter');
       const randomChars = "0123456789$#%*+";
-      let hasRun = false;
+      let activeIntervals = [];
 
       function startSlotMachineRoll() {
-        if (hasRun) return;
-        hasRun = true;
+        // Clear any running timers so it restarts cleanly
+        activeIntervals.forEach(id => clearInterval(id));
+        activeIntervals = [];
 
         counters.forEach((counter, idx) => {
           const target = counter.getAttribute('data-target');
           const targetLen = target.length;
-          const duration = 3000 + (idx * 300); // 3-second roll with slight stagger
+          const duration = 2000 + (idx * 200); // 2-second roll
           const startTime = performance.now();
 
           const interval = setInterval(() => {
             const elapsed = performance.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
 
-            // How many characters have locked in place
+            // Progressive character lock
             const lockedCharsCount = Math.floor(progress * targetLen);
 
             let display = "";
@@ -606,26 +605,25 @@
             }
 
             counter.textContent = display;
-
-            // Small 3D tumble bump on frame tick
-            counter.style.transform = `translateY(${(Math.random() - 0.5) * 3}px)`;
+            counter.style.transform = `translateY(${(Math.random() - 0.5) * 2}px)`;
 
             if (progress >= 1) {
               clearInterval(interval);
               counter.textContent = target;
               counter.style.transform = "translateY(0px)";
-              
-              // End snap celebration
+
               gsap.fromTo(counter, 
                 { scale: 1.15 }, 
-                { scale: 1, duration: 0.4, ease: "back.out(2)" }
+                { scale: 1, duration: 0.35, ease: "back.out(2)" }
               );
             }
-          }, 45); // 45ms rapid arcade tick
+          }, 40);
+
+          activeIntervals.push(interval);
         });
       }
 
-      // Trigger roll when the section comes into view
+      // Trigger every time the user scrolls in or back up into the section
       ScrollTrigger.create({
         trigger: "#books-section",
         start: "top 75%",
@@ -633,7 +631,7 @@
         onEnterBack: startSlotMachineRoll
       });
 
-      // Immediate check if page starts here
+      // Immediate check if page loads directly here
       setTimeout(() => {
         const rect = document.getElementById('books-section').getBoundingClientRect();
         if (rect.top < window.innerHeight * 0.8) {
