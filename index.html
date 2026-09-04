@@ -10,7 +10,7 @@
 
   <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
   <!-- GSAP + ScrollTrigger -->
@@ -46,9 +46,11 @@
       font-family: 'Caveat', cursive;
     }
 
-    .solid-editorial {
-      color: #111111;
-      line-height: 0.82;
+    /* Reference 0:26: Solid pure white display typography */
+    .solid-editorial-white {
+      color: #ffffff !important;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+      line-height: 0.84;
       letter-spacing: -0.04em;
     }
 
@@ -58,7 +60,7 @@
       transform: translateZ(0);
     }
 
-    /* Micro film-grain for cinematic finish */
+    /* Micro film-grain for cinematic texture */
     .film-grain {
       position: fixed;
       inset: 0;
@@ -75,31 +77,31 @@
 
   <div class="film-grain"></div>
 
-  <!-- ==================== FIXED PERSISTENT CANVAS STAGE ==================== -->
+  <!-- ==================== FIXED DUAL-SEQUENCE CANVAS ==================== -->
   <div id="canvas-wrapper" class="fixed inset-0 w-full h-full pointer-events-none z-0">
     <div id="hero-loader" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0b0f14] font-mono-code text-xs text-white/50 tracking-widest uppercase">
       <div class="w-10 h-10 rounded-full border border-white/20 border-t-[#d4f038] animate-spin mb-4"></div>
-      Loading Sequence...
+      <span id="loader-status">Loading Sequence...</span>
     </div>
     <canvas id="frame-canvas" class="w-full h-full"></canvas>
   </div>
 
-  <!-- ==================== SCROLL SPACER FOR 3D CHARACTER ==================== -->
-  <!-- Drives scrubbing across all 144 frames -->
-  <section id="character-scroll-track" class="relative w-full h-[360vh] pointer-events-none"></section>
+  <!-- ==================== SCROLL SPACER (240 FRAMES TOTAL) ==================== -->
+  <!-- 144 frames Character + 96 frames Smoke = 240 frames total scrub track -->
+  <section id="character-scroll-track" class="relative w-full h-[520vh] pointer-events-none"></section>
 
-  <!-- ==================== MAIN PARALLAX STAGE (CROSSFADE OVERLAY) ==================== -->
+  <!-- ==================== MAIN PARALLAX STAGE ==================== -->
   <section id="parallax-stage" class="relative z-10 w-full min-h-[260vh] bg-[#d4f038] text-slate-900 shadow-[0_-60px_100px_rgba(11,15,20,0.95)]">
     
     <!-- Seamless Gradient Seam Blend -->
     <div class="absolute -top-32 left-0 w-full h-32 bg-gradient-to-b from-transparent to-[#d4f038] pointer-events-none"></div>
 
-    <!-- Sticky Viewport Window -->
+    <!-- Sticky Full-Screen Viewport Window -->
     <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
       
-      <!-- 1. MASSIVE CRISP EDITORIAL HEADLINE -->
+      <!-- 1. MASSIVE PURE WHITE EDITORIAL HEADLINE (MATCHING 0:26) -->
       <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
-        <h1 class="font-headline solid-editorial text-[19vw] uppercase">
+        <h1 class="font-headline solid-editorial-white text-[19vw] uppercase">
           Numbers Not<br/>
           <span>Making Sense?</span>
         </h1>
@@ -255,20 +257,24 @@
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // 2. High-DPI Canvas Sequence Renderer (144 Frames)
+    // 2. Dual-Sequence High-DPI Canvas Renderer (144 Character + 96 Smoke = 240 Frames)
     (function () {
-      const FRAME_COUNT = 144;
-      const FRAME_PATH = (i) => `images-webp/ezgif-frame-${String(i).padStart(3, '0')}.webp`;
+      const CHAR_COUNT = 144;
+      const SMOKE_COUNT = 96;
+      const TOTAL_FRAMES = CHAR_COUNT + SMOKE_COUNT;
+
+      const CHAR_PATH = (i) => `images-webp/ezgif-frame-${String(i).padStart(3, '0')}.webp`;
+      const SMOKE_PATH = (i) => `images-webp2/smoke-frame-${String(i).padStart(3, '0')}.webp`;
 
       const canvas = document.getElementById('frame-canvas');
       const ctx = canvas.getContext('2d', { alpha: false });
       const loader = document.getElementById('hero-loader');
 
-      const images = new Array(FRAME_COUNT);
+      const allFrames = new Array(TOTAL_FRAMES);
       let logicalW = window.innerWidth;
       let logicalH = window.innerHeight;
       let currentFrame = 0;
-      let isFirstFrameReady = false;
+      let firstFrameLoaded = false;
 
       function resizeCanvas() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -290,14 +296,14 @@
       resizeCanvas();
 
       function renderFrame(index) {
-        const img = images[index];
+        const img = allFrames[index];
         if (!img || !img.complete || img.naturalWidth === 0) return;
 
         const canvasRatio = logicalW / logicalH;
         const imgRatio = img.naturalWidth / img.naturalHeight;
         let dw, dh, dx, dy;
 
-        // Mathematical cover fit
+        // Cover-fit logic preserving aspect ratio
         if (imgRatio > canvasRatio) {
           dh = logicalH;
           dw = dh * imgRatio;
@@ -314,24 +320,31 @@
         ctx.drawImage(img, dx, dy, dw, dh);
       }
 
-      // Preload the 144 frames
-      for (let i = 0; i < FRAME_COUNT; i++) {
+      // Preload Sequence 1: Character (1 -> 144)
+      for (let i = 0; i < CHAR_COUNT; i++) {
         const img = new Image();
-        img.src = FRAME_PATH(i + 1);
+        img.src = CHAR_PATH(i + 1);
         img.onload = () => {
-          if (!isFirstFrameReady) {
-            isFirstFrameReady = true;
+          if (!firstFrameLoaded) {
+            firstFrameLoaded = true;
             renderFrame(0);
             gsap.to(loader, { opacity: 0, duration: 0.4, onComplete: () => loader.remove() });
           }
         };
-        images[i] = img;
+        allFrames[i] = img;
       }
 
-      // Scrub frames over character track
+      // Preload Sequence 2: Smoke (1 -> 96) mapped to indices 144 -> 239
+      for (let j = 0; j < SMOKE_COUNT; j++) {
+        const img = new Image();
+        img.src = SMOKE_PATH(j + 1);
+        allFrames[CHAR_COUNT + j] = img;
+      }
+
+      // Scrub unified sequence (0 through 239) across the spacer track
       const sequenceObj = { frame: 0 };
       gsap.to(sequenceObj, {
-        frame: FRAME_COUNT - 1,
+        frame: TOTAL_FRAMES - 1,
         ease: 'none',
         scrollTrigger: {
           trigger: '#character-scroll-track',
@@ -345,7 +358,7 @@
         }
       });
 
-      // Sticky Crossfade: Smoke canvas lingers and dissolves into the lime green stage
+      // Sticky Crossfade: Smoke canvas lingers and dissolves into the lime stage
       gsap.to('#canvas-wrapper', {
         opacity: 0,
         ease: 'power1.inOut',
@@ -358,7 +371,7 @@
       });
     })();
 
-    // 3. Floating Accounting Artifacts Parallax Scrub
+    // 3. Floating Artifacts Parallax Scrub
     const cards = gsap.utils.toArray('.scroll-card');
     cards.forEach((card) => {
       const targetY = parseFloat(card.getAttribute('data-y')) || -300;
