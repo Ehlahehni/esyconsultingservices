@@ -65,16 +65,16 @@
       backface-visibility: hidden;
     }
 
-    /* Floating on Water: 2+ Second Lazy Recoil Physics */
+    /* Floating on Water: 5-Second Buoyant Recoil */
     .scatter-char {
       display: inline-block;
       position: relative;
       will-change: transform, text-shadow, filter;
       transform: translate3d(0, 0, 0);
-      /* Slow 2.4s aquatic buoyancy ease with extended linger */
-      transition: transform 2.4s cubic-bezier(0.06, 0.96, 0.2, 1.01),
-                  text-shadow 1.2s ease-out,
-                  filter 1.2s ease-out;
+      /* Slow 5-second aquatic settling curve with extended float */
+      transition: transform 5.0s cubic-bezier(0.04, 0.98, 0.18, 1.01),
+                  text-shadow 2.0s ease-out,
+                  filter 2.0s ease-out;
       pointer-events: auto;
       cursor: default;
       user-select: none;
@@ -86,10 +86,11 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* Refined Frosted Glass Specular Rim */
+    /* Pure Specular Frosted Glass Card Boundary */
     .glass-card-edge {
-      box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.22),
-                  inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.4);
+      box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.25),
+                  inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.5),
+                  0 30px 80px rgba(0, 0, 0, 0.65);
     }
 
     .film-grain {
@@ -240,32 +241,29 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== 3D FROSTED GLASS VIDEO SECTION ==================== -->
+  <!-- ==================== VIDEO BACKGROUND WITH FROSTED GLASS CARD ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex items-center justify-center p-4 sm:p-8 md:p-14 overflow-hidden">
     
-    <!-- 3D Glass Card Container -->
-    <div class="relative w-full max-w-6xl rounded-[2.5rem] md:rounded-[3.25rem] overflow-hidden glass-card-edge backdrop-blur-xl bg-white/[0.04] border border-white/[0.14] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_30px_90px_rgba(0,0,0,0.7)] flex items-center justify-center">
+    <!-- 1. FULL BACKGROUND VIDEO: Set to 80% opacity filling the entire section -->
+    <video 
+      autoplay 
+      loop 
+      muted 
+      playsinline 
+      class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80 mix-blend-screen z-0"
+    >
+      <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
+    </video>
+
+    <!-- 2. FROSTED GLASS CARD: Glassy and translucent directly over the lively background -->
+    <div class="relative w-full max-w-6xl rounded-[2.5rem] md:rounded-[3.25rem] overflow-hidden glass-card-edge backdrop-blur-2xl bg-white/[0.04] border border-white/[0.18] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_30px_90px_rgba(0,0,0,0.7)] flex items-center justify-center z-10">
       
-      <!-- Video Layer: Set to 80% opacity for clear visibility -->
-      <video 
-        autoplay 
-        loop 
-        muted 
-        playsinline 
-        class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80 mix-blend-screen z-0"
-      >
-        <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
-      </video>
-
-      <!-- Faint Glass Vignette (Leaves video clearly visible) -->
-      <div class="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/50 pointer-events-none z-[1]"></div>
-
       <!-- Compact Ambient Spotlight -->
       <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/4 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-      <!-- Balanced, Centered Editorial Typography (Uniform Pure White) -->
+      <!-- Centered Editorial Typography -->
       <div class="w-full select-none relative z-20">
-        <p id="scatter-statement" class="font-statement-grotesk text-center text-white text-5xl sm:text-7xl md:text-8xl lg:text-[5.5vw] leading-[1.05] sm:leading-[1.0] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)] max-w-5xl mx-auto">
+        <p id="scatter-statement" class="font-statement-grotesk text-center text-white text-5xl sm:text-7xl md:text-8xl lg:text-[5.5vw] leading-[1.05] sm:leading-[1.0] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)] max-w-4xl mx-auto">
           <span>Let me handle your books with precision while you focus on your mission</span>
         </p>
       </div>
@@ -445,7 +443,7 @@
 
     })();
 
-    // 4. WATER-BUOYANCY SCATTER (CENTERED & 2-SECOND SETTLING)
+    // 4. WATER-BUOYANCY SCATTER (CENTERED & 5-SECOND FLOATING RECOIL)
     (function () {
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
@@ -507,13 +505,13 @@
             const pushY = Math.sin(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 14;
             const pushRot = (Math.random() - 0.5) * 38 * force;
 
-            // Swift push deflection
+            // Swift push away on mouse enter
             item.el.style.transition = 'transform 0.22s cubic-bezier(0.1, 0.9, 0.2, 1), text-shadow 0.3s ease-out, filter 0.3s ease-out';
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
-            // Slower 2.4s buoyant return to resting position
-            item.el.style.transition = 'transform 2.4s cubic-bezier(0.06, 0.96, 0.2, 1.01), text-shadow 1.4s ease-out, filter 1.4s ease-out';
+            // 5-Second Buoyant Float & Settling
+            item.el.style.transition = 'transform 5.0s cubic-bezier(0.04, 0.98, 0.18, 1.01), text-shadow 2.0s ease-out, filter 2.0s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
           }
@@ -523,7 +521,7 @@
       section.addEventListener('mouseleave', () => {
         cursorGlow.style.opacity = '0';
         charData.forEach(item => {
-          item.el.style.transition = 'transform 2.4s cubic-bezier(0.06, 0.96, 0.2, 1.01), text-shadow 1.4s ease-out, filter 1.4s ease-out';
+          item.el.style.transition = 'transform 5.0s cubic-bezier(0.04, 0.98, 0.18, 1.01), text-shadow 2.0s ease-out, filter 2.0s ease-out';
           item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
           item.el.classList.remove('active-scatter');
         });
