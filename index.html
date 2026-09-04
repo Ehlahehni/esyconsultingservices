@@ -46,21 +46,16 @@
       font-family: 'Caveat', cursive;
     }
 
+    /* Solid Pure White Headline */
     .solid-editorial-white {
       color: #ffffff !important;
-      text-shadow: 0 14px 45px rgba(0, 0, 0, 0.22);
+      text-shadow: 0 14px 45px rgba(0, 0, 0, 0.25);
       line-height: 0.82;
       letter-spacing: -0.04em;
     }
 
-    /* Edge-free radial mask to stop rectangular cuts */
-    .radial-seamless-mask {
-      mask-image: radial-gradient(circle at center, black 65%, transparent 100%);
-      -webkit-mask-image: radial-gradient(circle at center, black 65%, transparent 100%);
-    }
-
-    /* Hardware accelerated GPU surface */
-    .scroll-card, #frame-canvas, #fixed-lime-viewport {
+    /* Prevent GPU raster blur */
+    .scroll-card, #frame-canvas {
       will-change: transform, opacity;
       transform: translateZ(0);
       backface-visibility: hidden;
@@ -82,8 +77,8 @@
 
   <div class="film-grain"></div>
 
-  <!-- ==================== STAGE 1: DUAL-SEQUENCE CANVAS ==================== -->
-  <div id="canvas-wrapper" class="fixed inset-0 w-full h-full pointer-events-none z-10">
+  <!-- ==================== STAGE 1: FULLSCREEN CANVAS ==================== -->
+  <div id="canvas-wrapper" class="fixed inset-0 w-full h-full pointer-events-none z-0">
     <div id="hero-loader" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0b0f14] font-mono-code text-xs text-white/50 tracking-widest uppercase">
       <div class="w-10 h-10 rounded-full border border-white/20 border-t-[#d4f038] animate-spin mb-4"></div>
       <span>Loading Sequence...</span>
@@ -91,8 +86,9 @@
     <canvas id="frame-canvas" class="w-full h-full"></canvas>
   </div>
 
-  <!-- ==================== STAGE 2: LIME VIEWPORT (FADES FORWARD) ==================== -->
-  <div id="fixed-lime-viewport" class="fixed inset-0 w-full h-full bg-[#d4f038] z-20 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
+  <!-- ==================== STAGE 2: HEADLINE & MASSIVE OVERLAY CARDS ==================== -->
+  <!-- Note: Background is completely transparent; lime flood happens directly on canvas -->
+  <div id="fixed-content-stage" class="fixed inset-0 w-full h-full z-10 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
     
     <!-- Massive Pure White Headline -->
     <div id="headline-container" class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
@@ -105,8 +101,8 @@
     <!-- ==================== ENLARGED FLOATING CARDS (COVERING LETTERS) ==================== -->
 
     <!-- Card 1: Store Receipt (Centered-Left over "NUMBERS") -->
-    <div class="scroll-card absolute top-[16%] left-[6%] sm:left-[12%] md:left-[18%] z-30" data-y="-850" data-rot="-10">
-      <div class="w-80 sm:w-96 md:w-[410px] bg-white text-slate-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.28)] border border-neutral-200">
+    <div class="scroll-card absolute top-[15%] left-[4%] sm:left-[10%] md:left-[16%] z-30" data-y="-950" data-rot="-11">
+      <div class="w-80 sm:w-96 md:w-[430px] bg-white text-slate-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.32)] border border-neutral-200">
         <div class="text-center pb-4 border-b border-dashed border-slate-300 font-mono-code text-xs">
           <p class="font-bold text-lg tracking-tight text-neutral-900">WHOLESALE COMMERCE</p>
           <p class="text-[12px] text-slate-400 mt-0.5">Terminal #04 • Batch 8820</p>
@@ -124,8 +120,8 @@
     </div>
 
     <!-- Card 2: Overdue Invoice Badge (Centered-Right over "NOT") -->
-    <div class="scroll-card absolute top-[15%] right-[6%] sm:right-[12%] md:right-[17%] z-25" data-y="-820" data-rot="9">
-      <div class="w-84 sm:w-96 md:w-[420px] bg-[#0f172a] text-white rounded-3xl p-7 shadow-[0_40px_80px_rgba(0,0,0,0.4)] border border-slate-800">
+    <div class="scroll-card absolute top-[14%] right-[4%] sm:right-[10%] md:right-[15%] z-25" data-y="-920" data-rot="9">
+      <div class="w-84 sm:w-96 md:w-[440px] bg-[#0f172a] text-white rounded-3xl p-7 shadow-[0_40px_80px_rgba(0,0,0,0.45)] border border-slate-800">
         <div class="flex items-center justify-between pb-4 border-b border-slate-800 font-mono-code">
           <span class="text-xs uppercase px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
             OVERDUE 45 DAYS
@@ -138,8 +134,8 @@
     </div>
 
     <!-- Card 3: Bank Live Feed (Right Center over "SENSE?") -->
-    <div class="scroll-card absolute top-[44%] right-[4%] sm:right-[10%] md:right-[14%] z-35" data-y="-980" data-rot="-5">
-      <div class="w-84 sm:w-96 md:w-[440px] bg-white text-slate-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.25)] border border-slate-200">
+    <div class="scroll-card absolute top-[43%] right-[2%] sm:right-[8%] md:right-[12%] z-35" data-y="-1050" data-rot="-5">
+      <div class="w-84 sm:w-96 md:w-[460px] bg-white text-slate-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.3)] border border-slate-200">
         <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
           <span class="text-sm font-bold tracking-tight text-slate-900 font-mono-code">Checking (...3810)</span>
           <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
@@ -162,8 +158,8 @@
     </div>
 
     <!-- Card 4: QuickBooks Alert (Left Center over "MAKING") -->
-    <div class="scroll-card absolute top-[45%] left-[4%] sm:left-[8%] md:left-[13%] z-30" data-y="-940" data-rot="7">
-      <div class="w-80 sm:w-96 md:w-[420px] bg-amber-50 rounded-3xl p-7 border border-amber-300 shadow-[0_30px_60px_rgba(217,119,6,0.22)]">
+    <div class="scroll-card absolute top-[44%] left-[2%] sm:left-[6%] md:left-[11%] z-30" data-y="-1020" data-rot="7">
+      <div class="w-80 sm:w-96 md:w-[440px] bg-amber-50 rounded-3xl p-7 border border-amber-300 shadow-[0_30px_60px_rgba(217,119,6,0.25)]">
         <div class="flex items-center gap-3">
           <span class="relative flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
@@ -172,14 +168,14 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero.
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
         </p>
       </div>
     </div>
 
     <!-- Card 5: Gross Margin Dashboard (Lower-Left Center) -->
-    <div class="scroll-card absolute bottom-[12%] left-[8%] sm:left-[15%] md:left-[22%] z-30" data-y="-880" data-rot="-4">
-      <div class="w-80 sm:w-96 md:w-[430px] bg-[#0b0f14] text-white rounded-3xl p-7 shadow-[0_40px_80px_rgba(0,0,0,0.4)] border border-white/10">
+    <div class="scroll-card absolute bottom-[10%] left-[6%] sm:left-[12%] md:left-[18%] z-30" data-y="-940" data-rot="-4">
+      <div class="w-80 sm:w-96 md:w-[450px] bg-[#0b0f14] text-white rounded-3xl p-7 shadow-[0_40px_80px_rgba(0,0,0,0.45)] border border-white/10">
         <div class="flex justify-between items-center text-xs sm:text-sm text-neutral-400 font-mono-code">
           <span class="font-medium">Shopify Gross Margin</span>
           <span class="text-rose-400 font-bold">↓ 18.2%</span>
@@ -199,8 +195,8 @@
     </div>
 
     <!-- Card 6: Business Check Slip (Lower-Right Center) -->
-    <div class="scroll-card absolute bottom-[10%] right-[6%] sm:right-[14%] md:right-[20%] z-25" data-y="-840" data-rot="6">
-      <div class="w-84 sm:w-96 md:w-[450px] bg-[#fdfcf7] text-stone-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.22)] border border-stone-300">
+    <div class="scroll-card absolute bottom-[8%] right-[4%] sm:right-[11%] md:right-[17%] z-25" data-y="-900" data-rot="6">
+      <div class="w-84 sm:w-96 md:w-[460px] bg-[#fdfcf7] text-stone-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.25)] border border-stone-300">
         <div class="flex justify-between items-start">
           <span class="text-xs font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
           <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
@@ -225,7 +221,7 @@
   <!-- Final Footer Stage -->
   <footer class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8 text-center">
     <h2 class="font-headline text-6xl md:text-8xl text-[#d4f038] uppercase tracking-tight">Clarity Reclaimed.</h2>
-    <p class="text-neutral-400 mt-3 font-mono-code text-sm max-w-md">Monthly close, reconciliation, and peace of mind.</p>
+    <p class="text-neutral-400 mt-3 font-mono-code text-sm max-w-md">Monthly close, reconciliation, and peace of mind[cite: 1, 2].</p>
   </footer>
 
   <!-- ==================== ANIMATION SCRIPT ==================== -->
@@ -248,7 +244,7 @@
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // 2. High-DPI Canvas Sequence Renderer
+    // 2. High-DPI Canvas Sequence Renderer with In-Context Lime Flood
     (function () {
       const CHAR_COUNT = 144;
       const SMOKE_COUNT = 96;
@@ -265,6 +261,7 @@
       let logicalW = window.innerWidth;
       let logicalH = window.innerHeight;
       let currentFrame = 0;
+      let limeFloodAlpha = 0; // Seamlessly floods canvas with #d4f038
       let firstFrameLoaded = false;
 
       function resizeCanvas() {
@@ -281,12 +278,12 @@
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'high';
 
-        renderFrame(Math.floor(currentFrame));
+        renderFrame(Math.floor(currentFrame), limeFloodAlpha);
       }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
 
-      function renderFrame(index) {
+      function renderFrame(index, limeAlpha = 0) {
         const img = allFrames[index];
         if (!img || !img.complete || img.naturalWidth === 0) return;
 
@@ -294,38 +291,54 @@
         const imgRatio = img.naturalWidth / img.naturalHeight;
         let dw, dh, dx, dy;
 
+        // Force cover scale with a 1.05 safety bleed so pixels strictly touch borders
         if (imgRatio > canvasRatio) {
-          dh = logicalH; dw = dh * imgRatio;
-          dx = (logicalW - dw) / 2; dy = 0;
+          dh = logicalH * 1.05;
+          dw = dh * imgRatio;
+          dx = (logicalW - dw) / 2;
+          dy = (logicalH - dh) / 2;
         } else {
-          dw = logicalW; dh = dw / imgRatio;
-          dx = 0; dy = (logicalH - dh) / 2;
+          dw = logicalW * 1.05;
+          dh = dw / imgRatio;
+          dx = (logicalW - dw) / 2;
+          dy = (logicalH - dh) / 2;
         }
 
         ctx.clearRect(0, 0, logicalW, logicalH);
         ctx.drawImage(img, dx, dy, dw, dh);
+
+        // IN-CANVAS LIME FLOOD (Zero rectangular borders or seams)
+        if (limeAlpha > 0) {
+          ctx.save();
+          ctx.fillStyle = '#d4f038';
+          ctx.globalAlpha = limeAlpha;
+          ctx.fillRect(0, 0, logicalW, logicalH);
+          ctx.restore();
+        }
       }
 
-      // Preload frames
+      // Preload Sequence 1: Character
       for (let i = 0; i < CHAR_COUNT; i++) {
         const img = new Image();
         img.src = CHAR_PATH(i + 1);
         img.onload = () => {
           if (!firstFrameLoaded) {
             firstFrameLoaded = true;
-            renderFrame(0);
+            renderFrame(0, 0);
             gsap.to(loader, { opacity: 0, duration: 0.4, onComplete: () => loader.remove() });
           }
         };
         allFrames[i] = img;
       }
+
+      // Preload Sequence 2: Smoke
       for (let j = 0; j < SMOKE_COUNT; j++) {
         const img = new Image();
         img.src = SMOKE_PATH(j + 1);
         allFrames[CHAR_COUNT + j] = img;
       }
 
-      // 3. MASTER SCROLL TIMELINE: In-Place Ambient Dissolve
+      // 3. MASTER SCROLL TIMELINE
       const masterTl = gsap.timeline({
         scrollTrigger: {
           trigger: '#master-scroll-track',
@@ -335,7 +348,7 @@
         }
       });
 
-      const sequenceObj = { frame: 0 };
+      const sequenceObj = { frame: 0, lime: 0 };
 
       // Phase 1: Scrub all 240 frames
       masterTl.to(sequenceObj, {
@@ -344,27 +357,31 @@
         duration: 5.5,
         onUpdate: () => {
           currentFrame = sequenceObj.frame;
-          renderFrame(Math.floor(sequenceObj.frame));
+          renderFrame(Math.floor(sequenceObj.frame), sequenceObj.lime);
         }
       }, 0);
 
-      // Phase 2: Smooth in-place fade forward (radial expansion, no vertical seam)
-      masterTl.fromTo('#fixed-lime-viewport', 
+      // Phase 2: Flood Canvas to #d4f038 (seamless dissolve from within canvas)
+      masterTl.to(sequenceObj, {
+        lime: 1,
+        ease: 'power2.inOut',
+        duration: 2.2,
+        onUpdate: () => {
+          renderFrame(Math.floor(sequenceObj.frame), sequenceObj.lime);
+        }
+      }, 4.2);
+
+      // Fade forward pure white text and clustered cards
+      masterTl.fromTo('#fixed-content-stage', 
         { opacity: 0, scale: 0.96 }, 
-        { opacity: 1, scale: 1, ease: 'power2.inOut', duration: 2.2 }, 
-        4.2 // Starts while smoke reaches maximum atmospheric expansion
+        { opacity: 1, scale: 1, ease: 'power2.inOut', duration: 2.0 }, 
+        4.4
       );
 
-      masterTl.to('#canvas-wrapper', {
-        opacity: 0,
-        ease: 'power2.inOut',
-        duration: 2.0
-      }, 4.4);
-
-      // Phase 3: Balloon ascension of cards revealing the text
+      // Phase 3: Balloon ascension of cards revealing the letters
       const cards = gsap.utils.toArray('.scroll-card');
       cards.forEach((card, index) => {
-        const targetY = parseFloat(card.getAttribute('data-y')) || -850;
+        const targetY = parseFloat(card.getAttribute('data-y')) || -950;
         const baseRot = parseFloat(card.getAttribute('data-rot')) || 0;
 
         gsap.set(card, {
@@ -374,7 +391,6 @@
           transformOrigin: 'center center'
         });
 
-        // Cards ascend smoothly and dissolve like balloons
         masterTl.to(card, {
           y: targetY,
           rotationZ: baseRot * 2,
