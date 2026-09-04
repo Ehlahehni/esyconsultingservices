@@ -8,10 +8,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
+  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Press Start 2P (8-Bit Retro), Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Press+Start+2P&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -41,11 +41,16 @@
     .font-statement-grotesk {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.035em;
     }
 
     .font-mono-code {
       font-family: 'Space Mono', monospace;
+    }
+
+    .font-pixel {
+      font-family: 'Press Start 2P', monospace;
+      letter-spacing: -0.05em;
     }
 
     .font-signature {
@@ -65,32 +70,47 @@
       backface-visibility: hidden;
     }
 
-    /* Floating on Water: 5-Second Buoyant Recoil */
+    /* Floating on Water: 10-Second Lazy Recoil Physics */
     .scatter-char {
       display: inline-block;
       position: relative;
       will-change: transform, text-shadow, filter;
       transform: translate3d(0, 0, 0);
-      /* Slow 5-second aquatic settling curve with extended float */
-      transition: transform 5.0s cubic-bezier(0.04, 0.98, 0.18, 1.01),
-                  text-shadow 2.0s ease-out,
-                  filter 2.0s ease-out;
+      /* Extremely languid 10-second buoyant water return */
+      transition: transform 10.0s cubic-bezier(0.02, 0.98, 0.15, 1.0),
+                  text-shadow 2.5s ease-out,
+                  filter 2.5s ease-out;
       pointer-events: auto;
       cursor: default;
       user-select: none;
     }
 
-    /* Soft letter glow on hover */
     .scatter-char.active-scatter {
       text-shadow: 0 0 18px rgba(212, 240, 56, 0.35);
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* Pure Specular Frosted Glass Card Boundary */
-    .glass-card-edge {
-      box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.25),
-                  inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.5),
-                  0 30px 80px rgba(0, 0, 0, 0.65);
+    /* 70% Transparent Frosted Glass Card Boundary */
+    .glass-metrics-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.2),
+                  0 25px 60px -15px rgba(0, 0, 0, 0.85);
+    }
+
+    /* 8-Bit Tumbling Slot Machine Letter Styles */
+    .slot-machine-reel {
+      display: inline-flex;
+      overflow: hidden;
+      perspective: 800px;
+    }
+
+    .tumble-digit {
+      display: inline-block;
+      transform-style: preserve-3d;
+      will-change: transform, opacity;
     }
 
     .film-grain {
@@ -241,10 +261,10 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== VIDEO BACKGROUND WITH FROSTED GLASS CARD ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex items-center justify-center p-4 sm:p-8 md:p-14 overflow-hidden">
+  <!-- ==================== FINAL SECTION: STATEMENTS & FROSTED 8-BIT METRICS ==================== -->
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 overflow-hidden">
     
-    <!-- 1. FULL BACKGROUND VIDEO: Set to 80% opacity filling the entire section -->
+    <!-- 80% Opacity Full Background Video -->
     <video 
       autoplay 
       loop 
@@ -255,17 +275,59 @@
       <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
     </video>
 
-    <!-- 2. FROSTED GLASS CARD: Glassy and translucent directly over the lively background -->
-    <div class="relative w-full max-w-6xl rounded-[2.5rem] md:rounded-[3.25rem] overflow-hidden glass-card-edge backdrop-blur-2xl bg-white/[0.04] border border-white/[0.18] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_30px_90px_rgba(0,0,0,0.7)] flex items-center justify-center z-10">
-      
-      <!-- Compact Ambient Spotlight -->
-      <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/4 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
+    <!-- Compact Ambient Spotlight -->
+    <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/5 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-      <!-- Centered Editorial Typography -->
-      <div class="w-full select-none relative z-20">
-        <p id="scatter-statement" class="font-statement-grotesk text-center text-white text-5xl sm:text-7xl md:text-8xl lg:text-[5.5vw] leading-[1.05] sm:leading-[1.0] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)] max-w-4xl mx-auto">
-          <span>Let me handle your books with precision while you focus on your mission</span>
+    <!-- MAIN CONTENT CONTAINER -->
+    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-10 sm:space-y-14">
+      
+      <!-- 1. EDITORIAL STATEMENT: 3 CLEAN LINES WITHOUT FROSTED GLASS -->
+      <div class="text-center max-w-5xl px-4">
+        <h2 id="scatter-statement" class="font-statement-grotesk text-center text-white text-4xl sm:text-6xl md:text-7xl lg:text-[5.2vw] leading-[1.08] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
+          <span class="block">Let me handle your</span>
+          <span class="block text-[#d4f038]">books with precision</span>
+          <span class="block">while you focus on your mission</span>
+        </h2>
+
+        <!-- Subheadline below main statement -->
+        <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 sm:mt-6 max-w-2xl mx-auto opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+          Clean books. Zero stress. More time to build what matters.
         </p>
+      </div>
+
+      <!-- 2. KEY METRICS: ONLY ELEMENT ON 70% FROSTED GLASS -->
+      <div id="metrics-card" class="w-full max-w-5xl rounded-3xl glass-metrics-card py-8 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15">
+        
+        <!-- Metric 1: 3000+ Transactions -->
+        <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
+          <div class="slot-machine-reel font-pixel text-xl sm:text-2xl md:text-3xl lg:text-[28px] text-[#d4f038] drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="3000+">
+            <!-- Dynamically populated tumble spans -->
+          </div>
+          <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[200px]">
+            Transactions Categorized
+          </p>
+        </div>
+
+        <!-- Metric 2: 200+ Accounts -->
+        <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
+          <div class="slot-machine-reel font-pixel text-xl sm:text-2xl md:text-3xl lg:text-[28px] text-[#d4f038] drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="200+">
+            <!-- Dynamically populated tumble spans -->
+          </div>
+          <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[200px]">
+            Accounts Reconciled
+          </p>
+        </div>
+
+        <!-- Metric 3: +1000 Invoices -->
+        <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
+          <div class="slot-machine-reel font-pixel text-xl sm:text-2xl md:text-3xl lg:text-[28px] text-[#d4f038] drop-shadow-[0_0_12px_rgba(212,240,56,0.35)]" data-val="+1000">
+            <!-- Dynamically populated tumble spans -->
+          </div>
+          <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[230px]">
+            Invoices, bills &amp; checks accurately recorded
+          </p>
+        </div>
+
       </div>
 
     </div>
@@ -443,17 +505,18 @@
 
     })();
 
-    // 4. WATER-BUOYANCY SCATTER (CENTERED & 5-SECOND FLOATING RECOIL)
+    // 4. WATER-BUOYANCY SCATTER (10-SECOND FLOATING RECOIL)
     (function () {
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
       const cursorGlow = document.getElementById('cursor-glow');
-      const spans = statement.querySelectorAll('span');
+      const lines = statement.querySelectorAll('span');
 
-      spans.forEach(span => {
-        const text = span.innerText.trim();
+      // Break each line into individual interactive glyphs while preserving spaces
+      lines.forEach(line => {
+        const text = line.innerText.trim();
         const words = text.split(' ');
-        span.innerHTML = words.map(word => {
+        line.innerHTML = words.map(word => {
           const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
           return `<span class="inline-block whitespace-nowrap mx-[0.14em]">${chars}</span>`;
         }).join(' ');
@@ -480,8 +543,7 @@
       const MAX_PUSH = 105;
 
       section.addEventListener('mousemove', (e) => {
-        const secRect = section.querySelector('.glass-card-edge').getBoundingClientRect();
-        
+        const secRect = section.getBoundingClientRect();
         const relX = e.clientX - secRect.left;
         const relY = e.clientY - secRect.top;
 
@@ -505,13 +567,13 @@
             const pushY = Math.sin(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 14;
             const pushRot = (Math.random() - 0.5) * 38 * force;
 
-            // Swift push away on mouse enter
+            // Swift push deflection
             item.el.style.transition = 'transform 0.22s cubic-bezier(0.1, 0.9, 0.2, 1), text-shadow 0.3s ease-out, filter 0.3s ease-out';
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
-            // 5-Second Buoyant Float & Settling
-            item.el.style.transition = 'transform 5.0s cubic-bezier(0.04, 0.98, 0.18, 1.01), text-shadow 2.0s ease-out, filter 2.0s ease-out';
+            // 10-Second Aquatic Recoil
+            item.el.style.transition = 'transform 10.0s cubic-bezier(0.02, 0.98, 0.15, 1.0), text-shadow 2.5s ease-out, filter 2.5s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
           }
@@ -521,10 +583,51 @@
       section.addEventListener('mouseleave', () => {
         cursorGlow.style.opacity = '0';
         charData.forEach(item => {
-          item.el.style.transition = 'transform 5.0s cubic-bezier(0.04, 0.98, 0.18, 1.01), text-shadow 2.0s ease-out, filter 2.0s ease-out';
+          item.el.style.transition = 'transform 10.0s cubic-bezier(0.02, 0.98, 0.15, 1.0), text-shadow 2.5s ease-out, filter 2.5s ease-out';
           item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
           item.el.classList.remove('active-scatter');
         });
+      });
+    })();
+
+    // 5. 8-BIT RETRO GAMING TUMBLING ENTRY ANIMATION (SLOT MACHINE REEL)
+    (function () {
+      const reels = document.querySelectorAll('.slot-machine-reel');
+
+      reels.forEach(reel => {
+        const val = reel.getAttribute('data-val') || '';
+        reel.innerHTML = val.split('').map((char, i) => `
+          <span class="tumble-digit inline-block" data-char="${char}">
+            ${char}
+          </span>
+        `).join('');
+      });
+
+      const allDigits = document.querySelectorAll('.tumble-digit');
+
+      // Initial state: flipped backwards & shifted down
+      gsap.set(allDigits, {
+        opacity: 0,
+        y: 45,
+        rotationX: -90,
+        transformOrigin: "50% 50% -25px"
+      });
+
+      // Trigger tumbling slot-machine roll when section scrolls into view
+      ScrollTrigger.create({
+        trigger: "#metrics-card",
+        start: "top 85%",
+        onEnter: () => {
+          gsap.to(allDigits, {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            duration: 1.1,
+            ease: "back.out(2.2)",
+            stagger: 0.08,
+            overwrite: "auto"
+          });
+        }
       });
     })();
   </script>
