@@ -54,7 +54,7 @@
       letter-spacing: -0.04em;
     }
 
-    /* Prevent GPU raster blur */
+    /* GPU acceleration and crisp render */
     .scroll-card, #frame-canvas {
       will-change: transform, opacity;
       transform: translateZ(0);
@@ -86,8 +86,7 @@
     <canvas id="frame-canvas" class="w-full h-full"></canvas>
   </div>
 
-  <!-- ==================== STAGE 2: HEADLINE & MASSIVE OVERLAY CARDS ==================== -->
-  <!-- Note: Background is completely transparent; lime flood happens directly on canvas -->
+  <!-- ==================== STAGE 2: HEADLINE & BALANCED OVERLAY CARDS ==================== -->
   <div id="fixed-content-stage" class="fixed inset-0 w-full h-full z-10 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
     
     <!-- Massive Pure White Headline -->
@@ -98,49 +97,49 @@
       </h1>
     </div>
 
-    <!-- ==================== ENLARGED FLOATING CARDS (COVERING LETTERS) ==================== -->
+    <!-- ==================== BALANCED FLOATING CARDS (GOLDILOCKS SCALE) ==================== -->
 
-    <!-- Card 1: Store Receipt (Centered-Left over "NUMBERS") -->
-    <div class="scroll-card absolute top-[15%] left-[4%] sm:left-[10%] md:left-[16%] z-30" data-y="-950" data-rot="-11">
-      <div class="w-80 sm:w-96 md:w-[430px] bg-white text-slate-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.32)] border border-neutral-200">
-        <div class="text-center pb-4 border-b border-dashed border-slate-300 font-mono-code text-xs">
-          <p class="font-bold text-lg tracking-tight text-neutral-900">WHOLESALE COMMERCE</p>
-          <p class="text-[12px] text-slate-400 mt-0.5">Terminal #04 • Batch 8820</p>
+    <!-- Card 1: Store Receipt (Over "NUMBERS") -->
+    <div class="scroll-card absolute top-[19%] left-[6%] sm:left-[12%] md:left-[17%] z-30" data-y="-920" data-rot="-10">
+      <div class="w-72 sm:w-80 md:w-[350px] bg-white text-slate-900 rounded-2xl p-5 shadow-[0_28px_56px_rgba(0,0,0,0.26)] border border-neutral-200">
+        <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
+          <p class="font-bold text-sm tracking-tight text-neutral-900">WHOLESALE COMMERCE</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Terminal #04 • Batch 8820</p>
         </div>
-        <div class="py-4 font-mono-code text-xs sm:text-sm space-y-2">
+        <div class="py-3 font-mono-code text-xs space-y-1.5">
           <div class="flex justify-between"><span>Physical Stock Tier-A</span><span class="font-semibold">$620.00</span></div>
           <div class="flex justify-between"><span>Express Freight</span><span class="font-semibold">$115.50</span></div>
           <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
         </div>
-        <div class="pt-3 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-base">
+        <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-xs">
           <span>TOTAL DUE</span>
           <span>$796.17</span>
         </div>
       </div>
     </div>
 
-    <!-- Card 2: Overdue Invoice Badge (Centered-Right over "NOT") -->
-    <div class="scroll-card absolute top-[14%] right-[4%] sm:right-[10%] md:right-[15%] z-25" data-y="-920" data-rot="9">
-      <div class="w-84 sm:w-96 md:w-[440px] bg-[#0f172a] text-white rounded-3xl p-7 shadow-[0_40px_80px_rgba(0,0,0,0.45)] border border-slate-800">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-800 font-mono-code">
-          <span class="text-xs uppercase px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
+    <!-- Card 2: Overdue Invoice Badge (Over "NOT") -->
+    <div class="scroll-card absolute top-[18%] right-[6%] sm:right-[12%] md:right-[17%] z-25" data-y="-880" data-rot="8">
+      <div class="w-72 sm:w-84 md:w-[360px] bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.38)] border border-slate-800">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800 font-mono-code">
+          <span class="text-[10px] uppercase px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
             OVERDUE 45 DAYS
           </span>
-          <span class="text-slate-400 text-xs">INV-2026-99</span>
+          <span class="text-slate-400 text-[11px]">INV-2026-99</span>
         </div>
-        <p class="text-xs sm:text-sm text-slate-400 mt-4 font-medium font-mono-code">Q3 Retainer Balance Due</p>
-        <p class="text-4xl font-black text-white mt-1.5 font-headline">$8,450.00</p>
+        <p class="text-xs text-slate-400 mt-3 font-medium font-mono-code">Q3 Retainer Balance Due</p>
+        <p class="text-2xl font-black text-white mt-1 font-headline">$8,450.00</p>
       </div>
     </div>
 
     <!-- Card 3: Bank Live Feed (Right Center over "SENSE?") -->
-    <div class="scroll-card absolute top-[43%] right-[2%] sm:right-[8%] md:right-[12%] z-35" data-y="-1050" data-rot="-5">
-      <div class="w-84 sm:w-96 md:w-[460px] bg-white text-slate-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.3)] border border-slate-200">
-        <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
-          <span class="text-sm font-bold tracking-tight text-slate-900 font-mono-code">Checking (...3810)</span>
-          <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
+    <div class="scroll-card absolute top-[43%] right-[4%] sm:right-[10%] md:right-[15%] z-35" data-y="-1000" data-rot="-5">
+      <div class="w-76 sm:w-88 md:w-[380px] bg-white text-slate-900 rounded-2xl p-5 shadow-[0_28px_56px_rgba(0,0,0,0.22)] border border-slate-200">
+        <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
+          <span class="text-xs font-bold tracking-tight text-slate-900 font-mono-code">Checking (...3810)</span>
+          <span class="text-[11px] font-mono-code text-slate-400">Live Feed</span>
         </div>
-        <div class="mt-4 space-y-3 font-mono-code text-xs sm:text-sm">
+        <div class="mt-3 space-y-2 font-mono-code text-xs">
           <div class="flex justify-between text-rose-600 font-bold">
             <span>Stripe Payout Reversal</span>
             <span>-$2,450.00</span>
@@ -158,57 +157,57 @@
     </div>
 
     <!-- Card 4: QuickBooks Alert (Left Center over "MAKING") -->
-    <div class="scroll-card absolute top-[44%] left-[2%] sm:left-[6%] md:left-[11%] z-30" data-y="-1020" data-rot="7">
-      <div class="w-80 sm:w-96 md:w-[440px] bg-amber-50 rounded-3xl p-7 border border-amber-300 shadow-[0_30px_60px_rgba(217,119,6,0.25)]">
-        <div class="flex items-center gap-3">
-          <span class="relative flex h-3 w-3">
+    <div class="scroll-card absolute top-[44%] left-[4%] sm:left-[8%] md:left-[14%] z-30" data-y="-960" data-rot="6">
+      <div class="w-72 sm:w-84 md:w-[360px] bg-amber-50 rounded-2xl p-5 border border-amber-300 shadow-[0_26px_50px_rgba(217,119,6,0.18)]">
+        <div class="flex items-center gap-2.5">
+          <span class="relative flex h-2.5 w-2.5">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
           </span>
-          <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
+          <span class="text-xs font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
-        <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
+        <p class="text-xs text-amber-800/90 mt-2.5 font-mono-code leading-relaxed">
           142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
         </p>
       </div>
     </div>
 
     <!-- Card 5: Gross Margin Dashboard (Lower-Left Center) -->
-    <div class="scroll-card absolute bottom-[10%] left-[6%] sm:left-[12%] md:left-[18%] z-30" data-y="-940" data-rot="-4">
-      <div class="w-80 sm:w-96 md:w-[450px] bg-[#0b0f14] text-white rounded-3xl p-7 shadow-[0_40px_80px_rgba(0,0,0,0.45)] border border-white/10">
-        <div class="flex justify-between items-center text-xs sm:text-sm text-neutral-400 font-mono-code">
+    <div class="scroll-card absolute bottom-[13%] left-[7%] sm:left-[14%] md:left-[20%] z-30" data-y="-900" data-rot="-4">
+      <div class="w-72 sm:w-84 md:w-[360px] bg-[#0b0f14] text-white rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.36)] border border-white/10">
+        <div class="flex justify-between items-center text-xs text-neutral-400 font-mono-code">
           <span class="font-medium">Shopify Gross Margin</span>
           <span class="text-rose-400 font-bold">↓ 18.2%</span>
         </div>
-        <div class="mt-3 flex items-baseline gap-2 font-mono-code">
-          <span class="text-4xl font-bold font-headline">$19,420</span>
-          <span class="text-xs sm:text-sm text-neutral-500">vs $23,750</span>
+        <div class="mt-2 flex items-baseline gap-2 font-mono-code">
+          <span class="text-2xl font-bold font-headline">$19,420</span>
+          <span class="text-[11px] text-neutral-500">vs $23,750</span>
         </div>
-        <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
-          <div class="flex-1 bg-neutral-800 h-6 rounded-sm"></div>
-          <div class="flex-1 bg-neutral-800 h-8 rounded-sm"></div>
+        <div class="mt-3 w-full h-8 flex items-end gap-1.5 pt-1">
+          <div class="flex-1 bg-neutral-800 h-5 rounded-sm"></div>
           <div class="flex-1 bg-neutral-800 h-7 rounded-sm"></div>
-          <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
-          <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
+          <div class="flex-1 bg-neutral-800 h-6 rounded-sm"></div>
+          <div class="flex-1 bg-rose-500/80 h-3.5 rounded-sm"></div>
+          <div class="flex-1 bg-rose-500 h-2 rounded-sm"></div>
         </div>
       </div>
     </div>
 
     <!-- Card 6: Business Check Slip (Lower-Right Center) -->
-    <div class="scroll-card absolute bottom-[8%] right-[4%] sm:right-[11%] md:right-[17%] z-25" data-y="-900" data-rot="6">
-      <div class="w-84 sm:w-96 md:w-[460px] bg-[#fdfcf7] text-stone-900 rounded-3xl p-7 shadow-[0_35px_70px_rgba(0,0,0,0.25)] border border-stone-300">
+    <div class="scroll-card absolute bottom-[11%] right-[6%] sm:right-[13%] md:right-[19%] z-25" data-y="-860" data-rot="5">
+      <div class="w-76 sm:w-88 md:w-[380px] bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_28px_56px_rgba(0,0,0,0.2)] border border-stone-300">
         <div class="flex justify-between items-start">
-          <span class="text-xs font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
-          <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
+          <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
+          <span class="font-mono-code text-[11px] text-stone-600">NO. 3082</span>
         </div>
-        <div class="mt-4 flex justify-between items-center border-b border-stone-300 pb-2">
-          <span class="text-xs font-mono-code text-stone-400">PAY TO:</span>
-          <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
-          <span class="text-sm sm:text-base font-mono-code font-bold">$4,850.00</span>
+        <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
+          <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
+          <span class="text-xs font-semibold">Contractor Services</span>
+          <span class="text-xs font-mono-code font-bold">$4,850.00</span>
         </div>
-        <div class="mt-3 flex justify-between items-baseline font-mono-code text-xs text-stone-400">
+        <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
           <span>MEMO: Tax Accrual</span>
-          <span class="font-signature text-stone-800 text-2xl">M. Kensington</span>
+          <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
         </div>
       </div>
     </div>
@@ -261,7 +260,7 @@
       let logicalW = window.innerWidth;
       let logicalH = window.innerHeight;
       let currentFrame = 0;
-      let limeFloodAlpha = 0; // Seamlessly floods canvas with #d4f038
+      let limeFloodAlpha = 0;
       let firstFrameLoaded = false;
 
       function resizeCanvas() {
@@ -291,7 +290,6 @@
         const imgRatio = img.naturalWidth / img.naturalHeight;
         let dw, dh, dx, dy;
 
-        // Force cover scale with a 1.05 safety bleed so pixels strictly touch borders
         if (imgRatio > canvasRatio) {
           dh = logicalH * 1.05;
           dw = dh * imgRatio;
@@ -307,7 +305,7 @@
         ctx.clearRect(0, 0, logicalW, logicalH);
         ctx.drawImage(img, dx, dy, dw, dh);
 
-        // IN-CANVAS LIME FLOOD (Zero rectangular borders or seams)
+        // IN-CANVAS LIME FLOOD (Eliminates edge boxes)
         if (limeAlpha > 0) {
           ctx.save();
           ctx.fillStyle = '#d4f038';
@@ -361,7 +359,7 @@
         }
       }, 0);
 
-      // Phase 2: Flood Canvas to #d4f038 (seamless dissolve from within canvas)
+      // Phase 2: Flood Canvas to #d4f038
       masterTl.to(sequenceObj, {
         lime: 1,
         ease: 'power2.inOut',
@@ -393,8 +391,8 @@
 
         masterTl.to(card, {
           y: targetY,
-          rotationZ: baseRot * 2,
-          scale: 0.88,
+          rotationZ: baseRot * 1.8,
+          scale: 0.9,
           opacity: 0,
           ease: 'power1.in',
           duration: 3.2
