@@ -8,10 +8,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
+  <!-- Google Fonts: Bebas Neue, Space Grotesk, Syne (Editorial Display), Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -38,6 +38,12 @@
       font-family: 'Bebas Neue', sans-serif;
     }
 
+    /* Distinct Awwwards editorial display for the footer statement */
+    .font-statement {
+      font-family: 'Syne', sans-serif;
+      letter-spacing: -0.04em;
+    }
+
     .font-mono-code {
       font-family: 'Space Mono', monospace;
     }
@@ -46,7 +52,6 @@
       font-family: 'Caveat', cursive;
     }
 
-    /* Solid Pure White Headline */
     .solid-editorial-white {
       color: #ffffff !important;
       text-shadow: 0 14px 45px rgba(0, 0, 0, 0.25);
@@ -54,21 +59,19 @@
       letter-spacing: -0.04em;
     }
 
-    /* GPU acceleration and crisp render */
     .scroll-card, #frame-canvas {
       will-change: transform, opacity;
       transform: translateZ(0);
       backface-visibility: hidden;
     }
 
-    /* Interactive Scatter Glyphs with Linger Recoil */
+    /* Interactive Scatter Glyphs with Languid Recoil */
     .scatter-char {
       display: inline-block;
       position: relative;
       will-change: transform, text-shadow, filter;
       transform: translate3d(0, 0, 0);
-      /* Slowed down recoil curve: lazy, buttery settling */
-      transition: transform 1.25s cubic-bezier(0.12, 0.95, 0.2, 1),
+      transition: transform 1.35s cubic-bezier(0.12, 0.95, 0.2, 1),
                   text-shadow 0.8s ease-out,
                   filter 0.8s ease-out;
       pointer-events: auto;
@@ -76,11 +79,10 @@
       user-select: none;
     }
 
-    /* Transparent Ambient Glow on letters during interaction */
+    /* Soft, low-opacity transparent light halo on displaced letters */
     .scatter-char.active-scatter {
-      text-shadow: 0 0 25px rgba(212, 240, 56, 0.75), 
-                   0 0 50px rgba(212, 240, 56, 0.35);
-      filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.55));
+      text-shadow: 0 0 20px rgba(212, 240, 56, 0.35);
+      filter: drop-shadow(0 0 12px rgba(212, 240, 56, 0.2));
     }
 
     .film-grain {
@@ -119,7 +121,7 @@
       </h1>
     </div>
 
-    <!-- ==================== FLOATING CARDS (COVERING LETTERS) ==================== -->
+    <!-- ==================== FLOATING CARDS ==================== -->
 
     <!-- Card 1: Store Receipt -->
     <div class="scroll-card absolute top-[12%] left-[4%] sm:left-[8%] md:left-[14%] z-30" data-y="-1150" data-rot="-11">
@@ -240,20 +242,20 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== TIGHTENED INTERACTIVE SCATTER FOOTER ==================== -->
-  <footer class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 text-center overflow-hidden">
     
-    <!-- Transparent Ambient Cursor Follower Light -->
-    <div id="cursor-glow" class="pointer-events-none fixed w-80 h-80 rounded-full bg-[#d4f038]/15 blur-[90px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
+    <!-- Transparent Ambient Cursor Light: strictly localized inside this section with reduced opacity -->
+    <div id="cursor-glow" class="pointer-events-none absolute w-[420px] h-[420px] rounded-full bg-[#d4f038]/7 blur-[110px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
     <div id="scatter-container" class="max-w-6xl w-full mx-auto px-4 select-none relative z-20">
       
-      <!-- Line 1: Ultra-tight leading (-my-1) with reduced vertical gaps -->
-      <h2 class="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-[7.5vw] text-[#d4f038] tracking-tight uppercase leading-[0.80] flex flex-wrap justify-center items-center -space-y-1">
+      <!-- Line 1: Syne Bold Display in Accent Lime with tight tracking -->
+      <h2 class="font-statement text-4xl sm:text-6xl md:text-7xl lg:text-[5.4vw] font-extrabold text-[#d4f038] tracking-tighter uppercase leading-[0.82] flex flex-wrap justify-center items-center">
         Let me handle your books with precision
       </h2>
 
-      <!-- Line 2: Snug vertical alignment with negative top margin -->
-      <p class="font-headline text-4xl sm:text-6xl md:text-7xl lg:text-[6vw] text-white/90 tracking-tight uppercase leading-[0.82] -mt-1 sm:-mt-2 md:-mt-3 flex flex-wrap justify-center items-center">
+      <!-- Line 2: Syne Bold Display in Pure White nested directly underneath -->
+      <p class="font-statement text-3xl sm:text-5xl md:text-6xl lg:text-[4.5vw] font-bold text-white/90 tracking-tighter uppercase leading-[0.84] -mt-1 sm:-mt-2 md:-mt-3 flex flex-wrap justify-center items-center">
         while you focus on your vision
       </p>
 
@@ -351,7 +353,6 @@
         }
       }
 
-      // Preload Sequence 1: Character
       for (let i = 0; i < CHAR_COUNT; i++) {
         const img = new Image();
         img.src = CHAR_PATH(i + 1);
@@ -365,7 +366,6 @@
         allFrames[i] = img;
       }
 
-      // Preload Sequence 2: Smoke
       for (let j = 0; j < SMOKE_COUNT; j++) {
         const img = new Image();
         img.src = SMOKE_PATH(j + 1);
@@ -384,7 +384,6 @@
 
       const sequenceObj = { frame: 0, lime: 0 };
 
-      // Phase 1: Scrub all 240 frames
       masterTl.to(sequenceObj, {
         frame: TOTAL_FRAMES - 1,
         ease: 'none',
@@ -395,7 +394,6 @@
         }
       }, 0);
 
-      // Phase 2: Flood Canvas to #d4f038
       masterTl.to(sequenceObj, {
         lime: 1,
         ease: 'power2.inOut',
@@ -405,14 +403,12 @@
         }
       }, 4.2);
 
-      // Fade forward pure white text and clustered cards
       masterTl.fromTo('#fixed-content-stage', 
         { opacity: 0, scale: 0.96 }, 
         { opacity: 1, scale: 1, ease: 'power2.inOut', duration: 2.0 }, 
         4.4
       );
 
-      // Phase 3: Balloon ascension of cards revealing the letters
       const cards = gsap.utils.toArray('.scroll-card');
       cards.forEach((card, index) => {
         const targetY = parseFloat(card.getAttribute('data-y')) || -1150;
@@ -437,13 +433,13 @@
 
     })();
 
-    // 4. CHAOTIC CURSOR-AVOIDANCE / SCATTER PHYSICS WITH TRANSPARENT LIGHT
+    // 4. SCOPED CURSOR-AVOIDANCE / SCATTER PHYSICS
     (function () {
+      const section = document.getElementById('books-section');
       const container = document.getElementById('scatter-container');
       const cursorGlow = document.getElementById('cursor-glow');
       const lines = container.querySelectorAll('h2, p');
 
-      // Break text into individual interactive characters
       lines.forEach(el => {
         const text = el.innerText.trim();
         el.innerHTML = text.split(' ').map(word => {
@@ -469,17 +465,23 @@
       window.addEventListener('scroll', cacheCharPositions, { passive: true });
       setTimeout(cacheCharPositions, 350);
 
-      const RADIUS = 150;     // Radius of detection around pointer
-      const MAX_PUSH = 115;   // Scatter push intensity
+      const RADIUS = 145;
+      const MAX_PUSH = 110;
 
-      window.addEventListener('mousemove', (e) => {
+      // Event listener strictly bounded to #books-section
+      section.addEventListener('mousemove', (e) => {
+        const secRect = section.getBoundingClientRect();
+        
+        // Relative mouse coordinates strictly within the footer container
+        const relX = e.clientX - secRect.left;
+        const relY = e.clientY - secRect.top;
+
+        cursorGlow.style.opacity = '1';
+        cursorGlow.style.left = `${relX}px`;
+        cursorGlow.style.top = `${relY}px`;
+
         const mx = e.clientX;
         const my = e.clientY;
-
-        // Position transparent ambient spotlight
-        cursorGlow.style.opacity = '1';
-        cursorGlow.style.left = `${mx}px`;
-        cursorGlow.style.top = `${my}px`;
 
         charData.forEach(item => {
           const dx = item.cx - mx;
@@ -490,17 +492,14 @@
             const force = (1 - dist / RADIUS);
             const angle = Math.atan2(dy, dx);
             
-            // Scatter physics with chaotic rotation
             const pushX = Math.cos(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 16;
             const pushY = Math.sin(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 16;
-            const pushRot = (Math.random() - 0.5) * 48 * force;
+            const pushRot = (Math.random() - 0.5) * 44 * force;
 
-            // Fast explosive reaction on hover
             item.el.style.transition = 'transform 0.16s ease-out, text-shadow 0.2s ease-out, filter 0.2s ease-out';
-            item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.15})`;
+            item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.12})`;
             item.el.classList.add('active-scatter');
           } else {
-            // Buttery, languid recoil settling
             item.el.style.transition = 'transform 1.35s cubic-bezier(0.12, 0.95, 0.2, 1), text-shadow 0.9s ease-out, filter 0.9s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
@@ -508,7 +507,7 @@
         });
       });
 
-      document.addEventListener('mouseleave', () => {
+      section.addEventListener('mouseleave', () => {
         cursorGlow.style.opacity = '0';
         charData.forEach(item => {
           item.el.style.transition = 'transform 1.35s cubic-bezier(0.12, 0.95, 0.2, 1), text-shadow 0.9s ease-out, filter 0.9s ease-out';
