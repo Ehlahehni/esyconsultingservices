@@ -3,174 +3,390 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scroll Animation</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <title>Numbers Not Making Sense?</title>
 
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Bebas Neue (Editorial Display) & Clean Accents -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
     body {
-      background-color: #000;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0b0f14;
+      font-family: 'Space Grotesk', sans-serif;
       overflow-x: hidden;
     }
-
-    /* Loading Screen */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      transition: opacity 0.5s ease;
+    .font-headline {
+      font-family: 'Bebas Neue', sans-serif;
+    }
+    .font-mono-code {
+      font-family: 'Space Mono', monospace;
+    }
+    .font-signature {
+      font-family: 'Caveat', cursive;
+    }
+    /* Solid, crisp display typography from 0:26 */
+    .solid-editorial {
+      color: #ffffff;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      line-height: 0.84;
+      letter-spacing: -0.04em;
     }
 
-    #loader.hidden {
+    /* Character hero: frame canvas + overlays */
+    #frame-canvas {
+      object-fit: cover;
+    }
+    .hero-symbol {
+      position: absolute;
+      color: #d4f038;
+      font-size: clamp(14px, 2.2vw, 26px);
+      font-weight: 700;
       opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Scroll container */
-    .scroll-track {
-      height: 500vh;
-      position: relative;
-    }
-
-    .canvas-container {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    canvas {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Content section after scroll */
-    .next-section {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0d0d0d;
-      font-size: 2.5rem;
+      transform: translateY(0px);
+      white-space: nowrap;
     }
   </style>
 </head>
-<body>
+<body class="selection:bg-black selection:text-[#d4f038]">
 
-  <div id="loader">
-    <p id="progress-text">Loading: 0%</p>
-  </div>
+  <!-- ==================== CHARACTER INTRO: FRAME-SEQUENCE HERO ==================== -->
+  <!-- 500vh of scroll distance drives the whole sequence: calm -> confused -> electric -> explosion -> smoke -> text reveal -->
+  <section id="character-hero" class="relative w-full h-[500vh] bg-[#0b0f14]">
+    <div id="hero-sticky" class="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
 
-  <div class="scroll-track">
-    <div class="canvas-container">
-      <canvas id="hero-canvas"></canvas>
+      <!-- Loading state, hidden once first frame is ready -->
+      <div id="hero-loader" class="absolute inset-0 z-50 flex items-center justify-center bg-[#0b0f14] font-mono-code text-xs text-white/40 uppercase tracking-widest">
+        Loading…
+      </div>
+
+      <!-- Frame-sequence canvas: draws frame N based on scroll progress -->
+      <canvas id="frame-canvas" class="absolute inset-0 w-full h-full"></canvas>
+
+      <!-- Floating accounting numbers/symbols: visible early, fade before electricity kicks in -->
+      <div id="floating-symbols" class="absolute inset-0 pointer-events-none select-none opacity-0">
+        <span class="hero-symbol font-mono-code" style="left:12%; top:22%;">42%</span>
+        <span class="hero-symbol font-mono-code" style="left:78%; top:18%;">Σ</span>
+        <span class="hero-symbol font-mono-code" style="left:20%; top:68%;">$8,450</span>
+        <span class="hero-symbol font-mono-code" style="left:70%; top:70%;">÷</span>
+        <span class="hero-symbol font-mono-code" style="left:85%; top:45%;">-18.2%</span>
+        <span class="hero-symbol font-mono-code" style="left:8%; top:45%;">#3082</span>
+        <span class="hero-symbol font-mono-code" style="left:50%; top:14%;">%</span>
+        <span class="hero-symbol font-mono-code" style="left:60%; top:82%;">a²+b²=c²</span>
+      </div>
+
+      <!-- Electricity crackle overlay -->
+      <div id="electricity-overlay" class="absolute inset-0 pointer-events-none opacity-0">
+        <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+          <g stroke="#d4f038" stroke-width="2.5" fill="none" opacity="0.9">
+            <path d="M120,80 L180,260 L110,300 L220,520 L150,560 L260,780" />
+            <path d="M880,60 L800,240 L870,280 L740,500 L820,540 L700,760" />
+            <path d="M500,0 L470,180 L540,220 L480,420" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Text reveal, emerges as the smoke-covered final frame fades out -->
+      <div id="hero-reveal-text" class="absolute inset-0 flex items-center justify-center px-4 opacity-0 pointer-events-none">
+        <h1 class="font-headline solid-editorial text-[15vw] sm:text-[12vw] uppercase text-center text-white">
+          Numbers Not<br/>
+          <span class="text-[#d4f038]">Making Sense?</span>
+        </h1>
+      </div>
+
     </div>
-  </div>
-
-  <section class="next-section">
-    <h2>Scroll Complete</h2>
   </section>
 
+  <!-- ==================== MAIN PARALLAX STAGE ==================== -->
+  <section id="parallax-stage" class="relative w-full min-h-[230vh] bg-[#d4f038] flex flex-col justify-start items-center">
+    
+    <!-- Sticky Full-Screen Viewport Window -->
+    <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
+      
+      <!-- 1. MASSIVE CRISP EDITORIAL HEADLINE -->
+      <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
+        <h1 class="font-headline solid-editorial text-[19vw] uppercase">
+          Numbers Not<br/>
+          <span>Making Sense?</span>
+        </h1>
+      </div>
+
+      <!-- ==================== ENLARGED ACCOUNTING ARTIFACTS ==================== -->
+
+      <!-- ARTIFACT 1: Store Receipt (Top Left) -->
+      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
+           data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
+        <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.3)] border border-neutral-200">
+          <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
+            <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
+            <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
+          </div>
+          <div class="py-3 font-mono-code text-xs space-y-1.5">
+            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
+            <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
+            <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
+          </div>
+          <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
+            <span>TOTAL DUE</span>
+            <span>$796.17</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTIFACT 2: Minimal Overdue Invoice Badge (Top Right) -->
+      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
+           data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
+        <div class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.4)] border border-slate-800">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
+              OVERDUE 45 DAYS
+            </span>
+            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-3 font-medium">Q3 Retainer Balance Due</p>
+          <p class="text-3xl font-black text-white mt-1.5">$8,450.00</p>
+        </div>
+      </div>
+
+      <!-- ARTIFACT 3: Bank Statement Live Feed (Middle Right) -->
+      <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
+           data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
+        <div class="w-72 sm:w-88 md:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-slate-200">
+          <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
+            <span class="text-sm font-bold tracking-tight text-slate-900">Checking (...3810)</span>
+            <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
+          </div>
+          <div class="mt-3 space-y-2.5 font-mono-code text-xs">
+            <div class="flex justify-between text-rose-600 font-bold">
+              <span>Stripe Payout Reversal</span>
+              <span>-$2,450.00</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>Infrastructure Hosting</span>
+              <span>-$420.80</span>
+            </div>
+            <div class="flex justify-between text-emerald-600 font-bold">
+              <span>Client Wire (Cleared)</span>
+              <span>+$12,300.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTIFACT 4: QuickBooks Alert Slip (Middle Left) -->
+      <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
+           data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
+        <div class="w-72 sm:w-80 md:w-88 bg-amber-50 rounded-2xl p-5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.2)]">
+          <div class="flex items-center gap-2.5">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+            </span>
+            <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Sync Discrepancy</span>
+          </div>
+          <p class="text-xs text-amber-800/90 mt-2.5 font-mono-code leading-relaxed">
+            142 unreconciled entries synced via QuickBooks &amp; Xero.
+          </p>
+        </div>
+      </div>
+
+      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard (Bottom Left) -->
+      <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
+           data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
+        <div class="w-72 sm:w-84 md:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.45)] border border-neutral-800">
+          <div class="flex justify-between items-center text-xs text-neutral-400">
+            <span class="font-medium">Shopify Gross Margin</span>
+            <span class="text-rose-400 font-bold font-mono-code">↓ 18.2%</span>
+          </div>
+          <div class="mt-2.5 flex items-baseline gap-2">
+            <span class="text-3xl font-bold font-mono-code">$19,420</span>
+            <span class="text-xs text-neutral-500 font-mono-code">vs $23,750</span>
+          </div>
+          <!-- Sparkline Bars -->
+          <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
+            <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
+            <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
+            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
+            <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
+            <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTIFACT 6: Business Check Slip (Bottom Right) -->
+      <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
+           data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
+        <div class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.25)] border border-stone-300">
+          <div class="flex justify-between items-start">
+            <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
+            <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
+          </div>
+          <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
+            <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
+            <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
+            <span class="text-xs sm:text-sm font-mono-code font-bold">$4,850.00</span>
+          </div>
+          <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
+            <span>MEMO: Tax Accrual</span>
+            <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Bottom section to finish scroll sequence -->
+  <footer class="h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8">
+    <h2 class="font-headline text-6xl md:text-7xl text-[#d4f038] tracking-tight">Clarity Reclaimed.</h2>
+    <p class="text-neutral-400 mt-2 font-mono-code text-sm">Monthly close, reconciliation, and peace of mind.</p>
+  </footer>
+
+  <!-- ==================== ANIMATION ENGINE ==================== -->
   <script>
-    const canvas = document.getElementById("hero-canvas");
-    const ctx = canvas.getContext("2d");
-    const loader = document.getElementById("loader");
-    const progressText = document.getElementById("progress-text");
+    gsap.registerPlugin(ScrollTrigger);
 
-    const frameCount = 203;
-    const currentFrame = (i) =>
-      `images/ezgif-frame-${i.toString().padStart(3, "0")}.jpg`;
+    /* ============ CHARACTER FRAME-SEQUENCE HERO ============ */
+    (function () {
+      const FRAME_COUNT = 240;                       // total frames in your sequence
+      const FRAME_PATH = i => `images-webp/ezgif-frame-${String(i).padStart(3, '0')}.webp`; // <-- your converted frames
 
-    const images = [];
-    let loadedCount = 0;
-    let targetFrame = 0;
-    let currentRenderedFrame = 0;
+      const canvas = document.getElementById('frame-canvas');
+      const ctx = canvas.getContext('2d');
+      const loader = document.getElementById('hero-loader');
+      const symbolsEl = document.getElementById('floating-symbols');
+      const electricityEl = document.getElementById('electricity-overlay');
+      const revealTextEl = document.getElementById('hero-reveal-text');
+      const symbols = gsap.utils.toArray('.hero-symbol');
 
-    function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      render(currentRenderedFrame);
-    }
-    window.addEventListener("resize", resizeCanvas);
+      const images = new Array(FRAME_COUNT);
+      let loadedCount = 0;
+      let firstFrameReady = false;
 
-    function render(index) {
-      const img = images[index];
-      if (!img || !img.complete) return;
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
 
-      const hRatio = canvas.width / img.width;
-      const vRatio = canvas.height / img.height;
-      const ratio = Math.max(hRatio, vRatio);
-
-      const shiftX = (canvas.width - img.width * ratio) / 2;
-      const shiftY = (canvas.height - img.height * ratio) / 2;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(
-        img,
-        0,
-        0,
-        img.width,
-        img.height,
-        shiftX,
-        shiftY,
-        img.width * ratio,
-        img.height * ratio
-      );
-    }
-
-    // Preload images
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      img.onload = () => {
-        loadedCount++;
-        const percent = Math.floor((loadedCount / frameCount) * 100);
-        progressText.textContent = `Loading: ${percent}%`;
-
-        if (loadedCount === 1) {
-          resizeCanvas();
+      function drawFrame(index) {
+        const img = images[index];
+        if (!img || !img.complete || img.naturalWidth === 0) return;
+        const canvasRatio = canvas.width / canvas.height;
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        let dw, dh, dx, dy;
+        // cover-fit so the character frame fills the viewport without distortion
+        if (imgRatio > canvasRatio) {
+          dh = canvas.height; dw = dh * imgRatio;
+          dx = (canvas.width - dw) / 2; dy = 0;
+        } else {
+          dw = canvas.width; dh = dw / imgRatio;
+          dx = 0; dy = (canvas.height - dh) / 2;
         }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, dx, dy, dw, dh);
+      }
 
-        if (loadedCount === frameCount) {
-          loader.classList.add("hidden");
-        }
+      // Preload: first frame blocking, rest streamed in behind the loader
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const img = new Image();
+        img.src = FRAME_PATH(i + 1);
+        img.onload = () => {
+          loadedCount++;
+          if (!firstFrameReady) {
+            firstFrameReady = true;
+            drawFrame(0);
+            gsap.to(loader, { opacity: 0, duration: 0.4, onComplete: () => loader.style.display = 'none' });
+          }
+        };
+        images[i] = img;
+      }
+
+      // Sequence timing, expressed as fractions of this section's total scroll (0 -> 1)
+      const T = {
+        framesEnd: 0.82,        // frame sequence plays across this much of the scroll
+        symbolsIn: [0.02, 0.10],
+        symbolsOut: [0.20, 0.30],
+        electricityIn: [0.42, 0.55],
+        electricityOut: [0.68, 0.78],
+        textIn: [0.85, 1.0]
       };
-      images.push(img);
-    }
 
-    // Scroll calculation
-    window.addEventListener("scroll", () => {
-      const track = document.querySelector(".scroll-track");
-      const trackTop = track.getBoundingClientRect().top;
-      const maxScroll = track.offsetHeight - window.innerHeight;
+      const rangeProgress = (p, [start, end]) => gsap.utils.clamp(0, 1, (p - start) / (end - start));
 
-      const progress = Math.min(Math.max(-trackTop / maxScroll, 0), 1);
-      targetFrame = Math.min(frameCount - 1, Math.floor(progress * frameCount));
+      ScrollTrigger.create({
+        trigger: '#character-hero',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true,
+        onUpdate: (self) => {
+          const p = self.progress;
+
+          // 1. Frame sequence
+          const frameProgress = gsap.utils.clamp(0, 1, p / T.framesEnd);
+          const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(frameProgress * (FRAME_COUNT - 1)));
+          drawFrame(frameIndex);
+
+          // 2. Floating accounting symbols: drift up and fade, in then out
+          const symbolsInP = rangeProgress(p, T.symbolsIn);
+          const symbolsOutP = rangeProgress(p, T.symbolsOut);
+          const symbolsOpacity = symbolsInP * (1 - symbolsOutP);
+          symbolsEl.style.opacity = symbolsOpacity;
+          symbols.forEach((el, i) => {
+            const depth = 30 + (i % 4) * 18;
+            el.style.transform = `translateY(${-depth * symbolsInP}px)`;
+          });
+
+          // 3. Electricity crackle
+          const elecInP = rangeProgress(p, T.electricityIn);
+          const elecOutP = rangeProgress(p, T.electricityOut);
+          electricityEl.style.opacity = Math.max(0, elecInP - elecOutP) * (0.6 + Math.random() * 0.4);
+
+          // 4. Canvas fades out through smoke as headline fades in underneath
+          const textInP = rangeProgress(p, T.textIn);
+          canvas.style.opacity = 1 - textInP;
+          revealTextEl.style.opacity = textInP;
+        }
+      });
+    })();
+
+    const cards = gsap.utils.toArray('.scroll-card');
+
+    cards.forEach((card) => {
+      const targetY = parseFloat(card.getAttribute('data-y')) || -300;
+      const maxBlur = parseFloat(card.getAttribute('data-blur')) || 8;
+      const targetScale = parseFloat(card.getAttribute('data-scale')) || 1.1;
+      const baseRotation = parseFloat(card.getAttribute('data-rotate')) || 0;
+
+      // Initial card position setup
+      gsap.set(card, {
+        rotationZ: baseRotation,
+        filter: "blur(0px)",
+        transformOrigin: "center center"
+      });
+
+      // Smooth scroll interpolation matching Framer showcase
+      gsap.to(card, {
+        y: targetY,
+        scale: targetScale,
+        filter: `blur(${maxBlur}px)`,
+        ease: "power1.out",
+        scrollTrigger: {
+          trigger: "#parallax-stage",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.2
+        }
+      });
     });
-
-    // Smooth render loop (LERP)
-    function loop() {
-      // Smoothly slide current frame to target frame
-      currentRenderedFrame += (targetFrame - currentRenderedFrame) * 0.15;
-      render(Math.round(currentRenderedFrame));
-      requestAnimationFrame(loop);
-    }
-    loop();
   </script>
 </body>
 </html>
