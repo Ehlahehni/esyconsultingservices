@@ -34,19 +34,16 @@
       margin: 0;
     }
 
-    /* Original Headline Font */
     .font-headline {
       font-family: 'Bebas Neue', sans-serif;
     }
 
-    /* Dedicated Font for the Footer Books Section */
     .font-statement-grotesk {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      letter-spacing: -0.045em;
+      letter-spacing: -0.04em;
     }
 
-    /* Original Fonts for Cards and Signatures */
     .font-mono-code {
       font-family: 'Space Mono', monospace;
     }
@@ -55,7 +52,6 @@
       font-family: 'Caveat', cursive;
     }
 
-    /* Original Solid Pure White Headline */
     .solid-editorial-white {
       color: #ffffff !important;
       text-shadow: 0 14px 45px rgba(0, 0, 0, 0.25);
@@ -69,7 +65,14 @@
       backface-visibility: hidden;
     }
 
-    /* Interactive Scatter Glyphs with Languid Recoil */
+    /* Justified editorial text block */
+    .justified-editorial {
+      text-align: justify;
+      text-align-last: center;
+      text-justify: inter-word;
+    }
+
+    /* Interactive Scatter Glyphs with Soft Recoil */
     .scatter-char {
       display: inline-block;
       position: relative;
@@ -83,10 +86,9 @@
       user-select: none;
     }
 
-    /* Soft, low-opacity transparent light halo on displaced letters */
     .scatter-char.active-scatter {
-      text-shadow: 0 0 20px rgba(212, 240, 56, 0.35);
-      filter: drop-shadow(0 0 12px rgba(212, 240, 56, 0.2));
+      text-shadow: 0 0 22px rgba(212, 240, 56, 0.35);
+      filter: drop-shadow(0 0 12px rgba(212, 240, 56, 0.22));
     }
 
     .film-grain {
@@ -117,7 +119,7 @@
   <!-- ==================== STAGE 2: HEADLINE & LARGE OVERLAY ARTIFACTS ==================== -->
   <div id="fixed-content-stage" class="fixed inset-0 w-full h-full z-10 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
     
-    <!-- Massive Pure White Headline (Original Bebas Neue) -->
+    <!-- Massive Pure White Headline -->
     <div id="headline-container" class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
       <h1 class="font-headline solid-editorial-white text-[19vw] uppercase">
         Numbers Not<br/>
@@ -125,8 +127,7 @@
       </h1>
     </div>
 
-    <!-- ==================== FLOATING CARDS ==================== -->
-
+    <!-- Floating Cards -->
     <!-- Card 1: Store Receipt -->
     <div class="scroll-card absolute top-[12%] left-[4%] sm:left-[8%] md:left-[14%] z-30" data-y="-1150" data-rot="-11">
       <div class="w-[320px] sm:w-[420px] md:w-[480px] bg-white text-slate-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.32)] border border-neutral-200">
@@ -245,22 +246,18 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== TIGHTENED SPACE GROTESK FOOTER ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+  <!-- ==================== JUSTIFIED SPACE GROTESK FOOTER ==================== -->
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex items-center justify-center p-6 md:p-12 overflow-hidden">
     
-    <!-- Transparent Ambient Cursor Light: strictly localized with subtle intensity -->
+    <!-- Transparent Ambient Cursor Light -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[420px] h-[420px] rounded-full bg-[#d4f038]/7 blur-[110px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <div id="scatter-container" class="max-w-6xl w-full mx-auto px-4 select-none relative z-20">
+    <div class="max-w-5xl w-full mx-auto px-4 select-none relative z-20">
       
-      <!-- Line 1: Space Grotesk Bold in Accent Lime -->
-      <h2 class="font-statement-grotesk text-4xl sm:text-6xl md:text-7xl lg:text-[4.8vw] text-[#d4f038] tracking-tight uppercase leading-[0.88] flex flex-wrap justify-center items-center">
-        Let me handle your books with precision
-      </h2>
-
-      <!-- Line 2: Space Grotesk Bold in Pure White -->
-      <p class="font-statement-grotesk text-3xl sm:text-5xl md:text-6xl lg:text-[4.0vw] text-white/90 tracking-tight uppercase leading-[0.90] -mt-1 sm:-mt-2 md:-mt-3 flex flex-wrap justify-center items-center">
-        while you focus on your vision
+      <!-- Unified Justified Paragraph Block -->
+      <p id="scatter-statement" class="font-statement-grotesk justified-editorial text-4xl sm:text-6xl md:text-7xl lg:text-[4.2vw] leading-[1.05] sm:leading-[1.0] uppercase">
+        <span class="text-[#d4f038]">Let me handle your books with precision</span> 
+        <span class="text-white/90">while you focus on your mission</span>
       </p>
 
     </div>
@@ -437,22 +434,24 @@
 
     })();
 
-    // 4. SCOPED CURSOR-AVOIDANCE / SCATTER PHYSICS (SPACE GROTESK)
+    // 4. SCOPED JUSTIFIED SCATTER PHYSICS
     (function () {
       const section = document.getElementById('books-section');
-      const container = document.getElementById('scatter-container');
+      const statement = document.getElementById('scatter-statement');
       const cursorGlow = document.getElementById('cursor-glow');
-      const lines = container.querySelectorAll('h2, p');
+      const spans = statement.querySelectorAll('span');
 
-      lines.forEach(el => {
-        const text = el.innerText.trim();
-        el.innerHTML = text.split(' ').map(word => {
+      // Break each word and character down, maintaining CSS justify spaces
+      spans.forEach(span => {
+        const text = span.innerText.trim();
+        const words = text.split(' ');
+        span.innerHTML = words.map(word => {
           const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
-          return `<span class="inline-block whitespace-nowrap mr-[0.24em]">${chars}</span>`;
-        }).join('');
+          return `<span class="inline-block whitespace-nowrap">${chars}</span>`;
+        }).join(' ');
       });
 
-      const chars = Array.from(container.querySelectorAll('.scatter-char'));
+      const chars = Array.from(statement.querySelectorAll('.scatter-char'));
       let charData = [];
 
       function cacheCharPositions() {
