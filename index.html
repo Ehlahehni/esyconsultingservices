@@ -65,38 +65,31 @@
       backface-visibility: hidden;
     }
 
-    /* Justified editorial text block */
-    .justified-editorial {
-      text-align: justify;
-      text-align-last: center;
-      text-justify: inter-word;
-    }
-
-    /* Interactive Scatter Glyphs: Floating on Water Physics */
+    /* Floating on Water: 2+ Second Lazy Recoil Physics */
     .scatter-char {
       display: inline-block;
       position: relative;
       will-change: transform, text-shadow, filter;
       transform: translate3d(0, 0, 0);
-      /* 2.1s fluid water-buoyancy recoil with gentle overshoot */
-      transition: transform 2.1s cubic-bezier(0.08, 0.98, 0.22, 1.02),
-                  text-shadow 1.4s ease-out,
-                  filter 1.4s ease-out;
+      /* Slow 2.4s aquatic buoyancy ease with extended linger */
+      transition: transform 2.4s cubic-bezier(0.06, 0.96, 0.2, 1.01),
+                  text-shadow 1.2s ease-out,
+                  filter 1.2s ease-out;
       pointer-events: auto;
       cursor: default;
       user-select: none;
     }
 
-    /* Ultra-faint aquatic displacement glow */
+    /* Soft letter glow on hover */
     .scatter-char.active-scatter {
-      text-shadow: 0 0 16px rgba(212, 240, 56, 0.22);
-      filter: drop-shadow(0 0 8px rgba(212, 240, 56, 0.12));
+      text-shadow: 0 0 18px rgba(212, 240, 56, 0.35);
+      filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* Glass card specular shine */
+    /* Refined Frosted Glass Specular Rim */
     .glass-card-edge {
-      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.2),
-                  inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+      box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.22),
+                  inset 0 -1.5px 1.5px 0 rgba(0, 0, 0, 0.4);
     }
 
     .film-grain {
@@ -127,7 +120,6 @@
   <!-- ==================== STAGE 2: HEADLINE & LARGE OVERLAY ARTIFACTS ==================== -->
   <div id="fixed-content-stage" class="fixed inset-0 w-full h-full z-10 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
     
-    <!-- Massive Pure White Headline -->
     <div id="headline-container" class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
       <h1 class="font-headline solid-editorial-white text-[19vw] uppercase">
         Numbers Not<br/>
@@ -136,7 +128,6 @@
     </div>
 
     <!-- Floating Cards -->
-    <!-- Card 1: Store Receipt -->
     <div class="scroll-card absolute top-[12%] left-[4%] sm:left-[8%] md:left-[14%] z-30" data-y="-1150" data-rot="-11">
       <div class="w-[320px] sm:w-[420px] md:w-[480px] bg-white text-slate-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.32)] border border-neutral-200">
         <div class="text-center pb-4 border-b border-dashed border-slate-300 font-mono-code text-xs sm:text-sm">
@@ -155,7 +146,6 @@
       </div>
     </div>
 
-    <!-- Card 2: Overdue Invoice Badge -->
     <div class="scroll-card absolute top-[10%] right-[3%] sm:right-[8%] md:right-[13%] z-25" data-y="-1100" data-rot="9">
       <div class="w-[330px] sm:w-[430px] md:w-[490px] bg-[#0f172a] text-white rounded-3xl p-7 md:p-8 shadow-[0_42px_85px_rgba(0,0,0,0.48)] border border-slate-800">
         <div class="flex items-center justify-between pb-4 border-b border-slate-800 font-mono-code">
@@ -169,7 +159,6 @@
       </div>
     </div>
 
-    <!-- Card 3: Bank Live Feed -->
     <div class="scroll-card absolute top-[40%] right-[2%] sm:right-[5%] md:right-[10%] z-35" data-y="-1250" data-rot="-5">
       <div class="w-[340px] sm:w-[450px] md:w-[510px] bg-white text-slate-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.28)] border border-slate-200">
         <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
@@ -193,7 +182,6 @@
       </div>
     </div>
 
-    <!-- Card 4: QuickBooks Alert -->
     <div class="scroll-card absolute top-[42%] left-[2%] sm:left-[5%] md:left-[9%] z-30" data-y="-1200" data-rot="7">
       <div class="w-[330px] sm:w-[430px] md:w-[490px] bg-amber-50 rounded-3xl p-7 md:p-8 border border-amber-300 shadow-[0_34px_68px_rgba(217,119,6,0.24)]">
         <div class="flex items-center gap-3">
@@ -209,7 +197,6 @@
       </div>
     </div>
 
-    <!-- Card 5: Gross Margin Dashboard -->
     <div class="scroll-card absolute bottom-[8%] left-[4%] sm:left-[9%] md:left-[16%] z-30" data-y="-1120" data-rot="-4">
       <div class="w-[340px] sm:w-[440px] md:w-[500px] bg-[#0b0f14] text-white rounded-3xl p-7 md:p-8 shadow-[0_42px_85px_rgba(0,0,0,0.48)] border border-white/10">
         <div class="flex justify-between items-center text-xs sm:text-sm text-neutral-400 font-mono-code">
@@ -230,7 +217,6 @@
       </div>
     </div>
 
-    <!-- Card 6: Business Check Slip -->
     <div class="scroll-card absolute bottom-[7%] right-[3%] sm:right-[8%] md:right-[15%] z-25" data-y="-1080" data-rot="6">
       <div class="w-[350px] sm:w-[450px] md:w-[520px] bg-[#fdfcf7] text-stone-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.28)] border border-stone-300">
         <div class="flex justify-between items-start">
@@ -254,35 +240,33 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== 3D GLASS CARD VIDEO SECTION ==================== -->
+  <!-- ==================== 3D FROSTED GLASS VIDEO SECTION ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex items-center justify-center p-4 sm:p-8 md:p-14 overflow-hidden">
     
-    <!-- 3D Glass Container with Embedded Looping Video -->
-    <div class="relative w-full max-w-6xl rounded-[2.5rem] md:rounded-[3.25rem] overflow-hidden glass-card-edge backdrop-blur-2xl bg-white/[0.02] border border-white/[0.12] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_30px_90px_rgba(0,0,0,0.7)] flex items-center justify-center">
+    <!-- 3D Glass Card Container -->
+    <div class="relative w-full max-w-6xl rounded-[2.5rem] md:rounded-[3.25rem] overflow-hidden glass-card-edge backdrop-blur-xl bg-white/[0.04] border border-white/[0.14] p-8 sm:p-12 md:p-16 lg:p-20 shadow-[0_30px_90px_rgba(0,0,0,0.7)] flex items-center justify-center">
       
-      <!-- Video Layer (Strictly contained inside the glass card) -->
+      <!-- Video Layer: Set to 80% opacity for clear visibility -->
       <video 
         autoplay 
         loop 
         muted 
         playsinline 
-        class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-40 mix-blend-screen z-0"
+        class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80 mix-blend-screen z-0"
       >
         <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
       </video>
 
-      <!-- Glass Depth Gradient Overlays -->
-      <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f14]/85 via-black/30 to-[#0b0f14]/85 pointer-events-none z-[1]"></div>
-      <div class="absolute inset-0 bg-radial-gradient from-transparent via-black/40 to-black/80 pointer-events-none z-[2]"></div>
+      <!-- Faint Glass Vignette (Leaves video clearly visible) -->
+      <div class="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/50 pointer-events-none z-[1]"></div>
 
-      <!-- Compact, Subdued Ambient Cursor Spotlight -->
+      <!-- Compact Ambient Spotlight -->
       <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/4 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-      <!-- Interactive Scaled-Up Typography (Pure White Uniform Font) -->
+      <!-- Balanced, Centered Editorial Typography (Uniform Pure White) -->
       <div class="w-full select-none relative z-20">
-        <p id="scatter-statement" class="font-statement-grotesk justified-editorial text-white text-5xl sm:text-7xl md:text-8xl lg:text-[5.5vw] leading-[1.05] sm:leading-[1.0] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.9)]">
-          <span class="text-white">Let me handle your books with precision</span> 
-          <span class="text-white">while you focus on your mission</span>
+        <p id="scatter-statement" class="font-statement-grotesk text-center text-white text-5xl sm:text-7xl md:text-8xl lg:text-[5.5vw] leading-[1.05] sm:leading-[1.0] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)] max-w-5xl mx-auto">
+          <span>Let me handle your books with precision while you focus on your mission</span>
         </p>
       </div>
 
@@ -461,7 +445,7 @@
 
     })();
 
-    // 4. WATER-BUOYANCY SCATTER PHYSICS ENGINE
+    // 4. WATER-BUOYANCY SCATTER (CENTERED & 2-SECOND SETTLING)
     (function () {
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
@@ -473,7 +457,7 @@
         const words = text.split(' ');
         span.innerHTML = words.map(word => {
           const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
-          return `<span class="inline-block whitespace-nowrap">${chars}</span>`;
+          return `<span class="inline-block whitespace-nowrap mx-[0.14em]">${chars}</span>`;
         }).join(' ');
       });
 
@@ -500,7 +484,6 @@
       section.addEventListener('mousemove', (e) => {
         const secRect = section.querySelector('.glass-card-edge').getBoundingClientRect();
         
-        // Relative mouse coordinates strictly bounded inside the 3D card
         const relX = e.clientX - secRect.left;
         const relY = e.clientY - secRect.top;
 
@@ -524,13 +507,13 @@
             const pushY = Math.sin(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 14;
             const pushRot = (Math.random() - 0.5) * 38 * force;
 
-            // Immediate, fluid deflection
+            // Swift push deflection
             item.el.style.transition = 'transform 0.22s cubic-bezier(0.1, 0.9, 0.2, 1), text-shadow 0.3s ease-out, filter 0.3s ease-out';
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
-            // Languid, buoyant water-drift return
-            item.el.style.transition = 'transform 2.1s cubic-bezier(0.08, 0.98, 0.22, 1.02), text-shadow 1.4s ease-out, filter 1.4s ease-out';
+            // Slower 2.4s buoyant return to resting position
+            item.el.style.transition = 'transform 2.4s cubic-bezier(0.06, 0.96, 0.2, 1.01), text-shadow 1.4s ease-out, filter 1.4s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
           }
@@ -540,7 +523,7 @@
       section.addEventListener('mouseleave', () => {
         cursorGlow.style.opacity = '0';
         charData.forEach(item => {
-          item.el.style.transition = 'transform 2.1s cubic-bezier(0.08, 0.98, 0.22, 1.02), text-shadow 1.4s ease-out, filter 1.4s ease-out';
+          item.el.style.transition = 'transform 2.4s cubic-bezier(0.06, 0.96, 0.2, 1.01), text-shadow 1.4s ease-out, filter 1.4s ease-out';
           item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
           item.el.classList.remove('active-scatter');
         });
