@@ -10,7 +10,7 @@
 
   <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
 
   <!-- GSAP + ScrollTrigger -->
@@ -49,15 +49,16 @@
     /* Reference 0:26: Solid pure white display typography */
     .solid-editorial-white {
       color: #ffffff !important;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
       line-height: 0.84;
       letter-spacing: -0.04em;
     }
 
-    /* Hardware-accelerated canvas layer */
-    #frame-canvas {
+    /* Prevent rasterization blur on scaling elements */
+    .scroll-card, #frame-canvas {
       will-change: transform, opacity;
       transform: translateZ(0);
+      backface-visibility: hidden;
     }
 
     /* Micro film-grain for cinematic texture */
@@ -77,8 +78,8 @@
 
   <div class="film-grain"></div>
 
-  <!-- ==================== FIXED DUAL-SEQUENCE CANVAS ==================== -->
-  <div id="canvas-wrapper" class="fixed inset-0 w-full h-full pointer-events-none z-0">
+  <!-- ==================== STAGE 1: FIXED DUAL-SEQUENCE CANVAS ==================== -->
+  <div id="canvas-wrapper" class="fixed inset-0 w-full h-full pointer-events-none z-10">
     <div id="hero-loader" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0b0f14] font-mono-code text-xs text-white/50 tracking-widest uppercase">
       <div class="w-10 h-10 rounded-full border border-white/20 border-t-[#d4f038] animate-spin mb-4"></div>
       <span id="loader-status">Loading Sequence...</span>
@@ -86,153 +87,146 @@
     <canvas id="frame-canvas" class="w-full h-full"></canvas>
   </div>
 
-  <!-- ==================== SCROLL SPACER (240 FRAMES TOTAL) ==================== -->
-  <!-- 144 frames Character + 96 frames Smoke = 240 frames total scrub track -->
-  <section id="character-scroll-track" class="relative w-full h-[520vh] pointer-events-none"></section>
-
-  <!-- ==================== MAIN PARALLAX STAGE ==================== -->
-  <section id="parallax-stage" class="relative z-10 w-full min-h-[260vh] bg-[#d4f038] text-slate-900 shadow-[0_-60px_100px_rgba(11,15,20,0.95)]">
+  <!-- ==================== STAGE 2: FIXED LIME PARALLAX STAGE ==================== -->
+  <!-- Stays fixed in the viewport; fades forward through the dissipating smoke -->
+  <div id="fixed-lime-viewport" class="fixed inset-0 w-full h-full bg-[#d4f038] z-20 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
     
-    <!-- Seamless Gradient Seam Blend -->
-    <div class="absolute -top-32 left-0 w-full h-32 bg-gradient-to-b from-transparent to-[#d4f038] pointer-events-none"></div>
-
-    <!-- Sticky Full-Screen Viewport Window -->
-    <div id="sticky-viewport" class="sticky top-0 w-full h-screen flex items-center justify-center [perspective:1400px] overflow-hidden">
-      
-      <!-- 1. MASSIVE PURE WHITE EDITORIAL HEADLINE (MATCHING 0:26) -->
-      <div class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
-        <h1 class="font-headline solid-editorial-white text-[19vw] uppercase">
-          Numbers Not<br/>
-          <span>Making Sense?</span>
-        </h1>
-      </div>
-
-      <!-- ==================== ENLARGED ACCOUNTING ARTIFACTS ==================== -->
-
-      <!-- ARTIFACT 1: Store Receipt (Top Left) -->
-      <div class="scroll-card absolute top-[8%] left-[2%] sm:left-[6%] z-30"
-           data-y="-520" data-blur="14" data-scale="1.22" data-rotate="-10">
-        <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.22)] border border-neutral-200">
-          <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
-            <p class="font-bold text-base tracking-tight">WHOLESALE COMMERCE</p>
-            <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
-          </div>
-          <div class="py-3 font-mono-code text-xs space-y-1.5">
-            <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
-            <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
-            <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
-          </div>
-          <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
-            <span>TOTAL DUE</span>
-            <span>$796.17</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 2: Minimal Overdue Invoice Badge (Top Right) -->
-      <div class="scroll-card absolute top-[7%] right-[2%] sm:right-[7%] z-25"
-           data-y="-480" data-blur="12" data-scale="1.2" data-rotate="8">
-        <div class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-slate-800">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-            <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
-              OVERDUE 45 DAYS
-            </span>
-            <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
-          </div>
-          <p class="text-xs text-slate-400 mt-3 font-medium font-mono-code">Q3 Retainer Balance Due</p>
-          <p class="text-3xl font-black text-white mt-1.5 font-headline">$8,450.00</p>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 3: Bank Statement Live Feed (Middle Right) -->
-      <div class="scroll-card absolute top-[44%] right-[1%] sm:right-[5%] z-35"
-           data-y="-160" data-blur="2" data-scale="1.04" data-rotate="-4">
-        <div class="w-72 sm:w-88 md:w-96 bg-white/95 backdrop-blur-md rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-slate-200">
-          <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
-            <span class="text-sm font-bold tracking-tight text-slate-900 font-mono-code">Checking (...3810)</span>
-            <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
-          </div>
-          <div class="mt-3 space-y-2.5 font-mono-code text-xs">
-            <div class="flex justify-between text-rose-600 font-bold">
-              <span>Stripe Payout Reversal</span>
-              <span>-$2,450.00</span>
-            </div>
-            <div class="flex justify-between text-slate-600">
-              <span>Infrastructure Hosting</span>
-              <span>-$420.80</span>
-            </div>
-            <div class="flex justify-between text-emerald-600 font-bold">
-              <span>Client Wire (Cleared)</span>
-              <span>+$12,300.00</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 4: QuickBooks Alert Slip (Middle Left) -->
-      <div class="scroll-card absolute top-[48%] left-[2%] sm:left-[5%] z-20"
-           data-y="-260" data-blur="5" data-scale="0.96" data-rotate="7">
-        <div class="w-72 sm:w-80 md:w-88 bg-amber-50 rounded-2xl p-5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.18)]">
-          <div class="flex items-center gap-2.5">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
-            </span>
-            <span class="text-xs font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
-          </div>
-          <p class="text-xs text-amber-800/90 mt-2.5 font-mono-code leading-relaxed">
-            142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
-          </p>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 5: Shopify Gross Margin Dashboard (Bottom Left) -->
-      <div class="scroll-card absolute bottom-[6%] left-[4%] sm:left-[12%] z-30"
-           data-y="-420" data-blur="11" data-scale="1.18" data-rotate="-5">
-        <div class="w-72 sm:w-84 md:w-92 bg-[#111111] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-neutral-800">
-          <div class="flex justify-between items-center text-xs text-neutral-400 font-mono-code">
-            <span class="font-medium">Shopify Gross Margin</span>
-            <span class="text-rose-400 font-bold">↓ 18.2%</span>
-          </div>
-          <div class="mt-2.5 flex items-baseline gap-2 font-mono-code">
-            <span class="text-3xl font-bold font-headline">$19,420</span>
-            <span class="text-xs text-neutral-500">vs $23,750</span>
-          </div>
-          <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
-            <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
-            <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
-            <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTIFACT 6: Business Check Slip (Bottom Right) -->
-      <div class="scroll-card absolute bottom-[5%] right-[4%] sm:right-[12%] z-25"
-           data-y="-340" data-blur="8" data-scale="1.12" data-rotate="4">
-        <div class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-stone-300">
-          <div class="flex justify-between items-start">
-            <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
-            <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
-          </div>
-          <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
-            <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
-            <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
-            <span class="text-xs sm:text-sm font-mono-code font-bold">$4,850.00</span>
-          </div>
-          <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
-            <span>MEMO: Tax Accrual</span>
-            <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
-          </div>
-        </div>
-      </div>
-
+    <!-- 1. MASSIVE PURE WHITE EDITORIAL HEADLINE -->
+    <div id="headline-container" class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
+      <h1 class="font-headline solid-editorial-white text-[19vw] uppercase">
+        Numbers Not<br/>
+        <span>Making Sense?</span>
+      </h1>
     </div>
-  </section>
 
-  <!-- Final Clean Footer Stage -->
-  <footer class="relative z-10 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8 text-center">
+    <!-- ==================== FLOATING ARTIFACTS (CRISP, NO BLUR) ==================== -->
+    <!-- Positioned directly over/around the letters to obscure them initially, then balloon away -->
+
+    <!-- ARTIFACT 1: Store Receipt -->
+    <div class="scroll-card absolute top-[28%] left-[6%] md:left-[14%] z-30" data-y="-700" data-rot="-12">
+      <div class="w-64 sm:w-76 md:w-80 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_32px_64px_rgba(0,0,0,0.22)] border border-neutral-200">
+        <div class="text-center pb-3 border-b border-dashed border-slate-300 font-mono-code text-xs">
+          <p class="font-bold text-base tracking-tight text-neutral-900">WHOLESALE COMMERCE</p>
+          <p class="text-[11px] text-slate-400">Terminal #04 • Batch 8820</p>
+        </div>
+        <div class="py-3 font-mono-code text-xs space-y-1.5">
+          <div class="flex justify-between"><span>Physical Stock Tier-A</span><span>$620.00</span></div>
+          <div class="flex justify-between"><span>Express Freight</span><span>$115.50</span></div>
+          <div class="flex justify-between text-slate-400"><span>State Tax (8.25%)</span><span>$60.67</span></div>
+        </div>
+        <div class="pt-2.5 border-t-2 border-slate-900 flex justify-between font-mono-code font-bold text-sm">
+          <span>TOTAL DUE</span>
+          <span>$796.17</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTIFACT 2: Minimal Overdue Invoice Badge -->
+    <div class="scroll-card absolute top-[25%] right-[6%] md:right-[15%] z-25" data-y="-650" data-rot="10">
+      <div class="w-72 sm:w-80 md:w-88 bg-[#0f172a] text-white rounded-2xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-slate-800">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <span class="text-[11px] font-mono-code uppercase px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 font-bold border border-rose-500/30">
+            OVERDUE 45 DAYS
+          </span>
+          <span class="text-slate-400 text-xs font-mono-code">INV-2026-99</span>
+        </div>
+        <p class="text-xs text-slate-400 mt-3 font-medium font-mono-code">Q3 Retainer Balance Due</p>
+        <p class="text-3xl font-black text-white mt-1.5 font-headline">$8,450.00</p>
+      </div>
+    </div>
+
+    <!-- ARTIFACT 3: Bank Statement Live Feed -->
+    <div class="scroll-card absolute top-[48%] right-[8%] md:right-[20%] z-35" data-y="-850" data-rot="-6">
+      <div class="w-72 sm:w-88 md:w-96 bg-white text-slate-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-slate-200">
+        <div class="flex justify-between items-center pb-2.5 border-b border-slate-100">
+          <span class="text-sm font-bold tracking-tight text-slate-900 font-mono-code">Checking (...3810)</span>
+          <span class="text-xs font-mono-code text-slate-400">Live Feed</span>
+        </div>
+        <div class="mt-3 space-y-2.5 font-mono-code text-xs">
+          <div class="flex justify-between text-rose-600 font-bold">
+            <span>Stripe Payout Reversal</span>
+            <span>-$2,450.00</span>
+          </div>
+          <div class="flex justify-between text-slate-600">
+            <span>Infrastructure Hosting</span>
+            <span>-$420.80</span>
+          </div>
+          <div class="flex justify-between text-emerald-600 font-bold">
+            <span>Client Wire (Cleared)</span>
+            <span>+$12,300.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTIFACT 4: QuickBooks Alert Slip -->
+    <div class="scroll-card absolute top-[45%] left-[8%] md:left-[18%] z-30" data-y="-800" data-rot="8">
+      <div class="w-72 sm:w-80 md:w-88 bg-amber-50 rounded-2xl p-5 border border-amber-300 shadow-[0_24px_45px_rgba(217,119,6,0.18)]">
+        <div class="flex items-center gap-2.5">
+          <span class="relative flex h-2.5 w-2.5">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+          </span>
+          <span class="text-xs font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
+        </div>
+        <p class="text-xs text-amber-800/90 mt-2.5 font-mono-code leading-relaxed">
+          142 unreconciled entries synced via QuickBooks &amp; Xero.
+        </p>
+      </div>
+    </div>
+
+    <!-- ARTIFACT 5: Gross Margin Dashboard -->
+    <div class="scroll-card absolute bottom-[18%] left-[12%] md:left-[26%] z-30" data-y="-750" data-rot="-4">
+      <div class="w-72 sm:w-84 md:w-92 bg-[#0b0f14] text-white rounded-3xl p-5 shadow-[0_35px_70px_rgba(0,0,0,0.35)] border border-white/10">
+        <div class="flex justify-between items-center text-xs text-neutral-400 font-mono-code">
+          <span class="font-medium">Shopify Gross Margin</span>
+          <span class="text-rose-400 font-bold">↓ 18.2%</span>
+        </div>
+        <div class="mt-2.5 flex items-baseline gap-2 font-mono-code">
+          <span class="text-3xl font-bold font-headline">$19,420</span>
+          <span class="text-xs text-neutral-500">vs $23,750</span>
+        </div>
+        <div class="mt-4 w-full h-10 flex items-end gap-2 pt-2">
+          <div class="flex-1 bg-neutral-700 h-6 rounded-sm"></div>
+          <div class="flex-1 bg-neutral-700 h-8 rounded-sm"></div>
+          <div class="flex-1 bg-neutral-700 h-7 rounded-sm"></div>
+          <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
+          <div class="flex-1 bg-rose-500 h-2.5 rounded-sm"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTIFACT 6: Business Check Slip -->
+    <div class="scroll-card absolute bottom-[16%] right-[10%] md:right-[24%] z-25" data-y="-720" data-rot="5">
+      <div class="w-76 sm:w-88 md:w-96 bg-[#fdfcf7] text-stone-900 rounded-2xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.2)] border border-stone-300">
+        <div class="flex justify-between items-start">
+          <span class="text-[11px] font-mono-code font-bold uppercase text-stone-500">FIRST METRO COMMERCE</span>
+          <span class="font-mono-code text-xs text-stone-600">NO. 3082</span>
+        </div>
+        <div class="mt-3 flex justify-between items-center border-b border-stone-300 pb-1.5">
+          <span class="text-[11px] font-mono-code text-stone-400">PAY TO:</span>
+          <span class="text-xs sm:text-sm font-semibold">Contractor Services</span>
+          <span class="text-xs sm:text-sm font-mono-code font-bold">$4,850.00</span>
+        </div>
+        <div class="mt-2.5 flex justify-between items-baseline font-mono-code text-[11px] text-stone-400">
+          <span>MEMO: Tax Accrual</span>
+          <span class="font-signature text-stone-800 text-xl">M. Kensington</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== UNIFIED SCROLL CONTROLLER TRACK ==================== -->
+  <!-- Controls the scrubbed sequence: 
+       0vh -> 400vh: Video 1 & Video 2 scrub
+       400vh -> 520vh: In-place fade-forward of lime section & headline
+       520vh -> 720vh: Balloon ascension of cards revealing the text
+  -->
+  <div id="master-scroll-track" class="relative w-full h-[720vh]"></div>
+
+  <!-- Final Footer Stage -->
+  <footer class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8 text-center">
     <h2 class="font-headline text-6xl md:text-8xl text-[#d4f038] uppercase tracking-tight">Clarity Reclaimed.</h2>
     <p class="text-neutral-400 mt-3 font-mono-code text-sm max-w-md">Monthly close, reconciliation, and peace of mind.</p>
   </footer>
@@ -257,7 +251,7 @@
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // 2. Dual-Sequence High-DPI Canvas Renderer (144 Character + 96 Smoke = 240 Frames)
+    // 2. Dual-Sequence Canvas Engine
     (function () {
       const CHAR_COUNT = 144;
       const SMOKE_COUNT = 96;
@@ -303,24 +297,19 @@
         const imgRatio = img.naturalWidth / img.naturalHeight;
         let dw, dh, dx, dy;
 
-        // Cover-fit logic preserving aspect ratio
         if (imgRatio > canvasRatio) {
-          dh = logicalH;
-          dw = dh * imgRatio;
-          dx = (logicalW - dw) / 2;
-          dy = 0;
+          dh = logicalH; dw = dh * imgRatio;
+          dx = (logicalW - dw) / 2; dy = 0;
         } else {
-          dw = logicalW;
-          dh = dw / imgRatio;
-          dx = 0;
-          dy = (logicalH - dh) / 2;
+          dw = logicalW; dh = dw / imgRatio;
+          dx = 0; dy = (logicalH - dh) / 2;
         }
 
         ctx.clearRect(0, 0, logicalW, logicalH);
         ctx.drawImage(img, dx, dy, dw, dh);
       }
 
-      // Preload Sequence 1: Character (1 -> 144)
+      // Preload frames
       for (let i = 0; i < CHAR_COUNT; i++) {
         const img = new Image();
         img.src = CHAR_PATH(i + 1);
@@ -333,70 +322,74 @@
         };
         allFrames[i] = img;
       }
-
-      // Preload Sequence 2: Smoke (1 -> 96) mapped to indices 144 -> 239
       for (let j = 0; j < SMOKE_COUNT; j++) {
         const img = new Image();
         img.src = SMOKE_PATH(j + 1);
         allFrames[CHAR_COUNT + j] = img;
       }
 
-      // Scrub unified sequence (0 through 239) across the spacer track
+      // 3. MASTER SCROLL TIMELINE (NO VERTICAL CUTS)
+      const masterTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#master-scroll-track',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.5,
+        }
+      });
+
       const sequenceObj = { frame: 0 };
-      gsap.to(sequenceObj, {
+
+      // Phase 1: Scrub frames 0 -> 239 (Character + Smoke)
+      masterTl.to(sequenceObj, {
         frame: TOTAL_FRAMES - 1,
         ease: 'none',
-        scrollTrigger: {
-          trigger: '#character-scroll-track',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.35,
-          onUpdate: () => {
-            currentFrame = sequenceObj.frame;
-            renderFrame(Math.floor(sequenceObj.frame));
-          }
+        duration: 5,
+        onUpdate: () => {
+          currentFrame = sequenceObj.frame;
+          renderFrame(Math.floor(sequenceObj.frame));
         }
-      });
+      }, 0);
 
-      // Sticky Crossfade: Smoke canvas lingers and dissolves into the lime stage
-      gsap.to('#canvas-wrapper', {
+      // Phase 2: Fade forward the Lime section and Letters in-place (no upward scrolling seam)
+      masterTl.fromTo('#fixed-lime-viewport', 
+        { opacity: 0, scale: 0.94 }, 
+        { opacity: 1, scale: 1, ease: 'power2.inOut', duration: 2 }, 
+        4.0 // Starts during the final billowing smoke frames
+      );
+
+      masterTl.to('#canvas-wrapper', {
         opacity: 0,
-        ease: 'power1.inOut',
-        scrollTrigger: {
-          trigger: '#parallax-stage',
-          start: 'top 85%',
-          end: 'top 20%',
-          scrub: true
-        }
+        ease: 'power2.inOut',
+        duration: 1.5
+      }, 4.5);
+
+      // Phase 3: Balloon ascension of cards (revealing the pure white text)
+      const cards = gsap.utils.toArray('.scroll-card');
+      cards.forEach((card, index) => {
+        const targetY = parseFloat(card.getAttribute('data-y')) || -700;
+        const baseRot = parseFloat(card.getAttribute('data-rot')) || 0;
+
+        // Ensure cards start razor sharp, slightly scaled
+        gsap.set(card, {
+          rotationZ: baseRot,
+          scale: 1,
+          opacity: 1,
+          transformOrigin: 'center center'
+        });
+
+        // Cards float upwards and dissolve like balloons
+        masterTl.to(card, {
+          y: targetY,
+          rotationZ: baseRot * 1.8,
+          scale: 0.85,
+          opacity: 0,
+          ease: 'power1.in',
+          duration: 3
+        }, 5.5 + (index * 0.1));
       });
+
     })();
-
-    // 3. Floating Artifacts Parallax Scrub
-    const cards = gsap.utils.toArray('.scroll-card');
-    cards.forEach((card) => {
-      const targetY = parseFloat(card.getAttribute('data-y')) || -300;
-      const targetScale = parseFloat(card.getAttribute('data-scale')) || 1.1;
-      const baseRotation = parseFloat(card.getAttribute('data-rotate')) || 0;
-      const maxBlur = parseFloat(card.getAttribute('data-blur')) || 8;
-
-      gsap.set(card, {
-        rotationZ: baseRotation,
-        transformOrigin: "center center"
-      });
-
-      gsap.to(card, {
-        y: targetY,
-        scale: targetScale,
-        filter: `blur(${maxBlur}px)`,
-        ease: 'power1.out',
-        scrollTrigger: {
-          trigger: '#parallax-stage',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.3
-        }
-      });
-    });
   </script>
 </body>
 </html>
