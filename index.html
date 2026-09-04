@@ -61,6 +61,17 @@
       backface-visibility: hidden;
     }
 
+    /* Interactive Scatter Glyphs */
+    .scatter-char {
+      display: inline-block;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+      pointer-events: auto;
+      cursor: default;
+      user-select: none;
+    }
+
     .film-grain {
       position: fixed;
       inset: 0;
@@ -97,9 +108,9 @@
       </h1>
     </div>
 
-    <!-- ==================== PROMINENT FLOATING CARDS (HEAVILY COVERING TEXT) ==================== -->
+    <!-- ==================== FLOATING CARDS (COVERING LETTERS) ==================== -->
 
-    <!-- Card 1: Store Receipt (Dominating left across "NUMBERS") -->
+    <!-- Card 1: Store Receipt -->
     <div class="scroll-card absolute top-[12%] left-[4%] sm:left-[8%] md:left-[14%] z-30" data-y="-1150" data-rot="-11">
       <div class="w-[320px] sm:w-[420px] md:w-[480px] bg-white text-slate-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.32)] border border-neutral-200">
         <div class="text-center pb-4 border-b border-dashed border-slate-300 font-mono-code text-xs sm:text-sm">
@@ -118,7 +129,7 @@
       </div>
     </div>
 
-    <!-- Card 2: Overdue Invoice Badge (Dominating right across "NOT") -->
+    <!-- Card 2: Overdue Invoice Badge -->
     <div class="scroll-card absolute top-[10%] right-[3%] sm:right-[8%] md:right-[13%] z-25" data-y="-1100" data-rot="9">
       <div class="w-[330px] sm:w-[430px] md:w-[490px] bg-[#0f172a] text-white rounded-3xl p-7 md:p-8 shadow-[0_42px_85px_rgba(0,0,0,0.48)] border border-slate-800">
         <div class="flex items-center justify-between pb-4 border-b border-slate-800 font-mono-code">
@@ -132,7 +143,7 @@
       </div>
     </div>
 
-    <!-- Card 3: Bank Live Feed (Stretching across center-right "SENSE?") -->
+    <!-- Card 3: Bank Live Feed -->
     <div class="scroll-card absolute top-[40%] right-[2%] sm:right-[5%] md:right-[10%] z-35" data-y="-1250" data-rot="-5">
       <div class="w-[340px] sm:w-[450px] md:w-[510px] bg-white text-slate-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.28)] border border-slate-200">
         <div class="flex justify-between items-center pb-3.5 border-b border-slate-100">
@@ -156,7 +167,7 @@
       </div>
     </div>
 
-    <!-- Card 4: QuickBooks Alert (Stretching across center-left "MAKING") -->
+    <!-- Card 4: QuickBooks Alert -->
     <div class="scroll-card absolute top-[42%] left-[2%] sm:left-[5%] md:left-[9%] z-30" data-y="-1200" data-rot="7">
       <div class="w-[330px] sm:w-[430px] md:w-[490px] bg-amber-50 rounded-3xl p-7 md:p-8 border border-amber-300 shadow-[0_34px_68px_rgba(217,119,6,0.24)]">
         <div class="flex items-center gap-3">
@@ -172,7 +183,7 @@
       </div>
     </div>
 
-    <!-- Card 5: Gross Margin Dashboard (Lower-Left Center) -->
+    <!-- Card 5: Gross Margin Dashboard -->
     <div class="scroll-card absolute bottom-[8%] left-[4%] sm:left-[9%] md:left-[16%] z-30" data-y="-1120" data-rot="-4">
       <div class="w-[340px] sm:w-[440px] md:w-[500px] bg-[#0b0f14] text-white rounded-3xl p-7 md:p-8 shadow-[0_42px_85px_rgba(0,0,0,0.48)] border border-white/10">
         <div class="flex justify-between items-center text-xs sm:text-sm text-neutral-400 font-mono-code">
@@ -193,7 +204,7 @@
       </div>
     </div>
 
-    <!-- Card 6: Business Check Slip (Lower-Right Center) -->
+    <!-- Card 6: Business Check Slip -->
     <div class="scroll-card absolute bottom-[7%] right-[3%] sm:right-[8%] md:right-[15%] z-25" data-y="-1080" data-rot="6">
       <div class="w-[350px] sm:w-[450px] md:w-[520px] bg-[#fdfcf7] text-stone-900 rounded-3xl p-7 md:p-8 shadow-[0_38px_75px_rgba(0,0,0,0.28)] border border-stone-300">
         <div class="flex justify-between items-start">
@@ -217,13 +228,25 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- Final Footer Stage -->
-  <footer class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8 text-center">
-    <h2 class="font-headline text-6xl md:text-8xl text-[#d4f038] uppercase tracking-tight">Clarity Reclaimed.</h2>
-    <p class="text-neutral-400 mt-3 font-mono-code text-sm max-w-md">Monthly close, reconciliation, and peace of mind[cite: 1, 2].</p>
+  <!-- ==================== INTERACTIVE SCATTER FOOTER ==================== -->
+  <footer class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-8 text-center overflow-hidden">
+    <div id="scatter-container" class="max-w-6xl w-full mx-auto px-4 select-none">
+      
+      <!-- Line 1: Bold Primary Display Type (Avoids cursor) -->
+      <h2 class="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-[#d4f038] tracking-tight uppercase leading-[0.9] flex flex-wrap justify-center items-center">
+        <!-- Spanned automatically via script for physics scatter -->
+        Let me handle your books with precision
+      </h2>
+
+      <!-- Line 2: Fluid Contrast Secondary Display Type (Avoids cursor) -->
+      <p class="font-headline text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-white/90 tracking-tight uppercase leading-[0.95] mt-4 sm:mt-6 flex flex-wrap justify-center items-center">
+        while you focus on your vision
+      </p>
+
+    </div>
   </footer>
 
-  <!-- ==================== ANIMATION SCRIPT ==================== -->
+  <!-- ==================== ANIMATION ENGINE ==================== -->
   <script>
     gsap.registerPlugin(ScrollTrigger);
 
@@ -305,7 +328,6 @@
         ctx.clearRect(0, 0, logicalW, logicalH);
         ctx.drawImage(img, dx, dy, dw, dh);
 
-        // IN-CANVAS LIME FLOOD (Zero rectangular borders or seams)
         if (limeAlpha > 0) {
           ctx.save();
           ctx.fillStyle = '#d4f038';
@@ -399,6 +421,77 @@
         }, 6.0 + (index * 0.12));
       });
 
+    })();
+
+    // 4. CHAOTIC CURSOR-AVOIDANCE / SCATTER PHYSICS ENGINE
+    (function () {
+      const container = document.getElementById('scatter-container');
+      const lines = container.querySelectorAll('h2, p');
+
+      // Break text into individual interactive characters while preserving spaces
+      lines.forEach(el => {
+        const text = el.innerText.trim();
+        el.innerHTML = text.split(' ').map(word => {
+          const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
+          return `<span class="inline-block whitespace-nowrap mr-[0.28em]">${chars}</span>`;
+        }).join('');
+      });
+
+      const chars = Array.from(container.querySelectorAll('.scatter-char'));
+      let charData = [];
+
+      function cacheCharPositions() {
+        charData = chars.map(char => {
+          const rect = char.getBoundingClientRect();
+          return {
+            el: char,
+            cx: rect.left + rect.width / 2 + window.scrollX,
+            cy: rect.top + rect.height / 2 + window.scrollY,
+            ox: 0,
+            oy: 0,
+            rot: 0
+          };
+        });
+      }
+      window.addEventListener('resize', cacheCharPositions);
+      window.addEventListener('scroll', cacheCharPositions, { passive: true });
+      setTimeout(cacheCharPositions, 300); // Initial layout cache
+
+      const RADIUS = 140; // Detection threshold around pointer
+      const MAX_PUSH = 110; // Maximum displacement distance
+
+      window.addEventListener('mousemove', (e) => {
+        const mx = e.pageX;
+        const my = e.pageY;
+
+        charData.forEach(item => {
+          const dx = item.cx - mx;
+          const dy = item.cy - my;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < RADIUS && dist > 0) {
+            const force = (1 - dist / RADIUS);
+            const angle = Math.atan2(dy, dx);
+            
+            // Scatter chaotically away from cursor
+            const pushX = Math.cos(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 15;
+            const pushY = Math.sin(angle) * force * MAX_PUSH + (Math.random() - 0.5) * 15;
+            const pushRot = (Math.random() - 0.5) * 45 * force;
+
+            item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.15})`;
+          } else {
+            // Elastic snap-back
+            item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
+          }
+        });
+      });
+
+      // Clear all transformations if cursor leaves window
+      document.addEventListener('mouseleave', () => {
+        charData.forEach(item => {
+          item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
+        });
+      });
     })();
   </script>
 </body>
