@@ -40,18 +40,9 @@
       letter-spacing: -0.04em;
     }
 
-    /* Character hero: frame canvas + overlays */
+    /* Character hero: frame canvas */
     #frame-canvas {
       object-fit: cover;
-    }
-    .hero-symbol {
-      position: absolute;
-      color: #d4f038;
-      font-size: clamp(14px, 2.2vw, 26px);
-      font-weight: 700;
-      opacity: 0;
-      transform: translateY(0px);
-      white-space: nowrap;
     }
   </style>
 </head>
@@ -69,37 +60,6 @@
 
       <!-- Frame-sequence canvas: draws frame N based on scroll progress -->
       <canvas id="frame-canvas" class="absolute inset-0 w-full h-full"></canvas>
-
-      <!-- Floating accounting numbers/symbols: visible early, fade before electricity kicks in -->
-      <div id="floating-symbols" class="absolute inset-0 pointer-events-none select-none opacity-0">
-        <span class="hero-symbol font-mono-code" style="left:12%; top:22%;">42%</span>
-        <span class="hero-symbol font-mono-code" style="left:78%; top:18%;">Σ</span>
-        <span class="hero-symbol font-mono-code" style="left:20%; top:68%;">$8,450</span>
-        <span class="hero-symbol font-mono-code" style="left:70%; top:70%;">÷</span>
-        <span class="hero-symbol font-mono-code" style="left:85%; top:45%;">-18.2%</span>
-        <span class="hero-symbol font-mono-code" style="left:8%; top:45%;">#3082</span>
-        <span class="hero-symbol font-mono-code" style="left:50%; top:14%;">%</span>
-        <span class="hero-symbol font-mono-code" style="left:60%; top:82%;">a²+b²=c²</span>
-      </div>
-
-      <!-- Electricity crackle overlay -->
-      <div id="electricity-overlay" class="absolute inset-0 pointer-events-none opacity-0">
-        <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
-          <g stroke="#d4f038" stroke-width="2.5" fill="none" opacity="0.9">
-            <path d="M120,80 L180,260 L110,300 L220,520 L150,560 L260,780" />
-            <path d="M880,60 L800,240 L870,280 L740,500 L820,540 L700,760" />
-            <path d="M500,0 L470,180 L540,220 L480,420" />
-          </g>
-        </svg>
-      </div>
-
-      <!-- Text reveal, emerges as the smoke-covered final frame fades out -->
-      <div id="hero-reveal-text" class="absolute inset-0 flex items-center justify-center px-4 opacity-0 pointer-events-none">
-        <h1 class="font-headline solid-editorial text-[15vw] sm:text-[12vw] uppercase text-center text-white">
-          Numbers Not<br/>
-          <span class="text-[#d4f038]">Making Sense?</span>
-        </h1>
-      </div>
 
     </div>
   </section>
@@ -261,18 +221,23 @@
       const canvas = document.getElementById('frame-canvas');
       const ctx = canvas.getContext('2d');
       const loader = document.getElementById('hero-loader');
-      const symbolsEl = document.getElementById('floating-symbols');
-      const electricityEl = document.getElementById('electricity-overlay');
-      const revealTextEl = document.getElementById('hero-reveal-text');
-      const symbols = gsap.utils.toArray('.hero-symbol');
 
       const images = new Array(FRAME_COUNT);
-      let loadedCount = 0;
       let firstFrameReady = false;
+      let logicalW = window.innerWidth;
+      let logicalH = window.innerHeight;
+      let lastDrawnIndex = -1;
 
       function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        logicalW = window.innerWidth;
+        logicalH = window.innerHeight;
+        canvas.width = logicalW * dpr;
+        canvas.height = logicalH * dpr;
+        canvas.style.width = logicalW + 'px';
+        canvas.style.height = logicalH + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS-pixel coordinates, render at native resolution
+        lastDrawnIndex = -1; // force redraw at new size
       }
       window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
@@ -280,19 +245,20 @@
       function drawFrame(index) {
         const img = images[index];
         if (!img || !img.complete || img.naturalWidth === 0) return;
-        const canvasRatio = canvas.width / canvas.height;
+        const canvasRatio = logicalW / logicalH;
         const imgRatio = img.naturalWidth / img.naturalHeight;
         let dw, dh, dx, dy;
         // cover-fit so the character frame fills the viewport without distortion
         if (imgRatio > canvasRatio) {
-          dh = canvas.height; dw = dh * imgRatio;
-          dx = (canvas.width - dw) / 2; dy = 0;
+          dh = logicalH; dw = dh * imgRatio;
+          dx = (logicalW - dw) / 2; dy = 0;
         } else {
-          dw = canvas.width; dh = dw / imgRatio;
-          dx = 0; dy = (canvas.height - dh) / 2;
+          dw = logicalW; dh = dw / imgRatio;
+          dx = 0; dy = (logicalH - dh) / 2;
         }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, logicalW, logicalH);
         ctx.drawImage(img, dx, dy, dw, dh);
+        lastDrawnIndex = index;
       }
 
       // Preload: first frame blocking, rest streamed in behind the loader
@@ -300,7 +266,6 @@
         const img = new Image();
         img.src = FRAME_PATH(i + 1);
         img.onload = () => {
-          loadedCount++;
           if (!firstFrameReady) {
             firstFrameReady = true;
             drawFrame(0);
@@ -310,50 +275,14 @@
         images[i] = img;
       }
 
-      // Sequence timing, expressed as fractions of this section's total scroll (0 -> 1)
-      const T = {
-        framesEnd: 0.82,        // frame sequence plays across this much of the scroll
-        symbolsIn: [0.02, 0.10],
-        symbolsOut: [0.20, 0.30],
-        electricityIn: [0.42, 0.55],
-        electricityOut: [0.68, 0.78],
-        textIn: [0.85, 1.0]
-      };
-
-      const rangeProgress = (p, [start, end]) => gsap.utils.clamp(0, 1, (p - start) / (end - start));
-
       ScrollTrigger.create({
         trigger: '#character-hero',
         start: 'top top',
         end: 'bottom bottom',
         scrub: true,
         onUpdate: (self) => {
-          const p = self.progress;
-
-          // 1. Frame sequence
-          const frameProgress = gsap.utils.clamp(0, 1, p / T.framesEnd);
-          const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(frameProgress * (FRAME_COUNT - 1)));
-          drawFrame(frameIndex);
-
-          // 2. Floating accounting symbols: drift up and fade, in then out
-          const symbolsInP = rangeProgress(p, T.symbolsIn);
-          const symbolsOutP = rangeProgress(p, T.symbolsOut);
-          const symbolsOpacity = symbolsInP * (1 - symbolsOutP);
-          symbolsEl.style.opacity = symbolsOpacity;
-          symbols.forEach((el, i) => {
-            const depth = 30 + (i % 4) * 18;
-            el.style.transform = `translateY(${-depth * symbolsInP}px)`;
-          });
-
-          // 3. Electricity crackle
-          const elecInP = rangeProgress(p, T.electricityIn);
-          const elecOutP = rangeProgress(p, T.electricityOut);
-          electricityEl.style.opacity = Math.max(0, elecInP - elecOutP) * (0.6 + Math.random() * 0.4);
-
-          // 4. Canvas fades out through smoke as headline fades in underneath
-          const textInP = rangeProgress(p, T.textIn);
-          canvas.style.opacity = 1 - textInP;
-          revealTextEl.style.opacity = textInP;
+          const frameIndex = Math.min(FRAME_COUNT - 1, Math.floor(self.progress * (FRAME_COUNT - 1)));
+          if (frameIndex !== lastDrawnIndex) drawFrame(frameIndex);
         }
       });
     })();
