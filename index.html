@@ -8,10 +8,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Fonts: Bebas Neue, Space Grotesk, Syne (Editorial Display), Space Mono, Caveat -->
+  <!-- Google Fonts: Bebas Neue, Space Grotesk, Space Mono, Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600&family=Space+Grotesk:wght@500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <!-- GSAP + ScrollTrigger -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -34,16 +34,19 @@
       margin: 0;
     }
 
+    /* Original Headline Font */
     .font-headline {
       font-family: 'Bebas Neue', sans-serif;
     }
 
-    /* Distinct Awwwards editorial display for the footer statement */
-    .font-statement {
-      font-family: 'Syne', sans-serif;
-      letter-spacing: -0.04em;
+    /* Dedicated Font for the Footer Books Section */
+    .font-statement-grotesk {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.045em;
     }
 
+    /* Original Fonts for Cards and Signatures */
     .font-mono-code {
       font-family: 'Space Mono', monospace;
     }
@@ -52,6 +55,7 @@
       font-family: 'Caveat', cursive;
     }
 
+    /* Original Solid Pure White Headline */
     .solid-editorial-white {
       color: #ffffff !important;
       text-shadow: 0 14px 45px rgba(0, 0, 0, 0.25);
@@ -113,7 +117,7 @@
   <!-- ==================== STAGE 2: HEADLINE & LARGE OVERLAY ARTIFACTS ==================== -->
   <div id="fixed-content-stage" class="fixed inset-0 w-full h-full z-10 flex items-center justify-center overflow-hidden opacity-0 pointer-events-none [perspective:1400px]">
     
-    <!-- Massive Pure White Headline -->
+    <!-- Massive Pure White Headline (Original Bebas Neue) -->
     <div id="headline-container" class="absolute z-10 text-center px-4 pointer-events-none select-none w-full max-w-7xl">
       <h1 class="font-headline solid-editorial-white text-[19vw] uppercase">
         Numbers Not<br/>
@@ -241,21 +245,21 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== TIGHTENED INTERACTIVE SCATTER FOOTER ==================== -->
+  <!-- ==================== TIGHTENED SPACE GROTESK FOOTER ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 text-center overflow-hidden">
     
-    <!-- Transparent Ambient Cursor Light: strictly localized inside this section with reduced opacity -->
+    <!-- Transparent Ambient Cursor Light: strictly localized with subtle intensity -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[420px] h-[420px] rounded-full bg-[#d4f038]/7 blur-[110px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
     <div id="scatter-container" class="max-w-6xl w-full mx-auto px-4 select-none relative z-20">
       
-      <!-- Line 1: Syne Bold Display in Accent Lime with tight tracking -->
-      <h2 class="font-statement text-4xl sm:text-6xl md:text-7xl lg:text-[5.4vw] font-extrabold text-[#d4f038] tracking-tighter uppercase leading-[0.82] flex flex-wrap justify-center items-center">
+      <!-- Line 1: Space Grotesk Bold in Accent Lime -->
+      <h2 class="font-statement-grotesk text-4xl sm:text-6xl md:text-7xl lg:text-[4.8vw] text-[#d4f038] tracking-tight uppercase leading-[0.88] flex flex-wrap justify-center items-center">
         Let me handle your books with precision
       </h2>
 
-      <!-- Line 2: Syne Bold Display in Pure White nested directly underneath -->
-      <p class="font-statement text-3xl sm:text-5xl md:text-6xl lg:text-[4.5vw] font-bold text-white/90 tracking-tighter uppercase leading-[0.84] -mt-1 sm:-mt-2 md:-mt-3 flex flex-wrap justify-center items-center">
+      <!-- Line 2: Space Grotesk Bold in Pure White -->
+      <p class="font-statement-grotesk text-3xl sm:text-5xl md:text-6xl lg:text-[4.0vw] text-white/90 tracking-tight uppercase leading-[0.90] -mt-1 sm:-mt-2 md:-mt-3 flex flex-wrap justify-center items-center">
         while you focus on your vision
       </p>
 
@@ -433,7 +437,7 @@
 
     })();
 
-    // 4. SCOPED CURSOR-AVOIDANCE / SCATTER PHYSICS
+    // 4. SCOPED CURSOR-AVOIDANCE / SCATTER PHYSICS (SPACE GROTESK)
     (function () {
       const section = document.getElementById('books-section');
       const container = document.getElementById('scatter-container');
@@ -468,11 +472,9 @@
       const RADIUS = 145;
       const MAX_PUSH = 110;
 
-      // Event listener strictly bounded to #books-section
       section.addEventListener('mousemove', (e) => {
         const secRect = section.getBoundingClientRect();
         
-        // Relative mouse coordinates strictly within the footer container
         const relX = e.clientX - secRect.left;
         const relY = e.clientY - secRect.top;
 
