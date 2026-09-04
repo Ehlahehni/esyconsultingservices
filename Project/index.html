@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scroll Animation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Loading Screen */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 0.5s ease;
+    }
+
+    #loader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Scroll container */
+    .scroll-track {
+      height: 500vh;
+      position: relative;
+    }
+
+    .canvas-container {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Content section after scroll */
+    .next-section {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0d0d0d;
+      font-size: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <p id="progress-text">Loading: 0%</p>
+  </div>
+
+  <div class="scroll-track">
+    <div class="canvas-container">
+      <canvas id="hero-canvas"></canvas>
+    </div>
+  </div>
+
+  <section class="next-section">
+    <h2>Scroll Complete</h2>
+  </section>
+
+  <script>
+    const canvas = document.getElementById("hero-canvas");
+    const ctx = canvas.getContext("2d");
+    const loader = document.getElementById("loader");
+    const progressText = document.getElementById("progress-text");
+
+    const frameCount = 203;
+    const currentFrame = (i) =>
+      `images/ezgif-frame-${i.toString().padStart(3, "0")}.jpg`;
+
+    const images = [];
+    let loadedCount = 0;
+    let targetFrame = 0;
+    let currentRenderedFrame = 0;
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      render(currentRenderedFrame);
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    function render(index) {
+      const img = images[index];
+      if (!img || !img.complete) return;
+
+      const hRatio = canvas.width / img.width;
+      const vRatio = canvas.height / img.height;
+      const ratio = Math.max(hRatio, vRatio);
+
+      const shiftX = (canvas.width - img.width * ratio) / 2;
+      const shiftY = (canvas.height - img.height * ratio) / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(
+        img,
+        0,
+        0,
+        img.width,
+        img.height,
+        shiftX,
+        shiftY,
+        img.width * ratio,
+        img.height * ratio
+      );
+    }
+
+    // Preload images
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image();
+      img.src = currentFrame(i);
+      img.onload = () => {
+        loadedCount++;
+        const percent = Math.floor((loadedCount / frameCount) * 100);
+        progressText.textContent = `Loading: ${percent}%`;
+
+        if (loadedCount === 1) {
+          resizeCanvas();
+        }
+
+        if (loadedCount === frameCount) {
+          loader.classList.add("hidden");
+        }
+      };
+      images.push(img);
+    }
+
+    // Scroll calculation
+    window.addEventListener("scroll", () => {
+      const track = document.querySelector(".scroll-track");
+      const trackTop = track.getBoundingClientRect().top;
+      const maxScroll = track.offsetHeight - window.innerHeight;
+
+      const progress = Math.min(Math.max(-trackTop / maxScroll, 0), 1);
+      targetFrame = Math.min(frameCount - 1, Math.floor(progress * frameCount));
+    });
+
+    // Smooth render loop (LERP)
+    function loop() {
+      // Smoothly slide current frame to target frame
+      currentRenderedFrame += (targetFrame - currentRenderedFrame) * 0.15;
+      render(Math.round(currentRenderedFrame));
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>
