@@ -89,14 +89,14 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* 70% Transparent Frosted Glass Card */
+    /* Compact 70% Transparent Frosted Glass Card */
     .glass-metrics-card {
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.2),
-                  0 25px 60px -15px rgba(0, 0, 0, 0.85);
+                  0 20px 50px -10px rgba(0, 0, 0, 0.85);
     }
 
     /* Interactive 3D Card Tilt Wrapper */
@@ -211,7 +211,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1].
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
         </p>
       </div>
     </div>
@@ -260,7 +260,7 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 sm:p-10 md:p-14 overflow-hidden">
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 sm:p-10 md:p-12 overflow-hidden">
     
     <!-- 80% Opacity Full Background Video -->
     <video 
@@ -277,28 +277,28 @@
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <div class="w-full max-w-7xl mx-auto flex flex-col items-center select-none relative z-20 space-y-10 md:space-y-12">
+    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-8 sm:space-y-10">
       
-      <!-- TOP SECTION: BALANCED ROW (STATEMENT LEFT, 3D INTERACTIVE PORTRAIT RIGHT) -->
-      <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+      <!-- TOP SECTION: TIGHTENED ROW WITH MINIMAL DEAD SPACE -->
+      <div class="w-full flex flex-col lg:flex-row items-center justify-start gap-8 lg:gap-14">
         
-        <!-- 1. LEFT-ALIGNED STATEMENT & SUBHEADLINE -->
-        <div class="flex-1 flex flex-col items-start text-left max-w-3xl">
-          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] leading-[1.05] tracking-tight uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
+        <!-- 1. LEFT-ALIGNED STATEMENT & SUBHEADLINE (BIGGER TYPOGRAPHY, NATURAL WRAP) -->
+        <div class="flex-1 flex flex-col items-start text-left max-w-2xl lg:max-w-[700px]">
+          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-4xl sm:text-6xl md:text-7xl lg:text-[4.7vw] leading-[0.98] tracking-tight uppercase drop-shadow-[0_14px_38px_rgba(0,0,0,0.95)]">
             <span class="block">Let me handle your</span>
-            <span class="block text-[#d4f038] whitespace-nowrap">books with precision</span>
+            <span class="block text-[#d4f038]">books with precision</span>
             <span class="block text-white/95">while you focus on your mission</span>
           </h2>
 
-          <!-- Subheadline: Left-aligned and locked underneath -->
-          <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-6 text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] border-l-2 border-[#d4f038]/60 pl-3">
+          <!-- Subheadline: Clean left alignment, no line borders -->
+          <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
             Clean books. Zero stress. More time to build what matters.
           </p>
         </div>
 
         <!-- 2. RIGHT-ALIGNED INTERACTIVE 3D TILT PORTRAIT -->
         <div class="portrait-tilt-stage flex items-center justify-center flex-shrink-0">
-          <div id="portrait-interactive" class="portrait-card relative w-56 sm:w-64 md:w-72 lg:w-80 cursor-pointer select-none">
+          <div id="portrait-interactive" class="portrait-card relative w-56 sm:w-64 md:w-72 lg:w-[310px] cursor-pointer select-none">
             
             <!-- Lime Halo Ring Effect -->
             <div class="absolute inset-0 rounded-full bg-[#d4f038]/15 blur-2xl -z-10 scale-110 pointer-events-none"></div>
@@ -319,35 +319,35 @@
 
       </div>
 
-      <!-- 3. KEY METRICS: 70% FROSTED GLASS -->
-      <div id="metrics-card" class="w-full rounded-3xl glass-metrics-card py-8 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
+      <!-- 3. COMPACT KEY METRICS STRIP: FITTED TO METRICS (MAX-W-4XL) -->
+      <div id="metrics-card" class="w-full max-w-4xl rounded-2xl glass-metrics-card py-5 px-6 sm:px-8 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
         
         <!-- Metric 1: 3000+ -->
-        <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[30px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="3000+">
+        <div class="flex flex-col items-center justify-center text-center px-3 pt-2 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] min-h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="3000+">
             0000
           </div>
-          <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[210px] leading-relaxed">
+          <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-200 uppercase tracking-wider mt-2 max-w-[190px] leading-snug">
             Transactions Categorized
           </p>
         </div>
 
         <!-- Metric 2: 200+ -->
-        <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[30px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="200+">
+        <div class="flex flex-col items-center justify-center text-center px-3 pt-4 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] min-h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="200+">
             000
           </div>
-          <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[210px] leading-relaxed">
+          <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-200 uppercase tracking-wider mt-2 max-w-[190px] leading-snug">
             Accounts Reconciled
           </p>
         </div>
 
         <!-- Metric 3: 1000+ -->
-        <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[30px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="1000+">
+        <div class="flex flex-col items-center justify-center text-center px-3 pt-4 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] min-h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="1000+">
             0000
           </div>
-          <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[230px] leading-relaxed">
+          <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-200 uppercase tracking-wider mt-2 max-w-[210px] leading-snug">
             Invoices, bills &amp; checks accurately recorded
           </p>
         </div>
@@ -636,10 +636,10 @@
         const yPct = mouseY / bounds.height - 0.5;
 
         // Dynamic 3D tilt calculation
-        const rotX = -yPct * 26; // -13deg to +13deg
-        const rotY = xPct * 26;  // -13deg to +13deg
+        const rotX = -yPct * 24; // -12deg to +12deg
+        const rotY = xPct * 24;  // -12deg to +12deg
 
-        portrait.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.05, 1.05, 1.05)`;
+        portrait.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.04, 1.04, 1.04)`;
       });
 
       portrait.addEventListener('mouseleave', () => {
