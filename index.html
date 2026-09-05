@@ -199,7 +199,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero.
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1].
         </p>
       </div>
     </div>
@@ -247,7 +247,7 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== FINAL STATEMENT & FROSTED 8-BIT METRICS ==================== -->
+  <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 overflow-hidden">
     
     <!-- 80% Opacity Full Background Video -->
@@ -264,24 +264,50 @@
     <!-- Compact Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/5 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-8 sm:space-y-12">
+    <!-- MAIN CONTENT CONTAINER -->
+    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-8 sm:space-y-10">
       
-      <!-- 1. 3-LINE STATEMENT (NO FROSTED GLASS) -->
-      <div class="text-center max-w-5xl px-4">
-        <h2 id="scatter-statement" class="font-statement-grotesk text-center text-white text-4xl sm:text-6xl md:text-7xl lg:text-[5.2vw] leading-[1.08] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
-          <span class="block">Let me handle your</span>
-          <span class="block text-[#d4f038]">books with precision</span>
-          <span class="block">while you focus on your mission</span>
-        </h2>
+      <!-- TOP GRID: LEFT-ALIGNED STATEMENT & RIGHT-ALIGNED PORTRAIT -->
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center">
+        
+        <!-- 1. LEFT-ALIGNED 3-LINE STATEMENT & SUBHEADLINE (Cols 1-7/8) -->
+        <div class="lg:col-span-8 flex flex-col items-start text-left px-2 sm:px-4">
+          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-4xl sm:text-5xl md:text-6xl lg:text-[4.6vw] leading-[1.08] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
+            <span class="block">Let me handle your</span>
+            <span class="block text-[#d4f038]">books with precision</span>
+            <span class="block">while you focus on your mission</span>
+          </h2>
 
-        <!-- Subheadline -->
-        <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 sm:mt-6 max-w-2xl mx-auto opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-          Clean books. Zero stress. More time to build what matters.
-        </p>
+          <!-- Subheadline: Left-aligned -->
+          <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 sm:mt-6 text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+            Clean books. Zero stress. More time to build what matters.
+          </p>
+        </div>
+
+        <!-- 2. RIGHT-ALIGNED CUTOUT PORTRAIT (Cols 9-12) -->
+        <div class="lg:col-span-4 flex justify-center lg:justify-end relative">
+          <div class="relative w-56 sm:w-68 md:w-76 lg:w-[340px] select-none pointer-events-none">
+            <!-- Ambient back-glow behind cutout -->
+            <div class="absolute inset-0 bg-[#d4f038]/10 rounded-full blur-[65px] -z-10"></div>
+            
+            <picture>
+              <source srcset="images/portrait.webp" type="image/webp" />
+              <img 
+                src="images/portrait.png" 
+                alt="Portrait" 
+                class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.85)] filter contrast-105"
+              />
+            </picture>
+
+            <!-- Bottom torso gradient dissolve -->
+            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0b0f14]/90 via-[#0b0f14]/40 to-transparent"></div>
+          </div>
+        </div>
+
       </div>
 
-      <!-- 2. KEY METRICS: 70% FROSTED GLASS -->
-      <div id="metrics-card" class="w-full max-w-5xl rounded-3xl glass-metrics-card py-9 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15">
+      <!-- 3. KEY METRICS: 70% FROSTED GLASS (FULL WIDTH CENTERED STRIP) -->
+      <div id="metrics-card" class="w-full rounded-3xl glass-metrics-card py-8 sm:py-9 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
         
         <!-- Metric 1: 3000+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
@@ -501,7 +527,7 @@
         const words = text.split(' ');
         line.innerHTML = words.map(word => {
           const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
-          return `<span class="inline-block whitespace-nowrap mx-[0.14em]">${chars}</span>`;
+          return `<span class="inline-block whitespace-nowrap mx-[0.12em]">${chars}</span>`;
         }).join(' ');
       });
 
@@ -554,6 +580,7 @@
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
+            // 30-Second Lazy Recoil
             item.el.style.transition = 'transform 30.0s cubic-bezier(0.01, 0.99, 0.1, 1.0), text-shadow 3.5s ease-out, filter 3.5s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
@@ -578,7 +605,6 @@
       let activeIntervals = [];
 
       function startSlotMachineRoll() {
-        // Clear any running timers so it restarts cleanly
         activeIntervals.forEach(id => clearInterval(id));
         activeIntervals = [];
 
@@ -592,7 +618,6 @@
             const elapsed = performance.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
 
-            // Progressive character lock
             const lockedCharsCount = Math.floor(progress * targetLen);
 
             let display = "";
@@ -623,7 +648,6 @@
         });
       }
 
-      // Trigger every time the user scrolls in or back up into the section
       ScrollTrigger.create({
         trigger: "#books-section",
         start: "top 75%",
@@ -631,7 +655,6 @@
         onEnterBack: startSlotMachineRoll
       });
 
-      // Immediate check if page loads directly here
       setTimeout(() => {
         const rect = document.getElementById('books-section').getBoundingClientRect();
         if (rect.top < window.innerHeight * 0.8) {
