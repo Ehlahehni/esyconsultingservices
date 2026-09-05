@@ -279,81 +279,84 @@
     <!-- MAIN CONTENT CONTAINER -->
     <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-6 sm:space-y-8">
       
-      <!-- TOP SECTION: TIGHTENED ROW (HEADLINE LEFT, UNCUT PHOTO RIGHT) -->
-      <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8 px-2">
+      <!-- TOP SECTION: STATEMENT (LEFT) & MONO-GREEN HALO PORTRAIT (RIGHT) -->
+      <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10 px-2">
         
-        <!-- 1. LEFT-ALIGNED STATEMENT & SUBHEADLINE: 4 Intentional, Balanced Lines -->
-        <div class="flex-1 flex flex-col items-start text-left max-w-xl lg:max-w-[560px]">
-          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.6rem] leading-[1.03] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]">
-            <span class="block">Let me handle your</span>
-            <span class="block text-[#d4f038]">books with precision</span>
-            <span class="block text-white/95">while you focus</span>
-            <span class="block text-white/95">on your mission</span>
+        <!-- 1. 3-LINE STATEMENT MATCHING PIC 2 CADENCE -->
+        <div class="flex-1 flex flex-col items-start text-left max-w-2xl lg:max-w-[650px]">
+          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.5rem] leading-[1.05] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]">
+            <span class="block whitespace-nowrap">Let me handle your books</span>
+            <span class="block whitespace-nowrap">with precision while you</span>
+            <span class="block whitespace-nowrap">focus on your vision</span>
           </h2>
 
           <!-- Subheadline -->
-          <p class="font-mono-code text-[11px] sm:text-xs md:text-sm text-neutral-300 tracking-wider uppercase mt-4 text-left opacity-85 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+          <p class="font-mono-code text-[11px] sm:text-xs md:text-sm text-neutral-300 tracking-wider uppercase mt-5 text-left opacity-85 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
             Clean books. Zero stress. More time to build what matters.
           </p>
         </div>
 
-        <!-- 2. RIGHT-ALIGNED INTERACTIVE 3D TILT PORTRAIT (No Clipping) -->
+        <!-- 2. PORTRAIT WITH UNIFIED SOLID LIME HALO -->
         <div class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-1 sm:pr-4">
           <div id="portrait-interactive" class="portrait-card relative w-52 sm:w-60 md:w-68 lg:w-72 cursor-pointer select-none">
             
             <!-- Ambient Glow Behind Ring -->
-            <div class="absolute inset-0 rounded-full bg-[#d4f038]/20 blur-xl -z-10 scale-105 pointer-events-none"></div>
+            <div class="absolute inset-0 rounded-full bg-[#d4f038]/25 blur-2xl -z-10 scale-105 pointer-events-none"></div>
 
-            <!-- Crisp Lime Circular Frame -->
-            <div class="relative w-full aspect-square rounded-full p-1.5 bg-gradient-to-b from-[#d4f038] via-[#d4f038]/80 to-transparent shadow-[0_12px_40px_rgba(0,0,0,0.85)]">
-              <div class="w-full h-full rounded-full overflow-hidden bg-[#0b0f14]/80 flex items-center justify-center">
-                <picture class="w-full h-full block">
-                  <source srcset="images/portrait.webp" type="image/webp" />
-                  <img 
-                    id="portrait-img"
-                    src="images/portrait.png" 
-                    alt="Portrait" 
-                    class="w-full h-full object-cover scale-105 transition-transform duration-300"
-                  />
-                </picture>
-              </div>
+            <!-- Solid Uniform Lime Green Border -->
+            <div class="relative w-full aspect-square rounded-full border-[6px] border-[#d4f038] shadow-[0_0_28px_rgba(212,240,56,0.35),0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden bg-[#0b0f14]">
+              <picture class="w-full h-full block">
+                <source srcset="images/portrait.webp" type="image/webp" />
+                <img 
+                  id="portrait-img"
+                  src="images/portrait.png" 
+                  alt="Portrait" 
+                  class="w-full h-full object-cover scale-105 transition-transform duration-300"
+                />
+              </picture>
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- 3. COMPACT KEY METRICS STRIP: Clean, proportional, not in-your-face -->
-      <div id="metrics-card" class="w-full max-w-3xl rounded-2xl glass-metrics-card py-4 px-4 sm:px-6 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20">
+      <!-- 3. COMPACT KEY METRICS STRIP: ALIGNED BASELINE & BALANCED 2-LINE LABELS -->
+      <div id="metrics-card" class="w-full max-w-3xl rounded-2xl glass-metrics-card py-5 px-4 sm:px-6 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10 relative z-20">
         
         <!-- Metric 1: 3000+ -->
-        <div class="flex flex-col items-center justify-center text-center px-2 pt-2 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-[22px] min-h-[32px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="3000+">
+        <div class="flex flex-col items-center justify-between text-center px-2 pt-2 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-[22px] h-[36px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="3000+">
             0000
           </div>
-          <p class="font-mono-code text-[11px] sm:text-xs font-medium text-neutral-300 uppercase tracking-wider mt-1.5 max-w-[170px] leading-tight">
-            Transactions Categorized
-          </p>
+          <div class="min-h-[2.5rem] flex items-center justify-center mt-1">
+            <p class="font-mono-code text-[11px] sm:text-xs font-medium text-neutral-300 uppercase tracking-wider leading-tight">
+              Transactions<br/>Categorized
+            </p>
+          </div>
         </div>
 
-        <!-- Metric 2: 200+ -->
-        <div class="flex flex-col items-center justify-center text-center px-2 pt-3 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-[22px] min-h-[32px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="200+">
+        <!-- Metric 2: 200+ (Level Baseline & Aligned Label) -->
+        <div class="flex flex-col items-center justify-between text-center px-2 pt-3 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-[22px] h-[36px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="200+">
             000
           </div>
-          <p class="font-mono-code text-[11px] sm:text-xs font-medium text-neutral-300 uppercase tracking-wider mt-1.5 max-w-[170px] leading-tight">
-            Accounts Reconciled
-          </p>
+          <div class="min-h-[2.5rem] flex items-center justify-center mt-1">
+            <p class="font-mono-code text-[11px] sm:text-xs font-medium text-neutral-300 uppercase tracking-wider leading-tight">
+              Accounts<br/>Reconciled
+            </p>
+          </div>
         </div>
 
         <!-- Metric 3: 1000+ -->
-        <div class="flex flex-col items-center justify-center text-center px-2 pt-3 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-[22px] min-h-[32px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="1000+">
+        <div class="flex flex-col items-center justify-between text-center px-2 pt-3 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-[22px] h-[36px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="1000+">
             0000
           </div>
-          <p class="font-mono-code text-[11px] sm:text-xs font-medium text-neutral-300 uppercase tracking-wider mt-1.5 max-w-[190px] leading-tight">
-            Invoices, bills &amp; checks accurately recorded
-          </p>
+          <div class="min-h-[2.5rem] flex items-center justify-center mt-1">
+            <p class="font-mono-code text-[11px] sm:text-xs font-medium text-neutral-300 uppercase tracking-wider leading-tight">
+              Invoices, Bills &amp;<br/>Checks Recorded
+            </p>
+          </div>
         </div>
 
       </div>
@@ -544,7 +547,7 @@
         const words = text.split(' ');
         line.innerHTML = words.map(word => {
           const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
-          return `<span class="inline-block whitespace-nowrap mx-[0.1em]">${chars}</span>`;
+          return `<span class="inline-block whitespace-nowrap mx-[0.08em]">${chars}</span>`;
         }).join(' ');
       });
 
