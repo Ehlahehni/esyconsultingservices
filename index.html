@@ -50,7 +50,7 @@
 
     .font-pixel {
       font-family: 'Press Start 2P', monospace;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.02em;
     }
 
     .font-signature {
@@ -97,6 +97,18 @@
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.2),
                   0 25px 60px -15px rgba(0, 0, 0, 0.85);
+    }
+
+    /* Interactive 3D Card Tilt Wrapper */
+    .portrait-tilt-stage {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    .portrait-card {
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s ease;
+      will-change: transform;
+      transform-style: preserve-3d;
     }
 
     .film-grain {
@@ -248,7 +260,7 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-4 sm:p-8 md:p-12 overflow-hidden">
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 sm:p-10 md:p-14 overflow-hidden">
     
     <!-- 80% Opacity Full Background Video -->
     <video 
@@ -256,62 +268,63 @@
       loop 
       muted 
       playsinline 
-      class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-80 mix-blend-screen z-0"
+      class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-75 mix-blend-screen z-0"
     >
       <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
     </video>
 
     <!-- Compact Ambient Spotlight -->
-    <div id="cursor-glow" class="pointer-events-none absolute w-[220px] h-[220px] rounded-full bg-[#d4f038]/5 blur-[70px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
+    <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-8 sm:space-y-10">
+    <div class="w-full max-w-7xl mx-auto flex flex-col items-center select-none relative z-20 space-y-10 md:space-y-12">
       
-      <!-- TOP GRID: LEFT-ALIGNED STATEMENT & RIGHT-ALIGNED PORTRAIT -->
-      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-center">
+      <!-- TOP SECTION: BALANCED ROW (STATEMENT LEFT, 3D INTERACTIVE PORTRAIT RIGHT) -->
+      <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
         
-        <!-- 1. LEFT-ALIGNED 3-LINE STATEMENT & SUBHEADLINE (Cols 1-7/8) -->
-        <div class="lg:col-span-8 flex flex-col items-start text-left px-2 sm:px-4">
-          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-4xl sm:text-5xl md:text-6xl lg:text-[4.6vw] leading-[1.08] uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
+        <!-- 1. LEFT-ALIGNED STATEMENT & SUBHEADLINE -->
+        <div class="flex-1 flex flex-col items-start text-left max-w-3xl">
+          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-6xl lg:text-[4.2vw] leading-[1.05] tracking-tight uppercase drop-shadow-[0_12px_36px_rgba(0,0,0,0.95)]">
             <span class="block">Let me handle your</span>
-            <span class="block text-[#d4f038]">books with precision</span>
-            <span class="block">while you focus on your mission</span>
+            <span class="block text-[#d4f038] whitespace-nowrap">books with precision</span>
+            <span class="block text-white/95">while you focus on your mission</span>
           </h2>
 
-          <!-- Subheadline: Left-aligned -->
-          <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 sm:mt-6 text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+          <!-- Subheadline: Left-aligned and locked underneath -->
+          <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-6 text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] border-l-2 border-[#d4f038]/60 pl-3">
             Clean books. Zero stress. More time to build what matters.
           </p>
         </div>
 
-        <!-- 2. RIGHT-ALIGNED CUTOUT PORTRAIT (Cols 9-12) -->
-        <div class="lg:col-span-4 flex justify-center lg:justify-end relative">
-          <div class="relative w-56 sm:w-68 md:w-76 lg:w-[340px] select-none pointer-events-none">
-            <!-- Ambient back-glow behind cutout -->
-            <div class="absolute inset-0 bg-[#d4f038]/10 rounded-full blur-[65px] -z-10"></div>
+        <!-- 2. RIGHT-ALIGNED INTERACTIVE 3D TILT PORTRAIT -->
+        <div class="portrait-tilt-stage flex items-center justify-center flex-shrink-0">
+          <div id="portrait-interactive" class="portrait-card relative w-56 sm:w-64 md:w-72 lg:w-80 cursor-pointer select-none">
             
-            <picture>
-              <source srcset="images/portrait.webp" type="image/webp" />
-              <img 
-                src="images/portrait.png" 
-                alt="Portrait" 
-                class="w-full h-auto object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.85)] filter contrast-105"
-              />
-            </picture>
+            <!-- Lime Halo Ring Effect -->
+            <div class="absolute inset-0 rounded-full bg-[#d4f038]/15 blur-2xl -z-10 scale-110 pointer-events-none"></div>
 
-            <!-- Bottom torso gradient dissolve -->
-            <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0b0f14]/90 via-[#0b0f14]/40 to-transparent"></div>
+            <div class="relative w-full rounded-full overflow-hidden p-1.5 bg-gradient-to-b from-[#d4f038] via-[#d4f038]/60 to-transparent shadow-[0_15px_45px_rgba(0,0,0,0.9)]">
+              <picture class="block w-full h-full rounded-full overflow-hidden bg-black/40">
+                <source srcset="images/portrait.webp" type="image/webp" />
+                <img 
+                  id="portrait-img"
+                  src="images/portrait.png" 
+                  alt="Portrait" 
+                  class="w-full h-auto object-cover scale-105 transition-transform duration-300"
+                />
+              </picture>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- 3. KEY METRICS: 70% FROSTED GLASS (FULL WIDTH CENTERED STRIP) -->
-      <div id="metrics-card" class="w-full rounded-3xl glass-metrics-card py-8 sm:py-9 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
+      <!-- 3. KEY METRICS: 70% FROSTED GLASS -->
+      <div id="metrics-card" class="w-full rounded-3xl glass-metrics-card py-8 px-4 sm:px-8 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
         
         <!-- Metric 1: 3000+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[48px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="3000+">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[30px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="3000+">
             0000
           </div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[210px] leading-relaxed">
@@ -321,7 +334,7 @@
 
         <!-- Metric 2: 200+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[48px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="200+">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[30px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="200+">
             000
           </div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[210px] leading-relaxed">
@@ -331,7 +344,7 @@
 
         <!-- Metric 3: 1000+ -->
         <div class="flex flex-col items-center justify-center text-center px-4 pt-6 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[32px] min-h-[48px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="1000+">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl lg:text-[30px] min-h-[44px] flex items-center justify-center drop-shadow-[0_0_14px_rgba(212,240,56,0.4)]" data-target="1000+">
             0000
           </div>
           <p class="font-mono-code text-[11px] sm:text-xs text-neutral-200 uppercase tracking-widest mt-3 max-w-[230px] leading-relaxed">
@@ -527,7 +540,7 @@
         const words = text.split(' ');
         line.innerHTML = words.map(word => {
           const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
-          return `<span class="inline-block whitespace-nowrap mx-[0.12em]">${chars}</span>`;
+          return `<span class="inline-block whitespace-nowrap mx-[0.1em]">${chars}</span>`;
         }).join(' ');
       });
 
@@ -580,7 +593,6 @@
             item.el.style.transform = `translate3d(${pushX}px, ${pushY}px, 0) rotate(${pushRot}deg) scale(${1 + force * 0.1})`;
             item.el.classList.add('active-scatter');
           } else {
-            // 30-Second Lazy Recoil
             item.el.style.transition = 'transform 30.0s cubic-bezier(0.01, 0.99, 0.1, 1.0), text-shadow 3.5s ease-out, filter 3.5s ease-out';
             item.el.style.transform = `translate3d(0, 0, 0) rotate(0deg) scale(1)`;
             item.el.classList.remove('active-scatter');
@@ -598,7 +610,44 @@
       });
     })();
 
-    // 4. 8-BIT RETRO 2-SECOND ARCADE ROLLER (RE-TRIGGERS ON EVERY ENTRY)
+    // 4. INTERACTIVE 3D PORTRAIT TILT PHYSICS
+    (function () {
+      const portrait = document.getElementById('portrait-interactive');
+      if (!portrait) return;
+
+      let bounds;
+
+      function updateBounds() {
+        bounds = portrait.getBoundingClientRect();
+      }
+      window.addEventListener('resize', updateBounds);
+      window.addEventListener('scroll', updateBounds, { passive: true });
+
+      portrait.addEventListener('mouseenter', () => {
+        updateBounds();
+      });
+
+      portrait.addEventListener('mousemove', (e) => {
+        if (!bounds) updateBounds();
+        const mouseX = e.clientX - bounds.left;
+        const mouseY = e.clientY - bounds.top;
+
+        const xPct = mouseX / bounds.width - 0.5;
+        const yPct = mouseY / bounds.height - 0.5;
+
+        // Dynamic 3D tilt calculation
+        const rotX = -yPct * 26; // -13deg to +13deg
+        const rotY = xPct * 26;  // -13deg to +13deg
+
+        portrait.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.05, 1.05, 1.05)`;
+      });
+
+      portrait.addEventListener('mouseleave', () => {
+        portrait.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+      });
+    })();
+
+    // 5. 8-BIT RETRO 2-SECOND ARCADE ROLLER
     (function () {
       const counters = document.querySelectorAll('.slot-counter');
       const randomChars = "0123456789$#%*+";
@@ -611,7 +660,7 @@
         counters.forEach((counter, idx) => {
           const target = counter.getAttribute('data-target');
           const targetLen = target.length;
-          const duration = 2000 + (idx * 200); // 2-second roll
+          const duration = 2000 + (idx * 200);
           const startTime = performance.now();
 
           const interval = setInterval(() => {
