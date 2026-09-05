@@ -91,11 +91,11 @@
 
     /* Tailored 70% Frosted Glass Card */
     .glass-metrics-card {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.2),
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.25),
                   0 20px 45px -10px rgba(0, 0, 0, 0.85);
     }
 
@@ -260,8 +260,7 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
-  <!-- Anchored towards the top (pt-8 to pt-14) with spacious room at the bottom over the cityscape -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-8 sm:pt-12 md:pt-14 pb-28 md:pb-36 px-6 sm:px-12 md:px-16 overflow-hidden">
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-32 md:pb-40 px-6 sm:px-12 md:px-16 overflow-hidden">
     
     <!-- 80% Opacity Full Background Video -->
     <video 
@@ -277,56 +276,61 @@
     <!-- Compact Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <!-- 1. TOP HEADER: LOGO AT TOP LEFT (ROBUST LOADING FALLBACKS) -->
-    <div class="w-full max-w-7xl mx-auto relative z-20 flex items-center justify-start mb-4 sm:mb-6">
-      <img 
-        src="images-webp3/logo.png" 
-        alt="Logo" 
-        class="h-11 sm:h-12 md:h-14 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
-        onerror="this.onerror=null; this.src='images-webp3/logo.webp'; if(!this.src) this.src='images-webp3/logo.svg';"
-      />
+    <!-- 1. HANGING BOOKMARK LOGO: Meets top edge flush with zero gap (Pic 1 Note 1) -->
+    <div class="absolute top-0 left-6 sm:left-12 lg:left-16 z-30 pointer-events-none">
+      <div class="w-14 sm:w-16 md:w-20 pt-3 pb-4 px-2 bg-white/95 rounded-b-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center border-b-2 border-x border-neutral-300">
+        <picture class="w-full flex justify-center">
+          <source srcset="images-webp3/logo.webp" type="image/webp" />
+          <img 
+            src="images-webp3/logo.png" 
+            alt="Logo" 
+            class="w-full h-auto object-contain max-h-16"
+            onerror="this.onerror=null; this.src='images-webp3/logo.svg';"
+          />
+        </picture>
+      </div>
     </div>
 
     <!-- 2. MAIN CONTENT ROW: EXACT PIC 2 ALIGNMENT (TEXT & METRICS FLUSH LEFT, LARGE PORTRAIT RIGHT) -->
     <div class="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 select-none relative z-20">
       
-      <!-- LEFT STACK: FLUSH-LEFT HEADLINE, TIGHT SUBHEADLINE, PERFECTLY-FITTED METRICS -->
-      <div class="flex-1 flex flex-col items-start text-left max-w-2xl lg:max-w-[720px] space-y-3 sm:space-y-4">
+      <!-- LEFT COLUMN: STATEMENT + TIGHT SUBHEADLINE + EXPANDED FROSTED METRICS -->
+      <div class="flex-1 flex flex-col items-start text-left w-full max-w-2xl lg:max-w-[760px] space-y-2 sm:space-y-3">
         
-        <!-- 3-Line Statement Matching Pic 2 -->
-        <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.75rem] leading-[1.03] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]">
-          <span class="block whitespace-nowrap">Let me handle your books</span>
-          <span class="block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span>
-          <span class="block whitespace-nowrap">focus on your vision</span>
+        <!-- 3-Line Statement: "BOOKS" defines right boundary for the metrics card -->
+        <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.75rem] leading-[1.03] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)] w-full">
+          <span class="inline-block whitespace-nowrap">Let me handle your <span id="books-anchor">books</span></span><br/>
+          <span class="inline-block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span><br/>
+          <span class="inline-block whitespace-nowrap">focus on your vision</span>
         </h2>
 
-        <!-- Subheadline: Tightened gap, left edge strictly aligned -->
+        <!-- Subheadline: Tightly nested directly below statement -->
         <p class="font-mono-code text-xs sm:text-sm text-neutral-300 tracking-wider uppercase text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] !mt-2">
           Clean books. Zero stress. More time to build what matters.
         </p>
 
-        <!-- PROPORTIONAL FROSTED GLASS METRICS: Matches Pic 2 width & vertical baseline -->
-        <div id="metrics-card" class="w-full max-w-[700px] rounded-2xl glass-metrics-card py-3.5 sm:py-4 px-4 sm:px-6 grid grid-cols-3 divide-x divide-white/15 relative !mt-4">
+        <!-- PROPORTIONAL FROSTED GLASS METRICS CARD: Aligns with 'K' in 'BOOKS' and fills card with zero voids (Pic 1 Notes 2 & 3) -->
+        <div id="metrics-card" class="w-full rounded-2xl glass-metrics-card py-4 sm:py-5 px-4 sm:px-6 md:px-8 grid grid-cols-3 divide-x divide-white/20 relative !mt-5">
           
           <!-- Metric 1: 3000+ -->
           <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-2xl h-[34px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="3000+">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
               0000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-              <p class="font-mono-code text-[10px] sm:text-[11px] md:text-xs font-semibold text-neutral-200 uppercase tracking-wide leading-tight">
+            <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5">
+              <p class="font-mono-code text-[11px] sm:text-xs md:text-[13px] font-semibold text-neutral-100 uppercase tracking-wide leading-snug">
                 Transactions<br/>Categorized
               </p>
             </div>
           </div>
 
-          <!-- Metric 2: 200+ (Exact Matching Baseline) -->
+          <!-- Metric 2: 200+ (Matching Baseline) -->
           <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-2xl h-[34px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="200+">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
               000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-              <p class="font-mono-code text-[10px] sm:text-[11px] md:text-xs font-semibold text-neutral-200 uppercase tracking-wide leading-tight">
+            <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5">
+              <p class="font-mono-code text-[11px] sm:text-xs md:text-[13px] font-semibold text-neutral-100 uppercase tracking-wide leading-snug">
                 Accounts<br/>Reconciled
               </p>
             </div>
@@ -334,11 +338,11 @@
 
           <!-- Metric 3: 1000+ -->
           <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-lg sm:text-xl lg:text-2xl h-[34px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="1000+">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="1000+">
               0000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-              <p class="font-mono-code text-[10px] sm:text-[11px] md:text-xs font-semibold text-neutral-200 uppercase tracking-wide leading-tight">
+            <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5">
+              <p class="font-mono-code text-[11px] sm:text-xs md:text-[13px] font-semibold text-neutral-100 uppercase tracking-wide leading-snug">
                 Invoices, Bills &amp; Checks<br/>Accurately Recorded
               </p>
             </div>
@@ -348,15 +352,15 @@
 
       </div>
 
-      <!-- RIGHT STACK: ENLARGED PORTRAIT WITH CRISP SOLID LIME GREEN HALO -->
-      <div class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-4">
-        <div id="portrait-interactive" class="portrait-card relative w-60 sm:w-72 md:w-80 lg:w-[360px] cursor-pointer select-none">
+      <!-- RIGHT COLUMN: SOLID LIME GREEN RING (ZERO BLACK GAP, COHESIVE COLOR - Pic 1 Note 4) -->
+      <div class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-2">
+        <div id="portrait-interactive" class="portrait-card relative w-60 sm:w-72 md:w-80 lg:w-[350px] cursor-pointer select-none">
           
-          <!-- Ambient Glow Behind Ring -->
+          <!-- Outer Ambient Glow -->
           <div class="absolute inset-0 rounded-full bg-[#d4f038]/30 blur-2xl -z-10 scale-105 pointer-events-none"></div>
 
-          <!-- Solid Lime Green Ring Framing Photo Directly with No Dark Seam -->
-          <div class="relative w-full aspect-square rounded-full border-[7px] border-[#d4f038] shadow-[0_0_28px_rgba(212,240,56,0.4),0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden bg-[#0b0f14]">
+          <!-- Solid Lime Green Ring directly touching photo (no inner dark seam) -->
+          <div class="relative w-full aspect-square rounded-full border-[8px] border-[#d4f038] shadow-[0_0_30px_rgba(212,240,56,0.45),0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden">
             <picture class="w-full h-full block">
               <source srcset="images/portrait.webp" type="image/webp" />
               <img 
@@ -563,7 +567,7 @@
         }
       }
 
-      const topLines = statement.querySelectorAll('span.block');
+      const topLines = statement.querySelectorAll('span.inline-block');
       topLines.forEach(line => processElement(line));
 
       const chars = Array.from(statement.querySelectorAll('.scatter-char'));
