@@ -89,7 +89,7 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* Tailored 70% Frosted Glass Card */
+    /* 70% Frosted Glass Card */
     .glass-metrics-card {
       background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(28px);
@@ -230,7 +230,7 @@
           <div class="flex-1 bg-neutral-800 h-6 rounded-sm"></div>
           <div class="flex-1 bg-neutral-800 h-8 rounded-sm"></div>
           <div class="flex-1 bg-neutral-800 h-7 rounded-sm"></div>
-          <div class="flex-1 bg-rose-500/80 h-4.5 rounded-sm"></div>
+          <div class="flex-1 bg-rose-500/80 h-4 rounded-sm"></div>
           <div class="flex-1 bg-rose-500 h-3 rounded-sm"></div>
         </div>
       </div>
@@ -276,41 +276,38 @@
     <!-- Compact Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <!-- 1. HANGING BOOKMARK LOGO: Meets top edge flush with zero gap (Pic 1 Note 1) -->
+    <!-- 1. HANGING BOOKMARK LOGO -->
     <div class="absolute top-0 left-6 sm:left-12 lg:left-16 z-30 pointer-events-none">
-      <div class="w-14 sm:w-16 md:w-20 pt-3 pb-4 px-2 bg-white/95 rounded-b-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center border-b-2 border-x border-neutral-300">
-        <picture class="w-full flex justify-center">
-          <source srcset="images-webp3/logo.webp" type="image/webp" />
-          <img 
-            src="images-webp3/logo.png" 
-            alt="Logo" 
-            class="w-full h-auto object-contain max-h-16"
-            onerror="this.onerror=null; this.src='images-webp3/logo.svg';"
-          />
-        </picture>
+      <div class="w-16 sm:w-20 md:w-24 pt-3 pb-4 px-2.5 bg-white rounded-b-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center border-b-2 border-x border-neutral-300">
+        <img 
+          src="images-webp3/logo.png" 
+          alt="Logo" 
+          class="w-full h-auto object-contain max-h-20"
+          onerror="if(!this.dataset.retried){this.dataset.retried='1'; this.src='images-webp3/logo.webp';}"
+        />
       </div>
     </div>
 
-    <!-- 2. MAIN CONTENT ROW: EXACT PIC 2 ALIGNMENT (TEXT & METRICS FLUSH LEFT, LARGE PORTRAIT RIGHT) -->
+    <!-- 2. MAIN CONTENT ROW -->
     <div class="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 select-none relative z-20">
       
-      <!-- LEFT COLUMN: STATEMENT + TIGHT SUBHEADLINE + EXPANDED FROSTED METRICS -->
-      <div class="flex-1 flex flex-col items-start text-left w-full max-w-2xl lg:max-w-[760px] space-y-2 sm:space-y-3">
+      <!-- LEFT COLUMN -->
+      <div class="flex-1 flex flex-col items-start text-left w-full max-w-2xl lg:max-w-[760px]">
         
-        <!-- 3-Line Statement: "BOOKS" defines right boundary for the metrics card -->
+        <!-- 3-Line Statement: Clean text nodes for scatter animation -->
         <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.75rem] leading-[1.03] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)] w-full">
-          <span class="inline-block whitespace-nowrap">Let me handle your <span id="books-anchor">books</span></span><br/>
-          <span class="inline-block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span><br/>
-          <span class="inline-block whitespace-nowrap">focus on your vision</span>
+          <span class="scatter-line block whitespace-nowrap">Let me handle your books</span>
+          <span class="scatter-line block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span>
+          <span class="scatter-line block whitespace-nowrap">focus on your vision</span>
         </h2>
 
-        <!-- Subheadline: Tightly nested directly below statement -->
-        <p class="font-mono-code text-xs sm:text-sm text-neutral-300 tracking-wider uppercase text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] !mt-2">
+        <!-- Subheadline -->
+        <p class="font-mono-code text-xs sm:text-sm text-neutral-300 tracking-wider uppercase text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] mt-2">
           Clean books. Zero stress. More time to build what matters.
         </p>
 
-        <!-- PROPORTIONAL FROSTED GLASS METRICS CARD: Aligns with 'K' in 'BOOKS' and fills card with zero voids (Pic 1 Notes 2 & 3) -->
-        <div id="metrics-card" class="w-full rounded-2xl glass-metrics-card py-4 sm:py-5 px-4 sm:px-6 md:px-8 grid grid-cols-3 divide-x divide-white/20 relative !mt-5">
+        <!-- Half-inch gap (mt-8 = 2rem) between subheadline and metrics card -->
+        <div id="metrics-card" class="w-full rounded-2xl glass-metrics-card py-4 sm:py-5 px-4 sm:px-6 md:px-8 grid grid-cols-3 divide-x divide-white/20 relative mt-8">
           
           <!-- Metric 1: 3000+ -->
           <div class="flex flex-col items-center justify-between text-center px-2">
@@ -324,7 +321,7 @@
             </div>
           </div>
 
-          <!-- Metric 2: 200+ (Matching Baseline) -->
+          <!-- Metric 2: 200+ -->
           <div class="flex flex-col items-center justify-between text-center px-2">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
               000
@@ -352,15 +349,15 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: SOLID LIME GREEN RING (ZERO BLACK GAP, COHESIVE COLOR - Pic 1 Note 4) -->
+      <!-- RIGHT COLUMN: Sized to match orange circle reference -->
       <div class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-2">
-        <div id="portrait-interactive" class="portrait-card relative w-60 sm:w-72 md:w-80 lg:w-[350px] cursor-pointer select-none">
+        <div id="portrait-interactive" class="portrait-card relative w-72 sm:w-84 md:w-96 lg:w-[410px] cursor-pointer select-none">
           
           <!-- Outer Ambient Glow -->
-          <div class="absolute inset-0 rounded-full bg-[#d4f038]/30 blur-2xl -z-10 scale-105 pointer-events-none"></div>
+          <div class="absolute inset-0 rounded-full bg-[#d4f038]/30 blur-3xl -z-10 scale-110 pointer-events-none"></div>
 
-          <!-- Solid Lime Green Ring directly touching photo (no inner dark seam) -->
-          <div class="relative w-full aspect-square rounded-full border-[8px] border-[#d4f038] shadow-[0_0_30px_rgba(212,240,56,0.45),0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden">
+          <!-- Single Pure Lime Green Border -->
+          <div class="relative w-full aspect-square rounded-full border-[8px] border-[#d4f038] shadow-[0_0_35px_rgba(212,240,56,0.5),0_20px_45px_rgba(0,0,0,0.9)] overflow-hidden">
             <picture class="w-full h-full block">
               <source srcset="images/portrait.webp" type="image/webp" />
               <img 
@@ -548,27 +545,32 @@
 
     })();
 
-    // 3. WATER-BUOYANCY SCATTER (30-SECOND RECOIL DECAY)
+    // 3. WATER-BUOYANCY SCATTER (RECURSIVE TEXT NODE PARSING)
     (function () {
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
       const cursorGlow = document.getElementById('cursor-glow');
 
-      function processElement(el) {
-        if (el.children.length > 0) {
-          Array.from(el.children).forEach(child => processElement(child));
-        } else {
-          const text = el.innerText;
-          const words = text.split(' ');
-          el.innerHTML = words.map(word => {
-            const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
-            return `<span class="inline-block whitespace-nowrap mx-[0.08em]">${chars}</span>`;
-          }).join(' ');
-        }
+      function wrapTextNodes(element) {
+        Array.from(element.childNodes).forEach(node => {
+          if (node.nodeType === Node.TEXT_NODE && node.nodeValue.trim() !== '') {
+            const words = node.nodeValue.split(' ');
+            const spanWrapper = document.createElement('span');
+            spanWrapper.className = 'inline-block';
+            spanWrapper.innerHTML = words.map(word => {
+              if (!word) return '';
+              const chars = word.split('').map(char => `<span class="scatter-char">${char}</span>`).join('');
+              return `<span class="inline-block whitespace-nowrap mx-[0.08em]">${chars}</span>`;
+            }).join(' ');
+            node.replaceWith(spanWrapper);
+          } else if (node.nodeType === Node.ELEMENT_NODE) {
+            wrapTextNodes(node);
+          }
+        });
       }
 
-      const topLines = statement.querySelectorAll('span.inline-block');
-      topLines.forEach(line => processElement(line));
+      const lines = statement.querySelectorAll('.scatter-line');
+      lines.forEach(line => wrapTextNodes(line));
 
       const chars = Array.from(statement.querySelectorAll('.scatter-char'));
       let charData = [];
