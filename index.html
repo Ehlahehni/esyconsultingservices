@@ -111,26 +111,24 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== CLOUDY WHITE FROSTED MACOS DOCK ==================== */
+    /* ==================== CANVA MOCKUP FROSTED GLASS DOCK ==================== */
     .macos-dock-container {
       position: relative;
-      width: min(94vw, 980px);
-      /* Translucent cloudy milky white frosted glass */
+      width: min(95vw, 1120px);
       background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.38) 0%,
-        rgba(255, 255, 255, 0.18) 45%,
-        rgba(255, 255, 255, 0.26) 100%
+        rgba(255, 255, 255, 0.28) 0%,
+        rgba(255, 255, 255, 0.12) 40%,
+        rgba(20, 24, 30, 0.32) 100%
       );
-      backdrop-filter: blur(40px) saturate(210%) brightness(115%);
-      -webkit-backdrop-filter: blur(40px) saturate(210%) brightness(115%);
-      border: 1.5px solid rgba(255, 255, 255, 0.55);
-      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(34px) saturate(200%);
+      -webkit-backdrop-filter: blur(34px) saturate(200%);
+      border: 1.5px solid rgba(255, 255, 255, 0.45);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.75);
       border-radius: 28px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5),
-                  0 0 40px rgba(255, 255, 255, 0.18),
-                  inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
-                  inset 0 -1px 2px rgba(255, 255, 255, 0.3);
+      box-shadow: 0 28px 65px rgba(0, 0, 0, 0.6),
+                  inset 0 1.5px 2px rgba(255, 255, 255, 0.65),
+                  inset 0 -1px 2px rgba(255, 255, 255, 0.2);
     }
 
     .macos-dock-item {
@@ -139,21 +137,20 @@
       user-select: none;
     }
 
-    /* Bigger bare icons with tight macOS drop shadow */
     .macos-dock-icon {
       transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
                   filter 0.26s ease;
       will-change: transform;
-      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.42));
     }
 
     .macos-dock-item:hover .macos-dock-icon {
-      transform: translateY(-14px) scale(1.28);
-      filter: drop-shadow(0 20px 28px rgba(0, 0, 0, 0.65));
+      transform: translateY(-10px) scale(1.24);
+      filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.6));
     }
 
     .macos-dock-item:active .macos-dock-icon {
-      transform: translateY(-6px) scale(1.15);
+      transform: translateY(-4px) scale(1.12);
       transition-duration: 0.12s;
     }
 
@@ -161,16 +158,16 @@
     .macos-dock-tooltip {
       position: absolute;
       left: 50%;
-      bottom: calc(100% + 16px);
+      bottom: calc(100% + 14px);
       transform: translateX(-50%) translateY(6px);
       opacity: 0;
       pointer-events: none;
       white-space: nowrap;
-      background: rgba(18, 18, 20, 0.94);
+      background: rgba(18, 18, 22, 0.94);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
       transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
@@ -185,12 +182,29 @@
       transform: translateX(-50%);
       border-width: 5px 5px 0 5px;
       border-style: solid;
-      border-color: rgba(18, 18, 20, 0.94) transparent transparent transparent;
+      border-color: rgba(18, 18, 22, 0.94) transparent transparent transparent;
     }
 
     .macos-dock-item:hover .macos-dock-tooltip {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+
+    /* Email Capsule */
+    .email-capsule {
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.22s ease,
+                  box-shadow 0.22s ease;
+    }
+
+    .email-capsule:hover {
+      transform: translateY(-4px);
+      background-color: #ffffff;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .email-capsule:hover .copy-hint {
+      opacity: 1;
     }
 
     .film-grain {
@@ -361,19 +375,7 @@
     <!-- Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <!-- 1. HANGING BOOKMARK LOGO -->
-    <div class="absolute top-0 left-6 sm:left-12 lg:left-16 z-30 pointer-events-none">
-      <div class="w-16 sm:w-20 md:w-24 pt-3 pb-4 px-2.5 bg-white rounded-b-xl shadow-[0_12px_28px_rgba(0,0,0,0.6)] flex items-center justify-center border-b-2 border-x border-neutral-300">
-        <img 
-          src="images-webp3/logo.png" 
-          alt="Logo" 
-          class="w-full h-auto object-contain max-h-20"
-          onerror="if(!this.dataset.retried){this.dataset.retried='1'; this.src='images-webp3/logo.webp';}"
-        />
-      </div>
-    </div>
-
-    <!-- 2. MAIN CONTENT ROW -->
+    <!-- MAIN CONTENT ROW (Top bookmark removed) -->
     <div class="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 select-none relative z-20">
       
       <!-- LEFT COLUMN -->
@@ -458,51 +460,110 @@
 
     </div>
 
-    <!-- ==================== 3. CLOUDY WHITE FROSTED MACOS DOCK ==================== -->
-    <nav aria-label="macOS Navigation Dock" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
-      <div class="macos-dock-container h-24 sm:h-28 flex items-center justify-center gap-3 sm:gap-4 px-6 sm:px-8 py-2">
+    <!-- ==================== CANVA-MATCHED FROSTED GLASS DOCK ==================== -->
+    <nav aria-label="Quick navigation dock" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
+      <div class="macos-dock-container min-h-[92px] sm:min-h-[102px] flex flex-wrap items-center justify-between gap-4 sm:gap-6 px-6 sm:px-8 py-3">
         
-        <!-- Dock Item 1: Home -->
-        <a href="#home" class="macos-dock-item group block p-1 focus:outline-none" aria-label="Navigate to Home">
-          <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-            Home
-          </span>
-          <img 
-            src="images/home.png" 
-            alt="Home" 
-            class="macos-dock-icon w-18 h-18 sm:w-20 sm:h-20 max-w-[76px] sm:max-w-[82px] object-contain pointer-events-none rounded-[18px]"
-          />
-        </a>
+        <!-- Left Group: Logo + Interactive Navigation Icons -->
+        <div class="flex items-center gap-3.5 sm:gap-5 flex-wrap">
+          
+          <!-- Logo Item: cream.png -->
+          <div class="relative flex items-center justify-center">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-[16px] border border-white/40 p-1.5 flex items-center justify-center bg-white/10 shadow-md">
+              <img 
+                src="images/cream.png" 
+                alt="Brand Logo" 
+                class="w-full h-full object-contain pointer-events-none"
+                onerror="this.src='images-webp3/logo.png';"
+              />
+            </div>
+          </div>
 
-        <!-- Dock Item 2: About me -->
-        <a href="#about" class="macos-dock-item group block p-1 focus:outline-none" aria-label="Navigate to About Me">
-          <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-            About me
-          </span>
-          <img 
-            src="images/about me.png" 
-            alt="About Me" 
-            class="macos-dock-icon w-18 h-18 sm:w-20 sm:h-20 max-w-[76px] sm:max-w-[82px] object-contain pointer-events-none rounded-[18px]"
-          />
-        </a>
+          <!-- Dock Item 1: Home -->
+          <a href="#home" class="macos-dock-item group block p-0.5 focus:outline-none" aria-label="Navigate to Home">
+            <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              Home
+            </span>
+            <img 
+              src="images/home.png" 
+              alt="Home" 
+              class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            />
+          </a>
 
-        <!-- Dock Item 3: Workflow -->
-        <a href="#workflow" class="macos-dock-item group block p-1 focus:outline-none" aria-label="Navigate to Workflow">
-          <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-            Workflow
-          </span>
-          <img 
-            src="images/workflow.png" 
-            alt="Workflow" 
-            class="macos-dock-icon w-18 h-18 sm:w-20 sm:h-20 max-w-[76px] sm:max-w-[82px] object-contain pointer-events-none rounded-[18px]"
-          />
-        </a>
+          <!-- Dock Item 2: About me -->
+          <a href="#about" class="macos-dock-item group block p-0.5 focus:outline-none" aria-label="Navigate to About Me">
+            <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              About me
+            </span>
+            <img 
+              src="images/about me.png" 
+              alt="About Me" 
+              class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            />
+          </a>
+
+          <!-- Dock Item 3: Workflow -->
+          <a href="#workflow" class="macos-dock-item group block p-0.5 focus:outline-none" aria-label="Navigate to Workflow">
+            <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              Workflow
+            </span>
+            <img 
+              src="images/workflow.png" 
+              alt="Workflow" 
+              class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            />
+          </a>
+
+          <!-- Dock Item 4: Intro -->
+          <a href="#intro" class="macos-dock-item group block p-0.5 focus:outline-none" aria-label="Navigate to Intro">
+            <span class="macos-dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              Intro
+            </span>
+            <img 
+              src="images/intro.png" 
+              alt="Intro" 
+              class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            />
+          </a>
+
+        </div>
+
+        <!-- Right Group: Email Section -->
+        <div class="flex items-center gap-3.5">
+          
+          <!-- Email Icon -->
+          <div class="w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center shrink-0">
+            <img 
+              src="images/mail.png" 
+              alt="Email" 
+              class="w-full h-full object-contain pointer-events-none"
+            />
+          </div>
+
+          <!-- Click-to-copy / Mailto Capsule -->
+          <button 
+            id="email-copy-btn" 
+            onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
+            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center justify-center shadow-lg border border-black/10 cursor-pointer group focus:outline-none select-none"
+            title="Click to copy email address"
+          >
+            <span class="font-mono-code font-bold text-xs sm:text-sm tracking-tight">
+              elaineyap.ph@gmail.com
+            </span>
+            <span class="copy-hint absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded bg-black/85 text-white font-mono-code text-[10px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200">
+              CLICK TO COPY
+            </span>
+          </button>
+
+        </div>
 
       </div>
     </nav>
 
-    <!-- Anchor for Dock 'Workflow' -->
+    <!-- Anchors for Dock Navigation -->
     <div id="workflow" class="w-0 h-0 pointer-events-none"></div>
+    <div id="intro" class="w-0 h-0 pointer-events-none"></div>
 
   </footer>
 
