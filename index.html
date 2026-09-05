@@ -111,23 +111,26 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== AUTHENTIC MACOS FROSTED TRAY DOCK ==================== */
+    /* ==================== CLOUDY WHITE FROSTED MACOS DOCK ==================== */
     .macos-dock-container {
       position: relative;
-      width: min(92vw, 920px);
+      width: min(94vw, 980px);
+      /* Translucent cloudy milky white frosted glass */
       background: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.18) 0%,
-        rgba(255, 255, 255, 0.06) 32%,
-        rgba(15, 20, 26, 0.38) 100%
+        rgba(255, 255, 255, 0.38) 0%,
+        rgba(255, 255, 255, 0.18) 45%,
+        rgba(255, 255, 255, 0.26) 100%
       );
-      backdrop-filter: blur(32px) saturate(190%);
-      -webkit-backdrop-filter: blur(32px) saturate(190%);
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      border-top: 1px solid rgba(255, 255, 255, 0.45);
-      border-radius: 26px;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65),
-                  inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(40px) saturate(210%) brightness(115%);
+      -webkit-backdrop-filter: blur(40px) saturate(210%) brightness(115%);
+      border: 1.5px solid rgba(255, 255, 255, 0.55);
+      border-top: 1.5px solid rgba(255, 255, 255, 0.85);
+      border-radius: 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5),
+                  0 0 40px rgba(255, 255, 255, 0.18),
+                  inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
+                  inset 0 -1px 2px rgba(255, 255, 255, 0.3);
     }
 
     .macos-dock-item {
@@ -136,38 +139,38 @@
       user-select: none;
     }
 
-    /* Bare icon with native shadow and spring bounce */
+    /* Bigger bare icons with tight macOS drop shadow */
     .macos-dock-icon {
       transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
                   filter 0.26s ease;
       will-change: transform;
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
     }
 
     .macos-dock-item:hover .macos-dock-icon {
-      transform: translateY(-12px) scale(1.32);
-      filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.65));
+      transform: translateY(-14px) scale(1.28);
+      filter: drop-shadow(0 20px 28px rgba(0, 0, 0, 0.65));
     }
 
     .macos-dock-item:active .macos-dock-icon {
-      transform: translateY(-6px) scale(1.18);
+      transform: translateY(-6px) scale(1.15);
       transition-duration: 0.12s;
     }
 
-    /* Tooltip */
+    /* macOS Floating Tooltip */
     .macos-dock-tooltip {
       position: absolute;
       left: 50%;
-      bottom: calc(100% + 14px);
+      bottom: calc(100% + 16px);
       transform: translateX(-50%) translateY(6px);
       opacity: 0;
       pointer-events: none;
       white-space: nowrap;
-      background: rgba(22, 22, 24, 0.92);
+      background: rgba(18, 18, 20, 0.94);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
       transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
                   transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: transform, opacity;
@@ -182,7 +185,7 @@
       transform: translateX(-50%);
       border-width: 5px 5px 0 5px;
       border-style: solid;
-      border-color: rgba(22, 22, 24, 0.92) transparent transparent transparent;
+      border-color: rgba(18, 18, 20, 0.94) transparent transparent transparent;
     }
 
     .macos-dock-item:hover .macos-dock-tooltip {
@@ -455,9 +458,9 @@
 
     </div>
 
-    <!-- ==================== 3. WIDE MACOS FROSTED GLASS DOCK ==================== -->
+    <!-- ==================== 3. CLOUDY WHITE FROSTED MACOS DOCK ==================== -->
     <nav aria-label="macOS Navigation Dock" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
-      <div class="macos-dock-container h-20 sm:h-24 flex items-center justify-center gap-7 sm:gap-11 px-8 py-2">
+      <div class="macos-dock-container h-24 sm:h-28 flex items-center justify-center gap-3 sm:gap-4 px-6 sm:px-8 py-2">
         
         <!-- Dock Item 1: Home -->
         <a href="#home" class="macos-dock-item group block p-1 focus:outline-none" aria-label="Navigate to Home">
@@ -467,7 +470,7 @@
           <img 
             src="images/home.png" 
             alt="Home" 
-            class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            class="macos-dock-icon w-18 h-18 sm:w-20 sm:h-20 max-w-[76px] sm:max-w-[82px] object-contain pointer-events-none rounded-[18px]"
           />
         </a>
 
@@ -479,7 +482,7 @@
           <img 
             src="images/about me.png" 
             alt="About Me" 
-            class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            class="macos-dock-icon w-18 h-18 sm:w-20 sm:h-20 max-w-[76px] sm:max-w-[82px] object-contain pointer-events-none rounded-[18px]"
           />
         </a>
 
@@ -491,7 +494,7 @@
           <img 
             src="images/workflow.png" 
             alt="Workflow" 
-            class="macos-dock-icon w-14 h-14 sm:w-16 sm:h-16 object-contain pointer-events-none rounded-[16px]"
+            class="macos-dock-icon w-18 h-18 sm:w-20 sm:h-20 max-w-[76px] sm:max-w-[82px] object-contain pointer-events-none rounded-[18px]"
           />
         </a>
 
