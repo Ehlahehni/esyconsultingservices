@@ -111,42 +111,47 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== 40% TRANSLUCENT CLOUDY WHITE FROSTED DOCK ==================== */
-    .canva-dock-tray {
+    /* ==================== DOCK TASKBAR WITH CANVA PNG GLASS ==================== */
+    .canva-dock-wrapper {
       position: relative;
-      width: min(96vw, 1160px);
-      /* Translucent ~40% cloudy white glass matching Canva Page 2 */
-      background: rgba(255, 255, 255, 0.38);
-      backdrop-filter: blur(28px) saturate(180%) brightness(108%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(108%);
-      border: 1px solid rgba(255, 255, 255, 0.55);
+      width: min(96vw, 1180px);
+    }
+
+    /* Background image from Canva */
+    .canva-dock-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      pointer-events: none;
+      z-index: 0;
       border-radius: 28px;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45),
-                  inset 0 1px 2px rgba(255, 255, 255, 0.65),
-                  inset 0 -1px 2px rgba(255, 255, 255, 0.2);
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.45));
     }
 
     .dock-app-item {
       position: relative;
       outline: none;
       user-select: none;
+      z-index: 10;
     }
 
-    /* Big bare icons with native soft shadow */
+    /* Bare icon with native bounce and soft drop shadow */
     .dock-app-icon {
-      transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  filter 0.26s ease;
+      transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  filter 0.24s ease;
       will-change: transform;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
     }
 
     .dock-app-item:hover .dock-app-icon {
-      transform: translateY(-8px) scale(1.18);
-      filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.45));
+      transform: translateY(-8px) scale(1.14);
+      filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.48));
     }
 
     .dock-app-item:active .dock-app-icon {
-      transform: translateY(-3px) scale(1.08);
+      transform: translateY(-3px) scale(1.06);
       transition-duration: 0.12s;
     }
 
@@ -189,13 +194,13 @@
     /* Email Capsule */
     .email-capsule {
       transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  background-color 0.22s ease,
                   box-shadow 0.22s ease;
+      z-index: 10;
     }
 
     .email-capsule:hover {
       transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
     }
 
     .email-capsule:hover .copy-hint {
@@ -455,101 +460,96 @@
 
     </div>
 
-    <!-- ==================== 40% TRANSLUCENT CLOUDY WHITE FROSTED DOCK ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (TIGHTENED & SCALED) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
-      <div class="canva-dock-tray min-h-[96px] sm:min-h-[108px] flex flex-wrap items-center justify-between gap-4 sm:gap-6 px-6 sm:px-10 py-3">
+      <div class="canva-dock-wrapper h-24 sm:h-28 flex items-center justify-between px-5 sm:px-8">
         
-        <!-- Left Group: Bare Logo + Big App Icons (No Box Sandwiches) -->
-        <div class="flex items-center gap-4 sm:gap-6 flex-wrap">
+        <!-- Canva Frosted Glass Background Texture -->
+        <img 
+          src="images/dock-bg.png" 
+          alt="Frosted Glass Dock" 
+          class="canva-dock-bg"
+          onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.35)'; this.parentElement.style.backdropFilter='blur(28px)';"
+        />
+
+        <!-- Left Group: Bare Logo + Enlarged App Icons (Tight Spacing) -->
+        <div class="flex items-center gap-2 sm:gap-3.5 relative z-10">
           
-          <!-- Brand Logo (Bare icon matching other apps) -->
-          <div class="dock-app-item flex items-center justify-center">
+          <!-- Brand Logo: cream.png -->
+          <div class="dock-app-item flex items-center justify-center shrink-0">
             <img 
               src="images/cream.png" 
               alt="Logo" 
-              class="dock-app-icon w-16 h-16 sm:w-[72px] sm:h-[72px] object-contain pointer-events-none"
+              class="dock-app-icon w-[68px] h-[68px] sm:w-[80px] sm:h-[80px] object-contain pointer-events-none"
               onerror="this.src='images-webp3/logo.png';"
             />
           </div>
 
           <!-- Icon 1: Home -->
-          <a href="#home" class="dock-app-item group block p-0.5 focus:outline-none" aria-label="Navigate to Home">
+          <a href="#home" class="dock-app-item group block p-0.5 focus:outline-none shrink-0" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-16 h-16 sm:w-[72px] sm:h-[72px] object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-[70px] h-[70px] sm:w-[82px] sm:h-[82px] object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
           <!-- Icon 2: About me -->
-          <a href="#about" class="dock-app-item group block p-0.5 focus:outline-none" aria-label="Navigate to About Me">
+          <a href="#about" class="dock-app-item group block p-0.5 focus:outline-none shrink-0" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-16 h-16 sm:w-[72px] sm:h-[72px] object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-[70px] h-[70px] sm:w-[82px] sm:h-[82px] object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
           <!-- Icon 3: Workflow -->
-          <a href="#workflow" class="dock-app-item group block p-0.5 focus:outline-none" aria-label="Navigate to Workflow">
+          <a href="#workflow" class="dock-app-item group block p-0.5 focus:outline-none shrink-0" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-16 h-16 sm:w-[72px] sm:h-[72px] object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-[70px] h-[70px] sm:w-[82px] sm:h-[82px] object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
           <!-- Icon 4: Intro -->
-          <a href="#intro" class="dock-app-item group block p-0.5 focus:outline-none" aria-label="Navigate to Intro">
+          <a href="#intro" class="dock-app-item group block p-0.5 focus:outline-none shrink-0" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-16 h-16 sm:w-[72px] sm:h-[72px] object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-[70px] h-[70px] sm:w-[82px] sm:h-[82px] object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
         </div>
 
-        <!-- Right Group: Mail Icon + Email Pill Capsule -->
-        <div class="flex items-center gap-3.5 sm:gap-4">
-          
-          <!-- Mail Icon (Bare with SVG fallback) -->
-          <div class="dock-app-item w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center shrink-0">
-            <img 
-              src="images/mail.png" 
-              alt="Email" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
-              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-14 h-14 sm:w-16 sm:h-16 rounded-[18px] bg-white/90 shadow-md flex items-center justify-center text-slate-800\'><svg class=\'w-8 h-8\' fill=\'none\' stroke=\'currentColor\' viewBox=\'0 0 24 24\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.8\' d=\'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\'/></svg></div>';"
-            />
-          </div>
-
-          <!-- Email Copy Capsule -->
+        <!-- Right Group: Standalone Email Copy Pill Capsule -->
+        <div class="flex items-center relative z-10 pl-2">
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 px-6 sm:px-8 py-3 rounded-2xl sm:rounded-full flex items-center justify-center shadow-lg border border-black/10 cursor-pointer group focus:outline-none select-none"
+            class="email-capsule relative bg-white text-slate-900 px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-full flex items-center justify-center shadow-lg border border-black/10 cursor-pointer group focus:outline-none select-none"
             title="Click to copy email address"
           >
-            <span class="font-mono-code font-bold text-sm sm:text-base tracking-tight text-neutral-900">
+            <span class="font-mono-code font-bold text-xs sm:text-sm tracking-tight text-neutral-900 whitespace-nowrap">
               elaineyap.ph@gmail.com
             </span>
-            <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200">
+            <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200 shadow-md">
               CLICK TO COPY
             </span>
           </button>
-
         </div>
 
       </div>
