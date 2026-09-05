@@ -111,38 +111,42 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== DOCK TASKBAR WITH CANVA PNG GLASS ==================== */
-    .canva-dock-wrapper {
+    /* ==================== DOCK TASKBAR WITH OPTICAL MIDLINE LOCK ==================== */
+    .dock-master-stage {
       position: relative;
       width: min(96vw, 1200px);
-      height: 98px; /* Perfectly sized to fit the icons cleanly without excess empty space */
+      height: 96px;
+      border-radius: 28px;
+      overflow: hidden; /* Clips any bleed from the image texture */
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 2rem;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), inset 0 1.5px 2px rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.38);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.45);
     }
 
     @media (min-width: 640px) {
-      .canva-dock-wrapper {
-        height: 106px;
+      .dock-master-stage {
+        height: 104px;
         padding: 0 2.5rem;
       }
     }
 
-    /* Background image from Canva calibrated to eliminate empty bottom margin */
-    .canva-dock-bg {
+    /* Canva texture layer calibrated to offset the empty bottom margin */
+    .dock-texture-layer {
       position: absolute;
-      top: -3px;
-      bottom: -15px; /* Pulls bottom down to compensate for Canva's transparent canvas void */
+      top: -10%;
       left: 0;
-      right: 0;
       width: 100%;
-      height: calc(100% + 18px);
+      height: 145%; /* Stretches downward so the transparent bottom void sits entirely outside the clipped container */
       object-fit: fill;
       pointer-events: none;
-      z-index: 0;
-      border-radius: 28px;
-      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.45));
+      z-index: 1;
+      opacity: 0.95;
     }
 
     .dock-app-item {
@@ -483,23 +487,23 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT MIDLINE VERTICAL CENTERING) ==================== -->
+    <!-- ==================== CALIBRATED MIDLINE DOCK TASKBAR ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
-      <div class="canva-dock-wrapper">
+      <div class="dock-master-stage">
         
-        <!-- Canva Frosted Glass Background Texture with Bottom Negative Offset -->
+        <!-- Texture Layer (Clipped cleanly so bottom margin is eliminated) -->
         <img 
           src="images/dock-bg.png" 
           alt="Frosted Glass Dock" 
-          class="canva-dock-bg"
-          onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
+          class="dock-texture-layer"
+          onerror="this.style.display='none';"
         />
 
         <!-- Left Group: Cream Logo + 4 App Icons (Middle of Height, 0.25rem / 4px Spacing) -->
-        <div class="flex items-center gap-1 relative z-10 my-auto">
+        <div class="flex items-center gap-1 relative z-10">
           
           <!-- Brand Logo: cream.png -->
-          <div class="dock-app-item shrink-0 w-[68px] h-[68px] sm:w-[76px] sm:h-[76px]">
+          <div class="dock-app-item shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -509,57 +513,57 @@
           </div>
 
           <!-- Icon 1: Home -->
-          <a href="#home" class="dock-app-item group shrink-0 w-[68px] h-[68px] sm:w-[76px] sm:h-[76px]" aria-label="Navigate to Home">
+          <a href="#home" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
           <!-- Icon 2: About me -->
-          <a href="#about" class="dock-app-item group shrink-0 w-[68px] h-[68px] sm:w-[76px] sm:h-[76px]" aria-label="Navigate to About Me">
+          <a href="#about" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
           <!-- Icon 3: Workflow -->
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[68px] h-[68px] sm:w-[76px] sm:h-[76px]" aria-label="Navigate to Workflow">
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
           <!-- Icon 4: Intro -->
-          <a href="#intro" class="dock-app-item group shrink-0 w-[68px] h-[68px] sm:w-[76px] sm:h-[76px]" aria-label="Navigate to Intro">
+          <a href="#intro" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
         </div>
 
-        <!-- Right Group: Email Copy Pill Capsule (Strictly on the Same Horizontal Midline Axis) -->
-        <div class="flex items-center relative z-10 pl-3 my-auto">
+        <!-- Right Group: Email Copy Pill Capsule (Centered along identical vertical axis) -->
+        <div class="flex items-center relative z-10 pl-3">
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
