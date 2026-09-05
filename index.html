@@ -89,14 +89,14 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* Proportional 70% Transparent Frosted Glass Card */
+    /* Compact 70% Transparent Frosted Glass Card */
     .glass-metrics-card {
-      background: rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.2),
-                  0 20px 50px -10px rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.18),
+                  0 20px 45px -10px rgba(0, 0, 0, 0.85);
     }
 
     /* Interactive 3D Card Tilt Wrapper */
@@ -260,7 +260,7 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center px-4 sm:px-8 md:px-12 py-8 overflow-hidden">
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-between px-6 sm:px-12 md:px-16 py-8 md:py-10 overflow-hidden">
     
     <!-- 80% Opacity Full Background Video -->
     <video 
@@ -276,92 +276,108 @@
     <!-- Compact Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <!-- MAIN CONTENT CONTAINER: Fits widescreen viewports perfectly -->
-    <div class="w-full max-w-7xl mx-auto flex flex-col items-center justify-between select-none relative z-20 space-y-6 sm:space-y-8">
+    <!-- 1. TOP HEADER BAR: LOGO AT TOP LEFT (PIC 2) -->
+    <header class="w-full relative z-20 flex items-center justify-start mb-2 sm:mb-4">
+      <div class="flex items-center">
+        <picture>
+          <source srcset="images-webp3/logo.webp" type="image/webp" />
+          <img 
+            src="images-webp3/logo.png" 
+            alt="Logo" 
+            class="h-12 sm:h-14 md:h-16 w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
+            onerror="this.onerror=null; this.src='images-webp3/logo.svg';"
+          />
+        </picture>
+      </div>
+    </header>
+
+    <!-- 2. MAIN GRID: PIC 2 EXACT SPATIAL ALIGNMENT (TEXT & METRICS LEFT, PHOTO RIGHT) -->
+    <div class="w-full flex-1 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 select-none relative z-20 my-auto">
       
-      <!-- TOP SECTION: STATEMENT (LEFT) & SOLID LIME HALO PORTRAIT (RIGHT) -->
-      <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10">
+      <!-- LEFT STACK: STATEMENT + SUBHEADLINE + METRICS CARD (ALL FLUSH LEFT) -->
+      <div class="flex-1 flex flex-col items-start text-left max-w-2xl lg:max-w-[680px] space-y-4 sm:space-y-6">
         
-        <!-- 1. 3-LINE STATEMENT MATCHING PIC 2 CADENCE -->
-        <div class="flex-1 flex flex-col items-start text-left max-w-2xl lg:max-w-[700px]">
-          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.4rem] lg:text-[3.9rem] leading-[1.04] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]">
-            <span class="block whitespace-nowrap">Let me handle your books</span>
-            <span class="block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span>
-            <span class="block whitespace-nowrap">focus on your vision</span>
-          </h2>
+        <!-- 3-Line Statement Matching Pic 2 -->
+        <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.6rem] leading-[1.05] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]">
+          <span class="block whitespace-nowrap">Let me handle your books</span>
+          <span class="block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span>
+          <span class="block whitespace-nowrap">focus on your vision</span>
+        </h2>
 
-          <!-- Subheadline -->
-          <p class="font-mono-code text-[11px] sm:text-xs md:text-sm text-neutral-300 tracking-wider uppercase mt-4 text-left opacity-85 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-            Clean books. Zero stress. More time to build what matters.
-          </p>
-        </div>
+        <!-- Subheadline: Left edge aligned directly with the statement above -->
+        <p class="font-mono-code text-xs sm:text-sm text-neutral-300 tracking-wider uppercase text-left opacity-85 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
+          Clean books. Zero stress. More time to build what matters.
+        </p>
 
-        <!-- 2. PORTRAIT WITH UNIFIED SOLID LIME HALO (NO BLACK EDGE) -->
-        <div class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 sm:pr-2">
-          <div id="portrait-interactive" class="portrait-card relative w-48 sm:w-56 md:w-64 lg:w-72 cursor-pointer select-none">
-            
-            <!-- Ambient Glow Behind Ring -->
-            <div class="absolute inset-0 rounded-full bg-[#d4f038]/30 blur-2xl -z-10 scale-105 pointer-events-none"></div>
-
-            <!-- Solid Uniform Lime Green Border Directly Touching Photo -->
-            <div class="relative w-full aspect-square rounded-full border-[7px] border-[#d4f038] shadow-[0_0_28px_rgba(212,240,56,0.4),0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden">
-              <picture class="w-full h-full block">
-                <source srcset="images/portrait.webp" type="image/webp" />
-                <img 
-                  id="portrait-img"
-                  src="images/portrait.png" 
-                  alt="Portrait" 
-                  class="w-full h-full object-cover scale-105 transition-transform duration-300"
-                />
-              </picture>
+        <!-- COMPACT KEY METRICS CARD (FITTED TO NUMBERS & LABELS, PIC 2) -->
+        <div id="metrics-card" class="w-full max-w-xl rounded-2xl glass-metrics-card py-4 px-4 sm:px-6 grid grid-cols-3 divide-x divide-white/15 relative mt-2">
+          
+          <!-- Metric 1: 3000+ -->
+          <div class="flex flex-col items-center justify-between text-center px-2">
+            <div class="slot-counter font-pixel text-[#d4f038] text-base sm:text-lg lg:text-xl h-[30px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="3000+">
+              0000
+            </div>
+            <div class="min-h-[2rem] flex items-center justify-center mt-1">
+              <p class="font-mono-code text-[9px] sm:text-[10px] md:text-[11px] font-medium text-neutral-300 uppercase tracking-wide leading-tight">
+                Transactions<br/>Categorized
+              </p>
             </div>
           </div>
+
+          <!-- Metric 2: 200+ -->
+          <div class="flex flex-col items-center justify-between text-center px-2">
+            <div class="slot-counter font-pixel text-[#d4f038] text-base sm:text-lg lg:text-xl h-[30px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="200+">
+              000
+            </div>
+            <div class="min-h-[2rem] flex items-center justify-center mt-1">
+              <p class="font-mono-code text-[9px] sm:text-[10px] md:text-[11px] font-medium text-neutral-300 uppercase tracking-wide leading-tight">
+                Accounts<br/>Reconciled
+              </p>
+            </div>
+          </div>
+
+          <!-- Metric 3: 1000+ -->
+          <div class="flex flex-col items-center justify-between text-center px-2">
+            <div class="slot-counter font-pixel text-[#d4f038] text-base sm:text-lg lg:text-xl h-[30px] flex items-center justify-center drop-shadow-[0_0_10px_rgba(212,240,56,0.35)]" data-target="1000+">
+              0000
+            </div>
+            <div class="min-h-[2rem] flex items-center justify-center mt-1">
+              <p class="font-mono-code text-[9px] sm:text-[10px] md:text-[11px] font-medium text-neutral-300 uppercase tracking-wide leading-tight">
+                Invoices, Bills &amp;<br/>Checks Accurately Recorded
+              </p>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
-      <!-- 3. COMPACT KEY METRICS STRIP: FILLS CONTAINER BALANCED & LEVEL -->
-      <div id="metrics-card" class="w-full max-w-4xl rounded-2xl glass-metrics-card py-4 sm:py-5 px-4 sm:px-6 md:px-8 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
-        
-        <!-- Metric 1: 3000+ -->
-        <div class="flex flex-col items-center justify-between text-center px-3 pt-2 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="3000+">
-            0000
-          </div>
-          <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-            <p class="font-mono-code text-[11px] sm:text-xs font-bold text-neutral-200 uppercase tracking-wider leading-tight">
-              Transactions<br/>Categorized
-            </p>
+      <!-- RIGHT COLUMN: PIC 2 ANCHORED PORTRAIT WITH SOLID LIME GREEN RING -->
+      <div class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-8">
+        <div id="portrait-interactive" class="portrait-card relative w-56 sm:w-64 md:w-72 lg:w-80 cursor-pointer select-none">
+          
+          <!-- Ambient Back Glow -->
+          <div class="absolute inset-0 rounded-full bg-[#d4f038]/25 blur-2xl -z-10 scale-105 pointer-events-none"></div>
+
+          <!-- Solid Lime Green Ring Framing Photo Directly -->
+          <div class="relative w-full aspect-square rounded-full border-[7px] border-[#d4f038] shadow-[0_0_28px_rgba(212,240,56,0.4),0_15px_35px_rgba(0,0,0,0.9)] overflow-hidden">
+            <picture class="w-full h-full block">
+              <source srcset="images/portrait.webp" type="image/webp" />
+              <img 
+                id="portrait-img"
+                src="images/portrait.png" 
+                alt="Portrait" 
+                class="w-full h-full object-cover scale-105 transition-transform duration-300"
+              />
+            </picture>
           </div>
         </div>
-
-        <!-- Metric 2: 200+ (Level Baseline & Aligned Label) -->
-        <div class="flex flex-col items-center justify-between text-center px-3 pt-3 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="200+">
-            000
-          </div>
-          <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-            <p class="font-mono-code text-[11px] sm:text-xs font-bold text-neutral-200 uppercase tracking-wider leading-tight">
-              Accounts<br/>Reconciled
-            </p>
-          </div>
-        </div>
-
-        <!-- Metric 3: 1000+ (Includes "Accurately Recorded") -->
-        <div class="flex flex-col items-center justify-between text-center px-3 pt-3 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="1000+">
-            0000
-          </div>
-          <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-            <p class="font-mono-code text-[11px] sm:text-xs font-bold text-neutral-200 uppercase tracking-wider leading-tight">
-              Invoices, Bills &amp; Checks<br/>Accurately Recorded
-            </p>
-          </div>
-        </div>
-
       </div>
 
     </div>
+
+    <!-- Empty spacer to ensure vertical balance -->
+    <div class="h-2 pointer-events-none"></div>
 
   </footer>
 
@@ -541,7 +557,6 @@
       const statement = document.getElementById('scatter-statement');
       const cursorGlow = document.getElementById('cursor-glow');
 
-      // Preserve nested inner spans (e.g. lime accent)
       function processElement(el) {
         if (el.children.length > 0) {
           Array.from(el.children).forEach(child => processElement(child));
