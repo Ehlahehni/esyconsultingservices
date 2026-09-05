@@ -89,7 +89,7 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* Compact 70% Transparent Frosted Glass Card */
+    /* 70% Transparent Frosted Glass Card */
     .glass-metrics-card {
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(28px);
@@ -260,7 +260,7 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center p-6 sm:p-10 md:p-12 overflow-hidden">
+  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center px-4 sm:px-8 md:px-12 py-8 overflow-hidden">
     
     <!-- 80% Opacity Full Background Video -->
     <video 
@@ -276,21 +276,21 @@
     <!-- Compact Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <div class="w-full max-w-6xl mx-auto flex flex-col items-center select-none relative z-20 space-y-8 sm:space-y-10">
+    <!-- MAIN CONTENT CONTAINER: Expanded max-width, minimal side margins -->
+    <div class="w-full max-w-7xl mx-auto flex flex-col items-center select-none relative z-20 space-y-8 md:space-y-10">
       
-      <!-- TOP SECTION: TIGHTENED ROW WITH MINIMAL DEAD SPACE -->
-      <div class="w-full flex flex-col lg:flex-row items-center justify-start gap-8 lg:gap-14">
+      <!-- TOP SECTION: BALANCED ROW (TEXT LEFT, PHOTO RIGHT) -->
+      <div class="w-full flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10">
         
-        <!-- 1. LEFT-ALIGNED STATEMENT & SUBHEADLINE (BIGGER TYPOGRAPHY, NATURAL WRAP) -->
-        <div class="flex-1 flex flex-col items-start text-left max-w-2xl lg:max-w-[700px]">
-          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-4xl sm:text-6xl md:text-7xl lg:text-[4.7vw] leading-[0.98] tracking-tight uppercase drop-shadow-[0_14px_38px_rgba(0,0,0,0.95)]">
-            <span class="block">Let me handle your</span>
-            <span class="block text-[#d4f038]">books with precision</span>
-            <span class="block text-white/95">while you focus on your mission</span>
+        <!-- 1. LEFT-ALIGNED STATEMENT & SUBHEADLINE: Fixed 3-line structural layout -->
+        <div class="flex-1 flex flex-col items-start text-left w-full">
+          <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-4xl sm:text-5xl md:text-6xl lg:text-[4.6vw] leading-[1.0] tracking-tight uppercase drop-shadow-[0_14px_38px_rgba(0,0,0,0.95)]">
+            <span class="block whitespace-nowrap">Let me handle your</span>
+            <span class="block text-[#d4f038] whitespace-nowrap">books with precision</span>
+            <span class="block text-white/95 whitespace-nowrap">while you focus on your mission</span>
           </h2>
 
-          <!-- Subheadline: Clean left alignment, no line borders -->
+          <!-- Subheadline -->
           <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase mt-5 text-left opacity-90 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
             Clean books. Zero stress. More time to build what matters.
           </p>
@@ -298,7 +298,7 @@
 
         <!-- 2. RIGHT-ALIGNED INTERACTIVE 3D TILT PORTRAIT -->
         <div class="portrait-tilt-stage flex items-center justify-center flex-shrink-0">
-          <div id="portrait-interactive" class="portrait-card relative w-56 sm:w-64 md:w-72 lg:w-[310px] cursor-pointer select-none">
+          <div id="portrait-interactive" class="portrait-card relative w-56 sm:w-68 md:w-76 lg:w-[330px] cursor-pointer select-none">
             
             <!-- Lime Halo Ring Effect -->
             <div class="absolute inset-0 rounded-full bg-[#d4f038]/15 blur-2xl -z-10 scale-110 pointer-events-none"></div>
@@ -319,35 +319,35 @@
 
       </div>
 
-      <!-- 3. COMPACT KEY METRICS STRIP: FITTED TO METRICS (MAX-W-4XL) -->
-      <div id="metrics-card" class="w-full max-w-4xl rounded-2xl glass-metrics-card py-5 px-6 sm:px-8 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
+      <!-- 3. BALANCED FROSTED GLASS METRICS: Scaled labels and proportional width -->
+      <div id="metrics-card" class="w-full max-w-5xl rounded-2xl glass-metrics-card py-6 px-6 sm:px-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15 relative z-20">
         
         <!-- Metric 1: 3000+ -->
-        <div class="flex flex-col items-center justify-center text-center px-3 pt-2 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] min-h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="3000+">
+        <div class="flex flex-col items-center justify-center text-center px-4 pt-3 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl min-h-[40px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="3000+">
             0000
           </div>
-          <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-200 uppercase tracking-wider mt-2 max-w-[190px] leading-snug">
+          <p class="font-mono-code text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider mt-2.5 max-w-[220px] leading-snug">
             Transactions Categorized
           </p>
         </div>
 
         <!-- Metric 2: 200+ -->
-        <div class="flex flex-col items-center justify-center text-center px-3 pt-4 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] min-h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="200+">
+        <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl min-h-[40px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="200+">
             000
           </div>
-          <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-200 uppercase tracking-wider mt-2 max-w-[190px] leading-snug">
+          <p class="font-mono-code text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider mt-2.5 max-w-[220px] leading-snug">
             Accounts Reconciled
           </p>
         </div>
 
         <!-- Metric 3: 1000+ -->
-        <div class="flex flex-col items-center justify-center text-center px-3 pt-4 md:pt-0">
-          <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] min-h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="1000+">
+        <div class="flex flex-col items-center justify-center text-center px-4 pt-4 md:pt-0">
+          <div class="slot-counter font-pixel text-[#d4f038] text-2xl sm:text-3xl min-h-[40px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]" data-target="1000+">
             0000
           </div>
-          <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-200 uppercase tracking-wider mt-2 max-w-[210px] leading-snug">
+          <p class="font-mono-code text-xs sm:text-sm font-bold text-neutral-100 uppercase tracking-wider mt-2.5 max-w-[240px] leading-snug">
             Invoices, bills &amp; checks accurately recorded
           </p>
         </div>
@@ -533,7 +533,7 @@
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
       const cursorGlow = document.getElementById('cursor-glow');
-      const lines = statement.querySelectorAll('span');
+      const lines = statement.querySelectorAll('span.block');
 
       lines.forEach(line => {
         const text = line.innerText.trim();
@@ -635,9 +635,8 @@
         const xPct = mouseX / bounds.width - 0.5;
         const yPct = mouseY / bounds.height - 0.5;
 
-        // Dynamic 3D tilt calculation
-        const rotX = -yPct * 24; // -12deg to +12deg
-        const rotY = xPct * 24;  // -12deg to +12deg
+        const rotX = -yPct * 24;
+        const rotY = xPct * 24;
 
         portrait.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.04, 1.04, 1.04)`;
       });
