@@ -111,45 +111,45 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== DOCK TASKBAR WITH CANVA PNG GLASS ==================== */
+    /* ==================== DOCK TASKBAR WITH PERFECT MARGIN FIT ==================== */
     .canva-dock-wrapper {
       position: relative;
-      width: min(96vw, 1220px);
-      height: 108px;
+      width: min(96vw, 1140px);
+      height: 86px; /* Compacted height to snugly fit the icons without excess top/bottom voids */
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.75rem;
+      padding: 0 1.5rem;
     }
 
     @media (min-width: 640px) {
       .canva-dock-wrapper {
-        height: 118px;
-        padding: 0 2.5rem;
+        height: 94px;
+        padding: 0 2.25rem;
       }
     }
 
-    /* Background image shifted so the glass height center matches the icons */
+    /* Background image shifted to preserve equal margins above and below */
     .canva-dock-bg {
       position: absolute;
-      top: -14px;
-      bottom: -6px;
+      top: -8px;
+      bottom: -4px;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100% + 20px);
+      height: calc(100% + 12px);
       object-fit: fill;
       pointer-events: none;
       z-index: 0;
-      border-radius: 28px;
-      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.45));
+      border-radius: 26px;
+      filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.45));
     }
 
     @media (min-width: 640px) {
       .canva-dock-bg {
-        top: -16px;
-        bottom: -8px;
-        height: calc(100% + 24px);
+        top: -10px;
+        bottom: -4px;
+        height: calc(100% + 14px);
       }
     }
 
@@ -172,16 +172,16 @@
                   filter 0.24s ease;
       will-change: transform;
       display: block;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
+      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.3));
     }
 
     .dock-app-item:hover .dock-app-icon {
-      transform: translateY(-8px) scale(1.12);
-      filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.48));
+      transform: translateY(-7px) scale(1.1);
+      filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.45));
     }
 
     .dock-app-item:active .dock-app-icon {
-      transform: translateY(-3px) scale(1.05);
+      transform: translateY(-3px) scale(1.04);
       transition-duration: 0.12s;
     }
 
@@ -189,7 +189,7 @@
     .dock-tooltip {
       position: absolute;
       left: 50%;
-      bottom: calc(100% + 14px);
+      bottom: calc(100% + 12px);
       transform: translateX(-50%) translateY(6px);
       opacity: 0;
       pointer-events: none;
@@ -429,11 +429,11 @@
           
           <!-- Metric 1: 3000+ -->
           <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
               0000
             </div>
             <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5">
-              <p class="font-mono-code text-[11px] sm:text-xs md:text-[13px] font-semibold text-neutral-100 uppercase tracking-wide leading-snug">
+              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug">
                 Transactions<br/>Categorized
               </p>
             </div>
@@ -441,23 +441,23 @@
 
           <!-- Metric 2: 200+ -->
           <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
               000
             </div>
             <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5">
-              <p class="font-mono-code text-[11px] sm:text-xs md:text-[13px] font-semibold text-neutral-100 uppercase tracking-wide leading-snug">
+              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug">
                 Accounts<br/>Reconciled
               </p>
             </div>
           </div>
 
-          <!-- Metric 3: 1000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[30px] h-[38px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="1000+">
+          <!-- Metric 3: 1000+ (Strictly Centered Both Horizontally & Vertically) -->
+          <div class="flex flex-col items-center justify-between text-center px-2 w-full">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[36px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)] w-full text-center" data-target="1000+">
               0000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5">
-              <p class="font-mono-code text-[11px] sm:text-xs md:text-[13px] font-semibold text-neutral-100 uppercase tracking-wide leading-snug">
+            <div class="min-h-[2.4rem] flex items-center justify-center mt-1.5 w-full">
+              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug text-center mx-auto">
                 Invoices, Bills &amp; Checks<br/>Accurately Recorded
               </p>
             </div>
@@ -491,11 +491,11 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT MIDLINE VERTICAL CENTERING) ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT COMPACT FIT & EQUAL MARGINS) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
-        <!-- Canva Frosted Glass Background Texture (Calibrated to Middle Symmetrical Bounds) -->
+        <!-- Canva Frosted Glass Background Texture (Snug Vertical Fit) -->
         <img 
           src="images/dock-bg.png" 
           alt="Frosted Glass Dock" 
@@ -503,11 +503,11 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <!-- Left Group: Cream Logo + 4 App Icons (Middle of Height, 0.25rem / 4px Spacing) -->
+        <!-- Left Group: Cream Logo + 4 App Icons (Proportionally Snug, 0.25rem / 4px Spacing) -->
         <div class="flex items-center gap-1 relative z-10 my-auto">
           
           <!-- Brand Logo: cream.png -->
-          <div class="dock-app-item shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]">
+          <div class="dock-app-item shrink-0 w-[62px] h-[62px] sm:w-[70px] sm:h-[70px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -517,64 +517,64 @@
           </div>
 
           <!-- Icon 1: Home -->
-          <a href="#home" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to Home">
+          <a href="#home" class="dock-app-item group shrink-0 w-[62px] h-[62px] sm:w-[70px] sm:h-[70px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
           <!-- Icon 2: About me -->
-          <a href="#about" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to About Me">
+          <a href="#about" class="dock-app-item group shrink-0 w-[62px] h-[62px] sm:w-[70px] sm:h-[70px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
           <!-- Icon 3: Workflow -->
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to Workflow">
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[62px] h-[62px] sm:w-[70px] sm:h-[70px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
           <!-- Icon 4: Intro -->
-          <a href="#intro" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to Intro">
+          <a href="#intro" class="dock-app-item group shrink-0 w-[62px] h-[62px] sm:w-[70px] sm:h-[70px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
         </div>
 
-        <!-- Right Group: Email Copy Pill Capsule (Centered along the horizontal midline axis) -->
+        <!-- Right Group: Email Copy Pill Capsule (Snug Height & Centered) -->
         <div class="flex items-center relative z-10 pl-3 my-auto">
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full flex items-center justify-center shadow-lg border border-black/10 cursor-pointer group focus:outline-none select-none"
+            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
             title="Click to copy email address"
           >
-            <span class="font-mono-code font-bold text-xs sm:text-sm md:text-base tracking-tight text-neutral-900 whitespace-nowrap">
+            <span class="font-mono-code font-bold text-xs sm:text-sm tracking-tight text-neutral-900 whitespace-nowrap">
               elaineyap.ph@gmail.com
             </span>
             <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200 shadow-md">
