@@ -20,6 +20,9 @@
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
 
+  <!-- Matter.js Physics Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
   <style>
     :root {
       --bg-dark: #0b0f14;
@@ -225,20 +228,22 @@
       opacity: 1;
     }
 
-    /* ==================== CUSHION STACKING BRICKS ==================== */
-    .software-brick {
+    /* ==================== 2D RIGID-BODY BRICK WRAPPERS ==================== */
+    .physics-block {
       position: absolute;
-      cursor: pointer;
+      top: 0;
+      left: 0;
       user-select: none;
+      cursor: pointer;
       will-change: transform;
       transform-origin: center center;
       transition: filter 0.15s ease;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.75));
       pointer-events: auto;
       touch-action: none;
     }
 
-    .software-brick img {
+    .physics-block img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -246,7 +251,7 @@
       display: block;
     }
 
-    .software-brick.is-pinned:hover {
+    .physics-block.is-pinned:hover {
       filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.9)) brightness(1.2);
     }
 
@@ -585,7 +590,7 @@
 
   </footer>
 
-  <!-- ==================== SOFTWARE SECTION: CUSHIONED STACKING ==================== -->
+  <!-- ==================== REAL 2D RIGID-BODY SOFTWARE SECTION ==================== -->
   <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-10 pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
     
     <!-- Editorial Header -->
@@ -601,10 +606,10 @@
     <!-- Arena Box -->
     <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[640px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
-      <!-- Subtle Floor Landing Guide -->
+      <!-- Subtle Floor Guide -->
       <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-[#d4f038]/25 pointer-events-none"></div>
 
-      <!-- Container for Puzzle-Fit Software Elements -->
+      <!-- DOM Element Container for Matter.js Synchronizer -->
       <div id="physics-body-container" class="relative w-full h-full pointer-events-auto"></div>
 
     </div>
@@ -989,53 +994,80 @@
       }, 500);
     })();
 
-    // ==================== 6. CUSHIONED STACKING & MOMENTUM ENGINE ====================
-    (function initCushionedJenga() {
+    // ==================== 6. MATTER.JS 2D RIGID-BODY ENGINE (TRUE COLLISION & NO RECOIL) ====================
+    (function () {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
+      const { Engine, World, Bodies, Body, Runner, Events } = Matter;
+
+      // 1. Setup Engine with snappy real-world gravity
+      const engine = Engine.create({ enableSleeping: false });
+      engine.world.gravity.y = 1.65;
+
+      const runner = Runner.create();
+      Runner.run(runner, engine);
+
       let stageW = stage.clientWidth || 1200;
       let stageH = stage.clientHeight || 640;
 
+      // Sizing geometry: 6 across desktop to eliminate lateral gap entirely
       const isMobile = stageW < 640;
-      const iconW = isMobile ? 124 : Math.min(180, Math.floor((stageW - 100) / 5.2));
-      const iconH = Math.round(iconW * 0.36);
+      const COLS = isMobile ? 4 : 6;
+      const padX = isMobile ? 12 : 20;
       const gapX = isMobile ? 8 : 12;
-      const gapY = isMobile ? 10 : 14;
-      const padX = isMobile ? 14 : 26;
-      const startY = 22;
+      const gapY = isMobile ? 10 : 12;
+      const availableW = stageW - (padX * 2);
+      const iconW = Math.floor((availableW - (gapX * (COLS - 1))) / COLS);
+      const iconH = Math.round(iconW * 0.36);
+      const startY = 20;
 
-      // Discreet landing channels across floor width
-      const NUM_COLUMNS = isMobile ? 4 : 6;
-      const colWidth = (stageW - padX * 2) / NUM_COLUMNS;
-      // Tracks current stack count and resting items per channel
-      const columns = Array.from({ length: NUM_COLUMNS }, (_, i) => ({
-        index: i,
-        centerX: padX + (i * colWidth) + (colWidth / 2),
-        items: []
-      }));
+      // 2. Rigid Static Boundaries (Traps all bodies strictly inside the box)
+      const WALL_THICKNESS = 160;
+      let ground = Bodies.rectangle(stageW / 2, stageH + WALL_THICKNESS / 2, stageW * 2, WALL_THICKNESS, {
+        isStatic: true,
+        restitution: 0.25, // Natural absorption like cushioned plastic/wood
+        friction: 0.65
+      });
+      let leftWall = Bodies.rectangle(-WALL_THICKNESS / 2, stageH / 2, WALL_THICKNESS, stageH * 3, { isStatic: true });
+      let rightWall = Bodies.rectangle(stageW + WALL_THICKNESS / 2, stageH / 2, WALL_THICKNESS, stageH * 3, { isStatic: true });
+      let ceiling = Bodies.rectangle(stageW / 2, -WALL_THICKNESS / 2, stageW * 2, WALL_THICKNESS, { isStatic: true });
 
-      container.innerHTML = '';
+      World.add(engine.world, [ground, leftWall, rightWall, ceiling]);
+
       const items = [];
+      container.innerHTML = '';
 
-      let curX = padX;
-      let curY = startY;
-
+      // 3. Grid Generation (Edge-to-Edge, 0deg level)
       for (let i = 1; i <= TOTAL_ICONS; i++) {
-        if (curX + iconW > stageW - padX) {
-          curX = padX;
-          curY += iconH + gapY;
-        }
+        const idx = i - 1;
+        const col = idx % COLS;
+        const row = Math.floor(idx / COLS);
 
+        const initX = padX + (col * (iconW + gapX)) + (iconW / 2);
+        const initY = startY + (row * (iconH + gapY)) + (iconH / 2);
+
+        // Chamfered rigid rectangle body
+        const body = Bodies.rectangle(initX, initY, iconW, iconH, {
+          isStatic: true,
+          restitution: 0.28,   // Realistic bounce
+          friction: 0.55,      // Blocks slide and grip without slipping infinitely
+          frictionAir: 0.018,  // Clean air resistance
+          chamfer: { radius: 14 }
+        });
+
+        World.add(engine.world, body);
+
+        // Mapped DOM image block
         const el = document.createElement('div');
-        el.className = 'software-brick is-pinned';
+        el.className = 'physics-block is-pinned';
         el.style.width = `${iconW}px`;
         el.style.height = `${iconH}px`;
-        el.style.left = `${curX}px`;
-        el.style.top = `${curY}px`;
-        el.style.zIndex = '10';
+        el.style.marginLeft = `${-iconW / 2}px`;
+        el.style.marginTop = `${-iconH / 2}px`;
+        el.style.transform = `translate3d(${initX}px, ${initY}px, 0px) rotate(0rad)`;
 
         const img = document.createElement('img');
         img.src = `./images/${i}.png`;
@@ -1048,96 +1080,26 @@
         el.appendChild(img);
         container.appendChild(el);
 
-        const itemData = {
-          id: i,
-          el,
-          origX: curX,
-          origY: curY,
-          currentX: 0,
-          currentY: 0,
-          currentRot: 0,
-          hasFallen: false,
-          targetCol: null,
-          stackTier: 0
-        };
+        const itemData = { id: i, body, el, hasFallen: false };
+        items.push(itemData);
 
-        // INTERACTION
+        // 4. Physical Interaction: Real Forces & Zero Recoil
         el.addEventListener('mouseenter', (e) => {
           if (!itemData.hasFallen) {
-            // First time: Detach, fall, hit cushion, stack
+            // First hover: Drop straight down under gravity
             itemData.hasFallen = true;
             el.classList.remove('is-pinned');
 
-            // Find closest non-congested landing column
-            const initialColIdx = Math.min(NUM_COLUMNS - 1, Math.max(0, Math.floor((itemData.origX - padX) / colWidth)));
-            let bestCol = columns[initialColIdx];
+            Body.setStatic(body, false);
 
-            // If initial column is already high, spill toward least-populated neighboring column
-            for (let c of columns) {
-              if (c.items.length < bestCol.items.length - 1) {
-                bestCol = c;
-                break;
-              }
-            }
-
-            itemData.targetCol = bestCol;
-            itemData.stackTier = bestCol.items.length;
-            bestCol.items.push(itemData);
-
-            // Layer higher stacked items above earlier ones
-            el.style.zIndex = `${20 + itemData.stackTier}`;
-
-            // Calculate non-overlapping target landing positions
-            const targetLeft = bestCol.centerX - (iconW / 2) + ((Math.random() - 0.5) * 16);
-            const deltaX = targetLeft - itemData.origX;
-
-            // Height offset: Floor is stageH - iconH - padding. Each tier stacks higher.
-            const floorBaseline = stageH - iconH - 16;
-            const targetTop = floorBaseline - (itemData.stackTier * (iconH + 6));
-            const deltaY = targetTop - itemData.origY;
-
-            // Slight organic angle without severe tilt
-            const landRot = (Math.random() - 0.5) * 10;
-
-            itemData.currentX = deltaX;
-            itemData.currentY = deltaY;
-            itemData.currentRot = landRot;
-
-            // Cushion Impact: When hitting previous items, cause them to absorb inertia
-            const lowerItems = bestCol.items.slice(0, -1);
-
-            // 1. Falling icon drops with snappy bounce
-            gsap.to(el, {
-              x: deltaX,
-              y: deltaY,
-              rotation: landRot,
-              duration: 1.25,
-              ease: "bounce.out",
-              onComplete: () => {
-                // Settle firmly
-                gsap.to(el, { rotation: landRot * 0.7, duration: 0.2 });
-              }
+            // Tiny natural perturbation so it doesn't drop like a frozen block
+            Body.setVelocity(body, {
+              x: (Math.random() - 0.5) * 1.5,
+              y: 2.2 + Math.random() * 1.0
             });
-
-            // 2. Transfer momentum to items beneath it (The Cushion Effect)
-            if (lowerItems.length > 0) {
-              // Delay cushion compression until the falling block hits (~0.6s into fall)
-              gsap.delayedCall(0.55, () => {
-                lowerItems.forEach((sub, tierIdx) => {
-                  const impactFactor = 1 / (lowerItems.length - tierIdx + 1); // Less displacement the deeper it is
-                  gsap.to(sub.el, {
-                    y: sub.currentY + (7 * impactFactor),
-                    rotation: sub.currentRot + ((Math.random() - 0.5) * 3),
-                    duration: 0.12,
-                    ease: "power1.in",
-                    yoyo: true,
-                    repeat: 1
-                  });
-                });
-              });
-            }
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04);
           } else {
-            // Directional Kick away from cursor with momentum decay
+            // DIRECTIONAL KICK AWAY FROM CURSOR (Matter.js force transfer)
             const rect = el.getBoundingClientRect();
             const brickCenterX = rect.left + rect.width / 2;
             const brickCenterY = rect.top + rect.height / 2;
@@ -1146,40 +1108,38 @@
             const dirY = brickCenterY - e.clientY;
             const angle = Math.atan2(dirY, dirX);
 
-            const kickDist = 45 + Math.random() * 35;
-            const kickX = Math.cos(angle) * kickDist;
-            const kickY = -Math.abs(Math.sin(angle) * kickDist) - 30; // Upward kick
+            // True kinetic impulse away from the cursor
+            const forceMagnitude = 0.065 + Math.random() * 0.035;
+            const forceX = Math.cos(angle) * forceMagnitude;
+            const forceY = -Math.abs(Math.sin(angle) * forceMagnitude) - 0.04; // Kick up into the air
 
-            // Kick pop into air
-            gsap.to(el, {
-              x: itemData.currentX + kickX,
-              y: itemData.currentY + kickY,
-              rotation: itemData.currentRot + (Math.random() - 0.5) * 22,
-              duration: 0.28,
-              ease: "power2.out",
-              onComplete: () => {
-                // Secondary dampened bounce back to its stack position
-                gsap.to(el, {
-                  x: itemData.currentX,
-                  y: itemData.currentY,
-                  rotation: itemData.currentRot,
-                  duration: 0.75,
-                  ease: "bounce.out"
-                });
-              }
-            });
+            Body.applyForce(body, body.position, { x: forceX, y: forceY });
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.22);
           }
         });
-
-        items.push(itemData);
-        curX += iconW + gapX;
       }
 
-      window.addEventListener('resize', () => {
-        const newW = stage.clientWidth;
-        if (Math.abs(newW - stageW) > 60) {
-          initCushionedJenga();
+      // 5. Synchronize DOM transforms directly to Matter.js coordinate positions on every frame
+      Events.on(engine, 'afterUpdate', () => {
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i];
+          const pos = it.body.position;
+          const angle = it.body.angle;
+
+          it.el.style.transform = `translate3d(${pos.x.toFixed(1)}px, ${pos.y.toFixed(1)}px, 0px) rotate(${angle.toFixed(3)}rad)`;
         }
+      });
+
+      // 6. Responsive Boundary Recalibration
+      window.addEventListener('resize', () => {
+        stageW = stage.clientWidth;
+        stageH = stage.clientHeight;
+
+        Body.setPosition(ground, { x: stageW / 2, y: stageH + WALL_THICKNESS / 2 });
+        Body.setVertices(ground, Bodies.rectangle(stageW / 2, stageH + WALL_THICKNESS / 2, stageW * 2, WALL_THICKNESS).vertices);
+
+        Body.setPosition(rightWall, { x: stageW + WALL_THICKNESS / 2, y: stageH / 2 });
+        Body.setPosition(leftWall, { x: -WALL_THICKNESS / 2, y: stageH / 2 });
       });
     })();
   </script>
