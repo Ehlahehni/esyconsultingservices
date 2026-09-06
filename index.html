@@ -114,8 +114,8 @@
     /* ==================== DOCK TASKBAR WITH CANVA PNG GLASS ==================== */
     .canva-dock-wrapper {
       position: relative;
-      width: min(96vw, 1200px);
-      height: 96px;
+      width: min(96vw, 1220px);
+      height: 108px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -124,20 +124,20 @@
 
     @media (min-width: 640px) {
       .canva-dock-wrapper {
-        height: 104px;
+        height: 118px;
         padding: 0 2.5rem;
       }
     }
 
-    /* Background image shifted upward so the glass centers directly behind the icons */
+    /* Background image shifted so the glass height center matches the icons */
     .canva-dock-bg {
       position: absolute;
-      top: -24px;   /* Pulls the glass upward */
-      bottom: 6px;  /* Trims the dead transparent bottom space */
+      top: -14px;
+      bottom: -6px;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100% + 18px);
+      height: calc(100% + 20px);
       object-fit: fill;
       pointer-events: none;
       z-index: 0;
@@ -147,9 +147,9 @@
 
     @media (min-width: 640px) {
       .canva-dock-bg {
-        top: -30px;
-        bottom: 8px;
-        height: calc(100% + 22px);
+        top: -16px;
+        bottom: -8px;
+        height: calc(100% + 24px);
       }
     }
 
@@ -495,7 +495,7 @@
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
-        <!-- Canva Frosted Glass Background Texture (Calibrated Upwards) -->
+        <!-- Canva Frosted Glass Background Texture (Calibrated to Middle Symmetrical Bounds) -->
         <img 
           src="images/dock-bg.png" 
           alt="Frosted Glass Dock" 
@@ -507,7 +507,7 @@
         <div class="flex items-center gap-1 relative z-10 my-auto">
           
           <!-- Brand Logo: cream.png -->
-          <div class="dock-app-item shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]">
+          <div class="dock-app-item shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -517,56 +517,56 @@
           </div>
 
           <!-- Icon 1: Home -->
-          <a href="#home" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Home">
+          <a href="#home" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
           <!-- Icon 2: About me -->
-          <a href="#about" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to About Me">
+          <a href="#about" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
           <!-- Icon 3: Workflow -->
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Workflow">
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
           <!-- Icon 4: Intro -->
-          <a href="#intro" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Intro">
+          <a href="#intro" class="dock-app-item group shrink-0 w-[76px] h-[76px] sm:w-[86px] sm:h-[86px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[22px]"
             />
           </a>
 
         </div>
 
-        <!-- Right Group: Email Copy Pill Capsule (Locked into the same vertical axis) -->
+        <!-- Right Group: Email Copy Pill Capsule (Centered along the horizontal midline axis) -->
         <div class="flex items-center relative z-10 pl-3 my-auto">
           <button 
             id="email-copy-btn" 
