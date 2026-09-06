@@ -20,6 +20,9 @@
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
 
+  <!-- Matter.js Physics Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
   <style>
     :root {
       --bg-dark: #0b0f14;
@@ -99,7 +102,7 @@
       will-change: transform;
     }
 
-    /* ==================== DOCK TASKBAR (COMPACT & SNUG) ==================== */
+    /* ==================== DOCK TASKBAR ==================== */
     .canva-dock-wrapper {
       position: relative;
       width: fit-content;
@@ -223,6 +226,48 @@
 
     .email-capsule:hover .copy-hint {
       opacity: 1;
+    }
+
+    /* ==================== MATTER.JS SOFTWARE PHYSICS SECTION ==================== */
+    .physics-icon-body {
+      position: absolute;
+      width: 68px;
+      height: 68px;
+      margin-left: -34px;
+      margin-top: -34px;
+      left: 0;
+      top: 0;
+      user-select: none;
+      cursor: grab;
+      will-change: transform;
+      transform-origin: center center;
+      transition: filter 0.25s ease;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+    }
+
+    @media (min-width: 768px) {
+      .physics-icon-body {
+        width: 78px;
+        height: 78px;
+        margin-left: -39px;
+        margin-top: -39px;
+      }
+    }
+
+    .physics-icon-body:active {
+      cursor: grabbing;
+    }
+
+    .physics-icon-body img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      display: block;
+    }
+
+    .physics-icon-body.is-static:hover {
+      filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.65)) brightness(1.12);
     }
 
     .film-grain {
@@ -390,6 +435,9 @@
       <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
     </video>
 
+    <!-- Seamless Bottom Vignette Transition to Next Section -->
+    <div class="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-b from-transparent to-[#0b0f14] pointer-events-none z-10"></div>
+
     <!-- Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
 
@@ -411,7 +459,7 @@
           Clean books. Zero stress. More time to build what matters.
         </p>
 
-        <!-- Floating Minimalist Key Metrics (High-Contrast & "Transactions correctly" line split) -->
+        <!-- Floating Minimalist Key Metrics -->
         <div id="metrics-card" class="w-fit flex items-start gap-6 sm:gap-10 divide-x divide-white/20 mt-8 select-none">
           
           <!-- Metric 1: 3000+ -->
@@ -480,7 +528,7 @@
         <!-- Left Group: Cream Logo (Static) + 4 App Icons -->
         <div class="flex items-center gap-1.5 relative z-10 my-auto">
           
-          <!-- Brand Logo: Static, no hover animations -->
+          <!-- Brand Logo: Static -->
           <div class="dock-app-item dock-logo-item shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]">
             <img 
               src="images/cream.png" 
@@ -565,6 +613,53 @@
     <div id="intro" class="w-0 h-0 pointer-events-none"></div>
 
   </footer>
+
+  <!-- ==================== NEW SECTION: SOFTWARE GRAVITY STACK ==================== -->
+  <section id="software-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-16 sm:pt-24 pb-20 px-6 sm:px-12 md:px-16 overflow-hidden border-t border-white/10">
+    
+    <!-- Ambient Background Radial Glow -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#d4f038]/5 blur-[120px] pointer-events-none z-0"></div>
+
+    <!-- Editorial Header Stack -->
+    <div class="w-full max-w-7xl mx-auto flex flex-col items-center text-center select-none relative z-10 mb-8 sm:mb-12">
+      
+      <!-- Eyebrow Category -->
+      <span class="font-mono-code text-xs sm:text-sm text-[#d4f038] tracking-[0.22em] uppercase font-bold mb-3 drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]">
+        // Ecosystem &amp; Software Architecture
+      </span>
+
+      <!-- Display Headline -->
+      <h2 class="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] tracking-tight leading-[0.9] uppercase text-white drop-shadow-[0_14px_38px_rgba(0,0,0,0.85)]">
+        Toolstack I Mastered <span class="text-[#d4f038] block sm:inline">So You Don't Have To</span>
+      </h2>
+
+      <!-- Subheadline & Interactive Hover Cue -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4">
+        <p class="font-mono-code text-xs sm:text-sm text-neutral-300 uppercase tracking-wider max-w-xl">
+          26 mission-critical accounting, ERP &amp; workflow platforms battle-tested in live operations.
+        </p>
+
+        <!-- Dynamic Indicator Capsule -->
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.07] border border-white/20 font-mono-code text-[11px] text-[#d4f038] tracking-widest uppercase shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-[#d4f038] animate-pulse"></span>
+          Hover an icon to engage gravity
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Interactive Physics Arena (Full Viewport Stage) -->
+    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[620px] sm:h-[700px] md:h-[760px] rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden shadow-[inset_0_2px_4px_rgba(255,255,255,0.06),0_20px_50px_rgba(0,0,0,0.7)] z-10">
+      
+      <!-- Floor Guide Line -->
+      <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#d4f038]/30 to-transparent pointer-events-none"></div>
+
+      <!-- DOM Container where the 26 <img> physics elements are rendered -->
+      <div id="physics-body-container" class="relative w-full h-full pointer-events-auto"></div>
+
+    </div>
+
+  </section>
 
   <!-- ==================== ANIMATION ENGINE ==================== -->
   <script>
@@ -750,7 +845,7 @@
 
     })();
 
-    // 3. WATER-BUOYANCY SCATTER (RECURSIVE TEXT NODE PARSING)
+    // 3. WATER-BUOYANCY SCATTER
     (function () {
       const section = document.getElementById('books-section');
       const statement = document.getElementById('scatter-statement');
@@ -942,6 +1037,138 @@
           startSlotMachineRoll();
         }
       }, 500);
+    })();
+
+    // ==================== 6. MATTER.JS SOFTWARE HOVER-FALL PHYSICS ENGINE ====================
+    (function () {
+      const TOTAL_ICONS = 26;
+      const stage = document.getElementById('physics-stage');
+      const container = document.getElementById('physics-body-container');
+      if (!stage || !container) return;
+
+      const { Engine, World, Bodies, Body, Events } = Matter;
+
+      const engine = Engine.create({
+        enableSleeping: false
+      });
+      engine.world.gravity.y = 1.35; // Snappy, realistic gravity
+
+      let width = stage.clientWidth;
+      let height = stage.clientHeight;
+      const iconSize = window.innerWidth < 768 ? 68 : 78;
+      const radius = iconSize / 2;
+
+      // Static boundaries
+      const WALL_THICKNESS = 120;
+      let ground = Bodies.rectangle(width / 2, height + WALL_THICKNESS / 2, width * 2, WALL_THICKNESS, { isStatic: true, restitution: 0.52 });
+      let leftWall = Bodies.rectangle(-WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height * 2, { isStatic: true });
+      let rightWall = Bodies.rectangle(width + WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height * 2, { isStatic: true });
+
+      World.add(engine.world, [ground, leftWall, rightWall]);
+
+      // Calculate initial layout positions in upper area (grid with organic offsets)
+      const cols = window.innerWidth < 640 ? 4 : (window.innerWidth < 1024 ? 6 : 9);
+      const rows = Math.ceil(TOTAL_ICONS / cols);
+      const spacingX = (width - 120) / (cols - 1 || 1);
+      const spacingY = Math.min((height * 0.44) / rows, 90);
+
+      const items = [];
+
+      for (let i = 1; i <= TOTAL_ICONS; i++) {
+        const index = i - 1;
+        const col = index % cols;
+        const row = Math.floor(index / cols);
+
+        // Staggered initial position with organic tilt
+        const initX = 60 + col * spacingX + ((row % 2 === 1) ? 14 : -14);
+        const initY = 55 + row * spacingY;
+        const initAngle = ((i * 19) % 24 - 12) * (Math.PI / 180);
+
+        // Circular collision body with natural bounce and slight friction
+        const body = Bodies.circle(initX, initY, radius, {
+          isStatic: true,
+          restitution: 0.55,
+          friction: 0.15,
+          frictionAir: 0.015,
+          density: 0.003
+        });
+        body.torque = 0;
+        Body.setAngle(body, initAngle);
+
+        World.add(engine.world, body);
+
+        // Create the mapped transparent DOM element
+        const el = document.createElement('div');
+        el.className = 'physics-icon-body is-static';
+        el.setAttribute('data-id', i);
+        el.style.transform = `translate3d(${initX}px, ${initY}px, 0px) rotate(${initAngle}rad)`;
+
+        const img = document.createElement('img');
+        img.src = `./images/${i}.png`;
+        img.alt = `Software ${i}`;
+        img.loading = 'lazy';
+        // Elegant fallback indicator in case a specific icon file is missing
+        img.onerror = () => {
+          img.style.display = 'none';
+          el.innerHTML = `<div class="w-full h-full rounded-2xl bg-white/10 border border-[#d4f038]/40 flex items-center justify-center font-mono-code text-[11px] text-[#d4f038] font-bold">#${i}</div>`;
+        };
+
+        el.appendChild(img);
+        container.appendChild(el);
+
+        const itemObj = { id: i, body, el, hasFallen: false, initX, initY, initAngle };
+        items.push(itemObj);
+
+        // Hover Trigger: Detach and fall
+        el.addEventListener('mouseenter', () => {
+          if (!itemObj.hasFallen) {
+            itemObj.hasFallen = true;
+            el.classList.remove('is-static');
+
+            // Wake up rigid-body
+            Body.setStatic(body, false);
+
+            // Kinetic burst pop + slight spin
+            const impulseX = (Math.random() - 0.5) * 4.5;
+            const impulseY = -2.5 - Math.random() * 2.5;
+            Body.setVelocity(body, { x: impulseX, y: impulseY });
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.14);
+          }
+        });
+      }
+
+      // Physics animation tick
+      let lastTime = performance.now();
+      function updatePhysics(time) {
+        const delta = Math.min(time - lastTime, 32);
+        lastTime = time;
+
+        Engine.update(engine, delta);
+
+        // Synchronize DOM elements to Matter.js coordinates
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          const pos = item.body.position;
+          const angle = item.body.angle;
+          item.el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0px) rotate(${angle}rad)`;
+        }
+
+        requestAnimationFrame(updatePhysics);
+      }
+      requestAnimationFrame(updatePhysics);
+
+      // Window resize handling
+      function handleResize() {
+        width = stage.clientWidth;
+        height = stage.clientHeight;
+
+        Body.setPosition(ground, { x: width / 2, y: height + WALL_THICKNESS / 2 });
+        Body.setVertices(ground, Bodies.rectangle(width / 2, height + WALL_THICKNESS / 2, width * 2, WALL_THICKNESS).vertices);
+
+        Body.setPosition(leftWall, { x: -WALL_THICKNESS / 2, y: height / 2 });
+        Body.setPosition(rightWall, { x: width + WALL_THICKNESS / 2, y: height / 2 });
+      }
+      window.addEventListener('resize', handleResize);
     })();
   </script>
 </body>
