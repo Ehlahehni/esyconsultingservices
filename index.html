@@ -112,31 +112,31 @@
     /* ==================== DOCK TASKBAR ==================== */
     .canva-dock-wrapper {
       position: relative;
-      width: min(96vw, 1120px);
-      height: 84px;
+      width: min(96vw, 1080px);
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2rem;
+      padding: 0 1.75rem;
       box-sizing: border-box;
     }
 
     @media (min-width: 640px) {
       .canva-dock-wrapper {
-        height: 90px;
-        padding: 0 2.5rem;
+        height: 84px;
+        padding: 0 2.25rem;
       }
     }
 
-    /* Shifted upward to cancel Canva's bottom empty artboard void */
+    /* Calibrated to make top and bottom margins completely symmetrical */
     .canva-dock-bg {
       position: absolute;
-      top: -18px;
-      bottom: 6px;
+      top: -14px;
+      bottom: 2px;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100% + 24px);
+      height: calc(100% + 16px);
       object-fit: fill;
       pointer-events: none;
       z-index: 0;
@@ -175,7 +175,7 @@
     }
 
     .dock-app-item:hover .dock-app-icon {
-      transform: translateY(-6px) scale(1.08);
+      transform: translateY(-5px) scale(1.08);
       filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.45));
     }
 
@@ -229,7 +229,7 @@
     }
 
     .email-capsule:hover {
-      transform: translateY(-3px);
+      transform: translateY(-2px);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
     }
 
@@ -423,11 +423,11 @@
           Clean books. Zero stress. More time to build what matters.
         </p>
 
-        <!-- Metrics Card: Snug fit with NO lateral dead space (~1-inch gap mt-10) -->
-        <div id="metrics-card" class="w-fit inline-grid grid-cols-3 divide-x divide-white/20 rounded-2xl glass-metrics-card py-2.5 px-3 sm:px-4 relative mt-10">
+        <!-- Metrics Card: Comfortable padding with zero lateral dead space (~1-inch gap mt-10) -->
+        <div id="metrics-card" class="w-fit inline-grid grid-cols-3 divide-x divide-white/20 rounded-2xl glass-metrics-card py-4 px-4 sm:px-6 relative mt-10">
           
           <!-- Metric 1: 3000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-4">
+          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-5">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[24px] h-[32px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
               0000
             </div>
@@ -438,20 +438,20 @@
             </div>
           </div>
 
-          <!-- Metric 2: 200+ -->
-          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-4">
+          <!-- Metric 2: 200+ (cleanly split: ACCOUNTS SUCCESSFULLY / RECONCILED) -->
+          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-5">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[24px] h-[32px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
               000
             </div>
             <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
               <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug">
-                Accounts<br/>successfully reconciled
+                Accounts successfully<br/>reconciled
               </p>
             </div>
           </div>
 
           <!-- Metric 3: 1000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-4">
+          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-5">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[24px] h-[32px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)] text-center" data-target="1000+">
               0000
             </div>
@@ -466,26 +466,24 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: Exactly One Solid Lime Green Ring (No outer glow, no double circles) -->
+      <!-- RIGHT COLUMN: Direct Native Image Display (No CSS Borders, Halos, or Duplicate Rings) -->
       <div id="about" class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-2">
-        <div id="portrait-interactive" class="portrait-card relative w-72 sm:w-84 md:w-96 lg:w-[400px] cursor-pointer select-none">
-          
-          <picture class="w-full aspect-square block rounded-full overflow-hidden border-[6px] border-[#d4f038]">
+        <div id="portrait-interactive" class="portrait-card relative w-72 sm:w-84 md:w-96 lg:w-[410px] cursor-pointer select-none">
+          <picture class="w-full h-full block">
             <source srcset="images/portrait.webp" type="image/webp" />
             <img 
               id="portrait-img"
               src="images/portrait.png" 
               alt="Portrait" 
-              class="w-full h-full object-cover block"
+              class="w-full h-full object-contain block"
             />
           </picture>
-
         </div>
       </div>
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT EQUAL MARGINS) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -501,7 +499,7 @@
         <div class="flex items-center gap-1.5 relative z-10 my-auto">
           
           <!-- Brand Logo: Static, no hover animations -->
-          <div class="dock-app-item dock-logo-item shrink-0 w-[58px] h-[58px] sm:w-[66px] sm:h-[66px]">
+          <div class="dock-app-item dock-logo-item shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -511,50 +509,50 @@
           </div>
 
           <!-- Icon 1: Home -->
-          <a href="#home" class="dock-app-item group shrink-0 w-[58px] h-[58px] sm:w-[66px] sm:h-[66px]" aria-label="Navigate to Home">
+          <a href="#home" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
             />
           </a>
 
           <!-- Icon 2: About me -->
-          <a href="#about" class="dock-app-item group shrink-0 w-[58px] h-[58px] sm:w-[66px] sm:h-[66px]" aria-label="Navigate to About Me">
+          <a href="#about" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
             />
           </a>
 
           <!-- Icon 3: Workflow -->
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[58px] h-[58px] sm:w-[66px] sm:h-[66px]" aria-label="Navigate to Workflow">
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
             />
           </a>
 
           <!-- Icon 4: Intro -->
-          <a href="#intro" class="dock-app-item group shrink-0 w-[58px] h-[58px] sm:w-[66px] sm:h-[66px]" aria-label="Navigate to Intro">
+          <a href="#intro" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
             />
           </a>
 
@@ -565,10 +563,10 @@
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
+            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
             title="Click to copy email address"
           >
-            <span class="font-mono-code font-bold text-xs sm:text-sm tracking-tight text-neutral-900 whitespace-nowrap">
+            <span class="font-mono-code font-bold text-xs sm:text-[13px] tracking-tight text-neutral-900 whitespace-nowrap">
               elaineyap.ph@gmail.com
             </span>
             <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200 shadow-md">
@@ -888,8 +886,8 @@
         const xPct = mouseX / bounds.width - 0.5;
         const yPct = mouseY / bounds.height - 0.5;
 
-        const rotX = -yPct * 20;
-        const rotY = xPct * 20;
+        const rotX = -yPct * 18;
+        const rotY = xPct * 18;
 
         portrait.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
       });
