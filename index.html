@@ -111,32 +111,39 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== DOCK TASKBAR WITH EXACT MOCKUP DIMENSIONS ==================== */
+    /* ==================== DOCK TASKBAR (SCALED SYSTEM & PROPORTIONAL GAPS) ==================== */
     .canva-dock-wrapper {
       position: relative;
-      width: min(96vw, 980px);
-      height: 88px; /* 64px icon + 12px top margin + 12px bottom margin = 88px perfect fit */
+      width: min(96vw, 1220px);
+      height: 98px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 0 36px; /* Exact 36px left and right padding from diagram */
+      justify-content: center; /* Centered content cluster prevents disconnected voids */
+      padding: 0 1.5rem;
       box-sizing: border-box;
     }
 
-    /* Background image calibrated to keep 12px top/bottom symmetry */
+    @media (min-width: 768px) {
+      .canva-dock-wrapper {
+        height: 108px;
+        padding: 0 2.25rem;
+      }
+    }
+
+    /* Background image calibrated to keep top and bottom breathing room identical */
     .canva-dock-bg {
       position: absolute;
-      top: -7px;
-      bottom: -3px;
+      top: -10px;
+      bottom: -4px;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100% + 10px);
+      height: calc(100% + 14px);
       object-fit: fill;
       pointer-events: none;
       z-index: 0;
-      border-radius: 24px;
-      filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.45));
+      border-radius: 28px;
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.45));
     }
 
     .dock-app-item {
@@ -159,16 +166,16 @@
                   filter 0.24s ease;
       will-change: transform;
       display: block;
-      filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.32));
     }
 
     .dock-app-item:hover .dock-app-icon {
-      transform: translateY(-7px) scale(1.1);
-      filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.45));
+      transform: translateY(-8px) scale(1.12);
+      filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.48));
     }
 
     .dock-app-item:active .dock-app-icon {
-      transform: translateY(-3px) scale(1.04);
+      transform: translateY(-3px) scale(1.05);
       transition-duration: 0.12s;
     }
 
@@ -176,7 +183,7 @@
     .dock-tooltip {
       position: absolute;
       left: 50%;
-      bottom: calc(100% + 12px);
+      bottom: calc(100% + 14px);
       transform: translateX(-50%) translateY(6px);
       opacity: 0;
       pointer-events: none;
@@ -209,18 +216,24 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Email Capsule: Exactly 292px × 43px */
+    /* Email Capsule: Proportionally scaled to 386px × 56px */
     .email-capsule {
       transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
                   box-shadow 0.22s ease;
       z-index: 10;
-      width: 292px;
-      height: 43px;
+      width: min(88vw, 386px);
+      height: 52px;
+    }
+
+    @media (min-width: 768px) {
+      .email-capsule {
+        height: 56px;
+      }
     }
 
     .email-capsule:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
     }
 
     .email-capsule:hover .copy-hint {
@@ -480,7 +493,7 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (MATCHING EXACT DIAGRAM DIMENSIONS) ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (SCALED & CLUSTERED PROPORTIONS) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -492,87 +505,94 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <!-- Left Group: Logo + 4 App Icons (Exact 64x64px Sizing, 21px Gaps, 12px Top/Bottom Margin) -->
-        <div class="flex items-center relative z-10 my-auto">
+        <!-- Centered Responsive Visual System (Prevents empty stretching) -->
+        <div class="w-full flex items-center justify-between relative z-10 my-auto">
           
-          <!-- Brand Logo (64px × 64px) -->
-          <div class="dock-app-item w-[64px] h-[64px] mr-[22px]">
-            <img 
-              src="images/cream.png" 
-              alt="Logo" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none"
-              onerror="this.src='images-webp3/logo.png';"
-            />
+          <!-- Left System: Logo + 4 Main Icons -->
+          <div class="flex items-center">
+            
+            <!-- Brand Logo (~75px visual size) -->
+            <div class="dock-app-item w-[68px] h-[68px] sm:w-[75px] sm:h-[75px] mr-[18px] sm:mr-[25px]">
+              <img 
+                src="images/cream.png" 
+                alt="Logo" 
+                class="dock-app-icon w-full h-full object-contain pointer-events-none"
+                onerror="this.src='images-webp3/logo.png';"
+              />
+            </div>
+
+            <!-- 4 Main Navigation Icons (85px x 85px with tight 28px gaps) -->
+            <div class="flex items-center gap-[18px] sm:gap-[28px]">
+              
+              <!-- Icon 1: Home -->
+              <a href="#home" class="dock-app-item group w-[72px] h-[72px] sm:w-[85px] sm:h-[85px]" aria-label="Navigate to Home">
+                <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+                  Home
+                </span>
+                <img 
+                  src="images/home.png" 
+                  alt="Home" 
+                  class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+                />
+              </a>
+
+              <!-- Icon 2: About me -->
+              <a href="#about" class="dock-app-item group w-[72px] h-[72px] sm:w-[85px] sm:h-[85px]" aria-label="Navigate to About Me">
+                <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+                  About me
+                </span>
+                <img 
+                  src="images/about me.png" 
+                  alt="About Me" 
+                  class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+                />
+              </a>
+
+              <!-- Icon 3: Workflow -->
+              <a href="#workflow" class="dock-app-item group w-[72px] h-[72px] sm:w-[85px] sm:h-[85px]" aria-label="Navigate to Workflow">
+                <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+                  Workflow
+                </span>
+                <img 
+                  src="images/workflow.png" 
+                  alt="Workflow" 
+                  class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+                />
+              </a>
+
+              <!-- Icon 4: Intro (Play) -->
+              <a href="#intro" class="dock-app-item group w-[72px] h-[72px] sm:w-[85px] sm:h-[85px]" aria-label="Navigate to Intro">
+                <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+                  Intro
+                </span>
+                <img 
+                  src="images/intro.png" 
+                  alt="Intro" 
+                  class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
+                />
+              </a>
+
+            </div>
+
           </div>
 
-          <!-- 4 App Icons (64px × 64px with exact 21px gaps) -->
-          <div class="flex items-center gap-[21px]">
-            <!-- Icon 1: Home -->
-            <a href="#home" class="dock-app-item group w-[64px] h-[64px]" aria-label="Navigate to Home">
-              <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-                Home
+          <!-- Right System: Email Capsule (Separated by ~95px intentional gap) -->
+          <div class="flex items-center pl-[28px] sm:pl-[70px] lg:pl-[95px]">
+            <button 
+              id="email-copy-btn" 
+              onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
+              class="email-capsule relative bg-white text-slate-900 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
+              title="Click to copy email address"
+            >
+              <span class="font-mono-code font-bold text-xs sm:text-[14px] tracking-tight text-neutral-900 whitespace-nowrap">
+                elaineyap.ph@gmail.com
               </span>
-              <img 
-                src="images/home.png" 
-                alt="Home" 
-                class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
-              />
-            </a>
-
-            <!-- Icon 2: About me -->
-            <a href="#about" class="dock-app-item group w-[64px] h-[64px]" aria-label="Navigate to About Me">
-              <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-                About me
+              <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200 shadow-md">
+                CLICK TO COPY
               </span>
-              <img 
-                src="images/about me.png" 
-                alt="About Me" 
-                class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
-              />
-            </a>
-
-            <!-- Icon 3: Workflow -->
-            <a href="#workflow" class="dock-app-item group w-[64px] h-[64px]" aria-label="Navigate to Workflow">
-              <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-                Workflow
-              </span>
-              <img 
-                src="images/workflow.png" 
-                alt="Workflow" 
-                class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
-              />
-            </a>
-
-            <!-- Icon 4: Intro -->
-            <a href="#intro" class="dock-app-item group w-[64px] h-[64px]" aria-label="Navigate to Intro">
-              <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
-                Intro
-              </span>
-              <img 
-                src="images/intro.png" 
-                alt="Intro" 
-                class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[16px]"
-              />
-            </a>
+            </button>
           </div>
 
-        </div>
-
-        <!-- Right Group: Email Copy Pill (Exact 292px × 43px Dimension, Centered) -->
-        <div class="flex items-center relative z-10 pl-[24px] sm:pl-[48px] my-auto">
-          <button 
-            id="email-copy-btn" 
-            onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
-            title="Click to copy email address"
-          >
-            <span class="font-mono-code font-bold text-xs sm:text-[13px] tracking-tight text-neutral-900 whitespace-nowrap">
-              elaineyap.ph@gmail.com
-            </span>
-            <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200 shadow-md">
-              CLICK TO COPY
-            </span>
-          </button>
         </div>
 
       </div>
