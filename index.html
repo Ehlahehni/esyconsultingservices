@@ -238,7 +238,8 @@
       will-change: transform;
       transform-origin: center center;
       transition: filter 0.2s ease;
-      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8));
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+      pointer-events: auto;
     }
 
     .physics-icon-body img {
@@ -356,7 +357,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
+          142 unreconciled entries synced via QuickBooks &amp; Xero.
         </p>
       </div>
     </div>
@@ -589,9 +590,9 @@
   </footer>
 
   <!-- ==================== CLEAN REDESIGNED SOFTWARE SECTION ==================== -->
-  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-12 pb-28 px-4 sm:px-8 md:px-12 overflow-hidden">
+  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-10 pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
     
-    <!-- Editorial Header (Left-aligned & Direct) -->
+    <!-- Editorial Header (Clean Left-Aligned Stack matching Pic 1) -->
     <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-8 px-2">
       <h2 class="font-headline text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.92] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]">
         My Digital Toolbox
@@ -601,8 +602,8 @@
       </p>
     </div>
 
-    <!-- Generous Interactive Physics Arena (620px High, Non-Cramped Stage) -->
-    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[620px] rounded-3xl bg-white/[0.015] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
+    <!-- Arena Box: Calibrated Dimensions to Fit All Icons Neatly (Matching Pic 2) -->
+    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[640px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
       <!-- Subtle Floor Landing Guide -->
       <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-[#d4f038]/20 pointer-events-none"></div>
@@ -992,70 +993,72 @@
       }, 500);
     })();
 
-    // ==================== 6. MATTER.JS BULLETPROOF PHYSICS ENGINE ====================
-    window.addEventListener('load', () => {
+    // ==================== 6. MATTER.JS PUZZLE-FIT TETRIS & KICK ENGINE ====================
+    (function initSoftwarePhysics() {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
-      const { Engine, World, Bodies, Body, Runner, Sleeping, Events } = Matter;
+      const { Engine, World, Bodies, Body, Events, Sleeping } = Matter;
 
-      // 1. Create Engine & Dedicated Runner
       const engine = Engine.create({ enableSleeping: false });
-      engine.world.gravity.y = 2.4; // Realistic gravity
+      engine.world.gravity.y = 2.4;
 
-      const runner = Runner.create();
-      Runner.run(runner, engine);
+      let stageW = stage.clientWidth;
+      let stageH = stage.clientHeight;
 
-      let width = stage.clientWidth || 1200;
-      let height = stage.clientHeight || 620;
-
-      const isMobile = window.innerWidth < 640;
-      const bodyW = isMobile ? 124 : 148;
-      const bodyH = isMobile ? 48 : 56;
-
-      // 2. Solid Floor and Lateral Boundary Walls
+      // Solid Floor and Lateral Boundary Walls
       const WALL_T = 200;
-      const ground = Bodies.rectangle(width / 2, height + WALL_T / 2, width * 3, WALL_T, {
+      let ground = Bodies.rectangle(stageW / 2, stageH + WALL_T / 2, stageW * 3, WALL_T, {
         isStatic: true,
-        restitution: 0.6,
-        friction: 0.35
+        restitution: 0.55,
+        friction: 0.38
       });
-      const leftWall = Bodies.rectangle(-WALL_T / 2 + 15, height / 2, WALL_T, height * 3, { isStatic: true });
-      const rightWall = Bodies.rectangle(width + WALL_T / 2 - 15, height / 2, WALL_T, height * 3, { isStatic: true });
+      let leftWall = Bodies.rectangle(-WALL_T / 2, stageH / 2, WALL_T, stageH * 3, { isStatic: true });
+      let rightWall = Bodies.rectangle(stageW + WALL_T / 2, stageH / 2, WALL_T, stageH * 3, { isStatic: true });
 
       World.add(engine.world, [ground, leftWall, rightWall]);
 
-      // 3. Grid Positioning (4 Staggered Rows, Max 7 Columns to prevent crowding)
-      const cols = isMobile ? 4 : 7;
-      const horizontalPad = isMobile ? 70 : 85;
-      const availWidth = width - (horizontalPad * 2);
-      const stepX = availWidth / (cols - 1 || 1);
-      const stepY = 62;
-
+      // Dynamic Puzzle Grid Math (Never cut off, wraps naturally)
       const items = [];
+      let isMobile = stageW < 640;
+      
+      // Calculate responsive brick size
+      let bodyW = isMobile ? 116 : Math.min(Math.floor((stageW - 120) / 6), 164);
+      let bodyH = Math.round(bodyW * 0.38);
+
+      const gapX = isMobile ? 8 : 12;
+      const gapY = isMobile ? 10 : 14;
+      const padX = isMobile ? 16 : 28;
+      const startY = isMobile ? 24 : 32;
+
+      let currentX = padX + bodyW / 2;
+      let currentY = startY + bodyH / 2;
 
       for (let i = 1; i <= TOTAL_ICONS; i++) {
-        const idx = i - 1;
-        const col = idx % cols;
-        const row = Math.floor(idx / cols);
+        // Wrap to new row if this icon exceeds stage bounds (like the blue reference box)
+        if (currentX + bodyW / 2 > stageW - padX) {
+          currentX = padX + bodyW / 2;
+          currentY += bodyH + gapY;
+        }
 
-        // Stagger every other row
-        const rowOffset = (row % 2 === 1) ? (stepX * 0.45) : 0;
-        const initX = horizontalPad + (col * stepX) + rowOffset;
-        const initY = 42 + (row * stepY);
-        const initAngle = ((i * 17) % 18 - 9) * (Math.PI / 180);
+        const initX = currentX;
+        const initY = currentY;
+        const initAngle = 0; // Pure 0deg horizontal orientation
 
-        // Chamfered capsule body for organic collision and tumbling
+        // Advance X for next icon
+        currentX += bodyW + gapX;
+
+        // Rigid Body
         const body = Bodies.rectangle(initX, initY, bodyW, bodyH, {
           isStatic: true,
-          restitution: 0.6,
-          friction: 0.35,
+          restitution: 0.55,
+          friction: 0.38,
           frictionAir: 0.012,
-          chamfer: { radius: 14 }
+          chamfer: { radius: 12 }
         });
-        Body.setAngle(body, initAngle);
+        Body.setAngle(body, 0);
         World.add(engine.world, body);
 
         // Mapped DOM Element
@@ -1065,7 +1068,7 @@
         el.style.height = bodyH + 'px';
         el.style.marginLeft = (-bodyW / 2) + 'px';
         el.style.marginTop = (-bodyH / 2) + 'px';
-        el.style.transform = `translate3d(${initX}px, ${initY}px, 0px) rotate(${initAngle}rad)`;
+        el.style.transform = `translate3d(${initX}px, ${initY}px, 0px) rotate(0rad)`;
 
         const img = document.createElement('img');
         img.src = `./images/${i}.png`;
@@ -1078,51 +1081,59 @@
         el.appendChild(img);
         container.appendChild(el);
 
-        const itemObj = { id: i, body, el, hasFallen: false, initX, initY, initAngle };
+        const itemObj = { id: i, body, el, hasFallen: false, initX, initY, initAngle: 0 };
         items.push(itemObj);
 
-        // Hover: First Time = Detach & Fall; Later = Kicking Force
+        // Interaction Handling
         el.addEventListener('mouseenter', (e) => {
           if (!itemObj.hasFallen) {
+            // First trigger: unpin and fall
             itemObj.hasFallen = true;
             el.classList.remove('is-static');
 
-            // Force dynamic physics mode
             Body.setStatic(body, false);
             Sleeping.set(body, false);
 
-            // Pop impulse with slight rotational tumble
-            const popX = (Math.random() - 0.5) * 4.5;
+            const popX = (Math.random() - 0.5) * 4.0;
             const popY = -2.0 - Math.random() * 2.5;
             Body.setVelocity(body, { x: popX, y: popY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.18);
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.16);
           } else {
-            // Interactive mouse kick when hovered again at the bottom
+            // Mouse kick impact when already at the bottom
             const rect = el.getBoundingClientRect();
             const mouseRelX = e.clientX - (rect.left + rect.width / 2);
             const kickDirX = mouseRelX < 0 ? 1 : -1;
-            const kickX = kickDirX * (4.0 + Math.random() * 5.0);
-            const kickY = -7.5 - Math.random() * 6.0;
+            const kickX = kickDirX * (4.5 + Math.random() * 4.5);
+            const kickY = -7.5 - Math.random() * 5.0;
 
             Body.setVelocity(body, { x: kickX, y: kickY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.32);
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.28);
 
-            gsap.fromTo(el, { scale: 1.15 }, { scale: 1.0, duration: 0.28, ease: "back.out(2)" });
+            gsap.fromTo(el, { scale: 1.12 }, { scale: 1.0, duration: 0.26, ease: "back.out(2)" });
           }
         });
       }
 
-      // 4. Synchronize DOM positions to Matter.js coordinate positions on every physics tick
-      Events.on(engine, 'afterUpdate', () => {
+      // Physics Loop (Direct requestAnimationFrame ticker)
+      let lastTime = performance.now();
+      function updatePhysics(time) {
+        const delta = Math.min(time - lastTime, 32);
+        lastTime = time;
+
+        Engine.update(engine, delta);
+
         for (let i = 0; i < items.length; i++) {
           const item = items[i];
           const pos = item.body.position;
           const angle = item.body.angle;
           item.el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0px) rotate(${angle}rad)`;
         }
-      });
 
-      // 5. Reset to Square One when scrolling out and back into the section
+        requestAnimationFrame(updatePhysics);
+      }
+      requestAnimationFrame(updatePhysics);
+
+      // Reset To Square One on Scroll Out & Return
       function resetToSquareOne() {
         items.forEach(item => {
           item.hasFallen = false;
@@ -1130,11 +1141,11 @@
 
           Body.setStatic(item.body, true);
           Body.setPosition(item.body, { x: item.initX, y: item.initY });
-          Body.setAngle(item.body, item.initAngle);
+          Body.setAngle(item.body, 0);
           Body.setVelocity(item.body, { x: 0, y: 0 });
           Body.setAngularVelocity(item.body, 0);
 
-          item.el.style.transform = `translate3d(${item.initX}px, ${item.initY}px, 0px) rotate(${item.initAngle}rad)`;
+          item.el.style.transform = `translate3d(${item.initX}px, ${item.initY}px, 0px) rotate(0rad)`;
         });
       }
 
@@ -1146,19 +1157,19 @@
         onEnterBack: resetToSquareOne
       });
 
-      // 6. Responsive Window Resize
+      // Window Resize Boundary Recalibration
       function handleResize() {
-        width = stage.clientWidth;
-        height = stage.clientHeight;
+        stageW = stage.clientWidth;
+        stageH = stage.clientHeight;
 
-        Body.setPosition(ground, { x: width / 2, y: height + WALL_T / 2 });
-        Body.setVertices(ground, Bodies.rectangle(width / 2, height + WALL_T / 2, width * 3, WALL_T).vertices);
+        Body.setPosition(ground, { x: stageW / 2, y: stageH + WALL_T / 2 });
+        Body.setVertices(ground, Bodies.rectangle(stageW / 2, stageH + WALL_T / 2, stageW * 3, WALL_T).vertices);
 
-        Body.setPosition(leftWall, { x: -WALL_T / 2 + 15, y: height / 2 });
-        Body.setPosition(rightWall, { x: width + WALL_T / 2 - 15, y: height / 2 });
+        Body.setPosition(leftWall, { x: -WALL_T / 2, y: stageH / 2 });
+        Body.setPosition(rightWall, { x: stageW + WALL_T / 2, y: stageH / 2 });
       }
       window.addEventListener('resize', handleResize);
-    });
+    })();
   </script>
 </body>
 </html>
