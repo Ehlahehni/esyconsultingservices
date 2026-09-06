@@ -89,16 +89,6 @@
       filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
-    /* 70% Frosted Glass Card */
-    .glass-metrics-card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      box-shadow: inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.25),
-                  0 16px 36px -8px rgba(0, 0, 0, 0.7);
-    }
-
     /* Interactive 3D Card Tilt Wrapper */
     .portrait-tilt-stage {
       perspective: 1000px;
@@ -112,13 +102,13 @@
     /* ==================== DOCK TASKBAR (COMPACT & SNUG) ==================== */
     .canva-dock-wrapper {
       position: relative;
-      width: fit-content; /* Squeezes the glass tight to the contents */
+      width: fit-content;
       max-width: min(94vw, 840px);
       height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 1.75rem; /* Shortens the gap between the last icon and the email */
+      gap: 1.75rem;
       padding: 0 1.75rem;
       box-sizing: border-box;
     }
@@ -127,11 +117,10 @@
       .canva-dock-wrapper {
         height: 84px;
         padding: 0 2.25rem;
-        gap: 2.75rem; /* Clean, tight ~44px gap on desktop */
+        gap: 2.75rem;
       }
     }
 
-    /* Calibrated to keep top and bottom margins completely symmetrical */
     .canva-dock-bg {
       position: absolute;
       top: -14px;
@@ -161,14 +150,12 @@
       flex-shrink: 0;
     }
 
-    /* Logo stays completely static without hover animation */
     .dock-logo-item img {
       display: block;
       pointer-events: none;
       filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
     }
 
-    /* Bare icon with native bounce and soft drop shadow */
     .dock-app-icon {
       transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1),
                   filter 0.24s ease;
@@ -187,7 +174,6 @@
       transition-duration: 0.12s;
     }
 
-    /* Floating Tooltip */
     .dock-tooltip {
       position: absolute;
       left: 50%;
@@ -224,7 +210,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Email Capsule */
     .email-capsule {
       transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
                   box-shadow 0.22s ease;
@@ -391,7 +376,7 @@
   <!-- Master Scroll Track for GSAP Scrubbing -->
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
-  <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
+  <!-- ==================== FINAL STATEMENT, PORTRAIT & METRICS ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 px-6 sm:px-12 md:px-16 overflow-hidden">
     
     <!-- Background Video -->
@@ -426,50 +411,44 @@
           Clean books. Zero stress. More time to build what matters.
         </p>
 
-        <!-- Metrics Card: Comfortable padding with zero lateral dead space (~1-inch gap mt-10) -->
-        <div id="metrics-card" class="w-fit inline-grid grid-cols-3 divide-x divide-white/20 rounded-2xl glass-metrics-card py-4 px-4 sm:px-6 relative mt-10">
+        <!-- Floating Minimalist Key Metrics (No Frosted Glass Container) -->
+        <div id="metrics-card" class="w-fit flex items-start gap-6 sm:gap-10 divide-x divide-white/15 mt-8 select-none">
           
           <!-- Metric 1: 3000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-5">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[24px] h-[32px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
+          <div class="flex flex-col items-start text-left pr-2">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[34px] flex items-center drop-shadow-[0_0_14px_rgba(212,240,56,0.35)]" data-target="3000+">
               0000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug">
-                Transactions<br/>correctly categorized
-              </p>
-            </div>
+            <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase tracking-wider leading-relaxed mt-2">
+              Transactions<br/>correctly categorized
+            </p>
           </div>
 
-          <!-- Metric 2: 200+ (cleanly split: ACCOUNTS SUCCESSFULLY / RECONCILED) -->
-          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-5">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[24px] h-[32px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
+          <!-- Metric 2: 200+ -->
+          <div class="flex flex-col items-start text-left pl-6 sm:pl-10 pr-2">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[34px] flex items-center drop-shadow-[0_0_14px_rgba(212,240,56,0.35)]" data-target="200+">
               000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug">
-                Accounts successfully<br/>reconciled
-              </p>
-            </div>
+            <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase tracking-wider leading-relaxed mt-2">
+              Accounts successfully<br/>reconciled
+            </p>
           </div>
 
           <!-- Metric 3: 1000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-5">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[24px] h-[32px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)] text-center" data-target="1000+">
+          <div class="flex flex-col items-start text-left pl-6 sm:pl-10">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[34px] flex items-center drop-shadow-[0_0_14px_rgba(212,240,56,0.35)]" data-target="1000+">
               0000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
-              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug text-center whitespace-nowrap">
-                Invoices, Bills &amp; Checks<br/>Accurately Recorded
-              </p>
-            </div>
+            <p class="font-mono-code text-[10px] sm:text-[11px] text-neutral-400 font-medium uppercase tracking-wider leading-relaxed mt-2">
+              Invoices, Bills &amp; Checks<br/>Accurately Recorded
+            </p>
           </div>
 
         </div>
 
       </div>
 
-      <!-- RIGHT COLUMN: Direct Native Image Display (No CSS Borders, Halos, or Duplicate Rings) -->
+      <!-- RIGHT COLUMN: Direct Native Image Display -->
       <div id="about" class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-2">
         <div id="portrait-interactive" class="portrait-card relative w-72 sm:w-84 md:w-96 lg:w-[410px] cursor-pointer select-none">
           <picture class="w-full h-full block">
@@ -486,7 +465,7 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (SNUG CLUSTERED WIDTH) ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -561,7 +540,7 @@
 
         </div>
 
-        <!-- Right Group: Email Copy Pill (Now sits directly adjacent to Intro) -->
+        <!-- Right Group: Email Copy Pill -->
         <div class="flex items-center relative z-10 my-auto">
           <button 
             id="email-copy-btn" 
