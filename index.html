@@ -111,42 +111,46 @@
       transform-style: preserve-3d;
     }
 
-    /* ==================== DOCK TASKBAR WITH OPTICAL MIDLINE LOCK ==================== */
-    .dock-master-stage {
+    /* ==================== DOCK TASKBAR WITH CANVA PNG GLASS ==================== */
+    .canva-dock-wrapper {
       position: relative;
       width: min(96vw, 1200px);
       height: 96px;
-      border-radius: 28px;
-      overflow: hidden; /* Clips any bleed from the image texture */
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2rem;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), inset 0 1.5px 2px rgba(255, 255, 255, 0.45);
-      background: rgba(255, 255, 255, 0.38);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.45);
+      padding: 0 1.75rem;
     }
 
     @media (min-width: 640px) {
-      .dock-master-stage {
+      .canva-dock-wrapper {
         height: 104px;
         padding: 0 2.5rem;
       }
     }
 
-    /* Canva texture layer calibrated to offset the empty bottom margin */
-    .dock-texture-layer {
+    /* Background image shifted upward so the glass centers directly behind the icons */
+    .canva-dock-bg {
       position: absolute;
-      top: -10%;
+      top: -24px;   /* Pulls the glass upward */
+      bottom: 6px;  /* Trims the dead transparent bottom space */
       left: 0;
+      right: 0;
       width: 100%;
-      height: 145%; /* Stretches downward so the transparent bottom void sits entirely outside the clipped container */
+      height: calc(100% + 18px);
       object-fit: fill;
       pointer-events: none;
-      z-index: 1;
-      opacity: 0.95;
+      z-index: 0;
+      border-radius: 28px;
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.45));
+    }
+
+    @media (min-width: 640px) {
+      .canva-dock-bg {
+        top: -30px;
+        bottom: 8px;
+        height: calc(100% + 22px);
+      }
     }
 
     .dock-app-item {
@@ -388,7 +392,7 @@
   <!-- ==================== FINAL STATEMENT, PORTRAIT & FROSTED 8-BIT METRICS ==================== -->
   <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 px-6 sm:px-12 md:px-16 overflow-hidden">
     
-    <!-- 80% Opacity Full Background Video -->
+    <!-- Background Video -->
     <video 
       autoplay 
       loop 
@@ -487,20 +491,20 @@
 
     </div>
 
-    <!-- ==================== CALIBRATED MIDLINE DOCK TASKBAR ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT MIDLINE VERTICAL CENTERING) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
-      <div class="dock-master-stage">
+      <div class="canva-dock-wrapper">
         
-        <!-- Texture Layer (Clipped cleanly so bottom margin is eliminated) -->
+        <!-- Canva Frosted Glass Background Texture (Calibrated Upwards) -->
         <img 
           src="images/dock-bg.png" 
           alt="Frosted Glass Dock" 
-          class="dock-texture-layer"
-          onerror="this.style.display='none';"
+          class="canva-dock-bg"
+          onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
         <!-- Left Group: Cream Logo + 4 App Icons (Middle of Height, 0.25rem / 4px Spacing) -->
-        <div class="flex items-center gap-1 relative z-10">
+        <div class="flex items-center gap-1 relative z-10 my-auto">
           
           <!-- Brand Logo: cream.png -->
           <div class="dock-app-item shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]">
@@ -562,8 +566,8 @@
 
         </div>
 
-        <!-- Right Group: Email Copy Pill Capsule (Centered along identical vertical axis) -->
-        <div class="flex items-center relative z-10 pl-3">
+        <!-- Right Group: Email Copy Pill Capsule (Locked into the same vertical axis) -->
+        <div class="flex items-center relative z-10 pl-3 my-auto">
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
