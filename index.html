@@ -20,9 +20,6 @@
   <!-- Lenis Smooth Scroll -->
   <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
 
-  <!-- Matter.js Physics Engine -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
-
   <style>
     :root {
       --bg-dark: #0b0f14;
@@ -228,21 +225,19 @@
       opacity: 1;
     }
 
-    /* ==================== MATTER.JS PILL PHYSICS ==================== */
-    .physics-icon-body {
+    /* ==================== HARDWARE-ACCELERATED PUZZLE ICONS ==================== */
+    .software-brick {
       position: absolute;
-      top: 0;
-      left: 0;
-      user-select: none;
       cursor: pointer;
+      user-select: none;
       will-change: transform;
       transform-origin: center center;
       transition: filter 0.2s ease;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
       pointer-events: auto;
     }
 
-    .physics-icon-body img {
+    .software-brick img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -250,7 +245,7 @@
       display: block;
     }
 
-    .physics-icon-body.is-static:hover {
+    .software-brick.is-pinned:hover {
       filter: drop-shadow(0 0 16px rgba(212, 240, 56, 0.85)) brightness(1.15);
     }
 
@@ -357,7 +352,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero.
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
         </p>
       </div>
     </div>
@@ -589,10 +584,10 @@
 
   </footer>
 
-  <!-- ==================== CLEAN REDESIGNED SOFTWARE SECTION ==================== -->
+  <!-- ==================== CLEAN SOFTWARE SECTION ==================== -->
   <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-10 pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
     
-    <!-- Editorial Header (Clean Left-Aligned Stack matching Pic 1) -->
+    <!-- Editorial Header -->
     <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-8 px-2">
       <h2 class="font-headline text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.92] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]">
         My Digital Toolbox
@@ -602,13 +597,13 @@
       </p>
     </div>
 
-    <!-- Arena Box: Calibrated Dimensions to Fit All Icons Neatly (Matching Pic 2) -->
-    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[640px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
+    <!-- Arena Box (Calibrated Stage Boundary) -->
+    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[620px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
       <!-- Subtle Floor Landing Guide -->
-      <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-[#d4f038]/20 pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-[#d4f038]/25 pointer-events-none"></div>
 
-      <!-- Container for the 26 Physics Elements -->
+      <!-- Container for Puzzle-Fit Software Elements -->
       <div id="physics-body-container" class="relative w-full h-full pointer-events-auto"></div>
 
     </div>
@@ -993,82 +988,50 @@
       }, 500);
     })();
 
-    // ==================== 6. MATTER.JS PUZZLE-FIT TETRIS & KICK ENGINE ====================
-    (function initSoftwarePhysics() {
+    // ==================== 6. HIGH-PERFORMANCE GSAP GRAVITY, STACK & KICK ====================
+    (function initPuzzleStackEngine() {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
-      const { Engine, World, Bodies, Body, Events, Sleeping } = Matter;
+      let stageW = stage.clientWidth || 1180;
+      let stageH = stage.clientHeight || 620;
 
-      const engine = Engine.create({ enableSleeping: false });
-      engine.world.gravity.y = 2.4;
-
-      let stageW = stage.clientWidth;
-      let stageH = stage.clientHeight;
-
-      // Solid Floor and Lateral Boundary Walls
-      const WALL_T = 200;
-      let ground = Bodies.rectangle(stageW / 2, stageH + WALL_T / 2, stageW * 3, WALL_T, {
-        isStatic: true,
-        restitution: 0.55,
-        friction: 0.38
-      });
-      let leftWall = Bodies.rectangle(-WALL_T / 2, stageH / 2, WALL_T, stageH * 3, { isStatic: true });
-      let rightWall = Bodies.rectangle(stageW + WALL_T / 2, stageH / 2, WALL_T, stageH * 3, { isStatic: true });
-
-      World.add(engine.world, [ground, leftWall, rightWall]);
-
-      // Dynamic Puzzle Grid Math (Never cut off, wraps naturally)
-      const items = [];
-      let isMobile = stageW < 640;
-      
-      // Calculate responsive brick size
-      let bodyW = isMobile ? 116 : Math.min(Math.floor((stageW - 120) / 6), 164);
-      let bodyH = Math.round(bodyW * 0.38);
-
-      const gapX = isMobile ? 8 : 12;
+      // Sizing calibrated to match reference image (neat 5-across on desktop)
+      const isMobile = stageW < 640;
+      const iconW = isMobile ? 122 : Math.min(180, Math.floor((stageW - 100) / 5.4));
+      const iconH = Math.round(iconW * 0.36);
+      const gapX = isMobile ? 8 : 14;
       const gapY = isMobile ? 10 : 14;
-      const padX = isMobile ? 16 : 28;
-      const startY = isMobile ? 24 : 32;
+      const padX = isMobile ? 14 : 28;
+      const startY = 24;
 
-      let currentX = padX + bodyW / 2;
-      let currentY = startY + bodyH / 2;
+      // Stacking tracker along the bottom floor
+      const NUM_COLUMNS = isMobile ? 4 : 6;
+      const colStep = (stageW - padX * 2) / NUM_COLUMNS;
+      const floorStacks = new Array(NUM_COLUMNS).fill(0);
+
+      container.innerHTML = '';
+      const iconObjects = [];
+
+      let curX = padX;
+      let curY = startY;
 
       for (let i = 1; i <= TOTAL_ICONS; i++) {
-        // Wrap to new row if this icon exceeds stage bounds (like the blue reference box)
-        if (currentX + bodyW / 2 > stageW - padX) {
-          currentX = padX + bodyW / 2;
-          currentY += bodyH + gapY;
+        // Wrap to the next line if the icon exceeds the box boundary
+        if (curX + iconW > stageW - padX) {
+          curX = padX;
+          curY += iconH + gapY;
         }
 
-        const initX = currentX;
-        const initY = currentY;
-        const initAngle = 0; // Pure 0deg horizontal orientation
-
-        // Advance X for next icon
-        currentX += bodyW + gapX;
-
-        // Rigid Body
-        const body = Bodies.rectangle(initX, initY, bodyW, bodyH, {
-          isStatic: true,
-          restitution: 0.55,
-          friction: 0.38,
-          frictionAir: 0.012,
-          chamfer: { radius: 12 }
-        });
-        Body.setAngle(body, 0);
-        World.add(engine.world, body);
-
-        // Mapped DOM Element
         const el = document.createElement('div');
-        el.className = 'physics-icon-body is-static';
-        el.style.width = bodyW + 'px';
-        el.style.height = bodyH + 'px';
-        el.style.marginLeft = (-bodyW / 2) + 'px';
-        el.style.marginTop = (-bodyH / 2) + 'px';
-        el.style.transform = `translate3d(${initX}px, ${initY}px, 0px) rotate(0rad)`;
+        el.className = 'software-brick is-pinned';
+        el.style.width = `${iconW}px`;
+        el.style.height = `${iconH}px`;
+        el.style.left = `${curX}px`;
+        el.style.top = `${curY}px`;
+        el.setAttribute('data-id', i);
 
         const img = document.createElement('img');
         img.src = `./images/${i}.png`;
@@ -1081,94 +1044,87 @@
         el.appendChild(img);
         container.appendChild(el);
 
-        const itemObj = { id: i, body, el, hasFallen: false, initX, initY, initAngle: 0 };
-        items.push(itemObj);
+        const initialLeft = curX;
+        const initialTop = curY;
 
-        // Interaction Handling
+        const iconData = {
+          el,
+          id: i,
+          hasFallen: false,
+          top: initialTop,
+          left: initialLeft,
+          settledY: 0,
+          settledRot: 0
+        };
+
+        // Interactive Event: First Hover = Detach & Fall; Later Hover = Kick
         el.addEventListener('mouseenter', (e) => {
-          if (!itemObj.hasFallen) {
-            // First trigger: unpin and fall
-            itemObj.hasFallen = true;
-            el.classList.remove('is-static');
+          if (!iconData.hasFallen) {
+            iconData.hasFallen = true;
+            el.classList.remove('is-pinned');
 
-            Body.setStatic(body, false);
-            Sleeping.set(body, false);
+            // Find best floor column to stack onto like Tetris
+            const colIdx = Math.min(NUM_COLUMNS - 1, Math.max(0, Math.floor((iconData.left - padX) / colStep)));
+            const stackHeight = floorStacks[colIdx];
+            floorStacks[colIdx] += 1;
 
-            const popX = (Math.random() - 0.5) * 4.0;
-            const popY = -2.0 - Math.random() * 2.5;
-            Body.setVelocity(body, { x: popX, y: popY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.16);
+            // Target landing Y on the floor
+            const baseFloorY = stageH - iconH - 18;
+            const targetY = baseFloorY - (stackHeight * (iconH * 0.65));
+            const deltaY = targetY - iconData.top;
+            const targetRot = (Math.random() - 0.5) * 16;
+
+            iconData.settledY = deltaY;
+            iconData.settledRot = targetRot;
+
+            // 1.5s snappy gravity drop, tumble and realistic bounce
+            gsap.to(el, {
+              y: deltaY,
+              rotation: targetRot,
+              duration: 1.55,
+              ease: "bounce.out",
+              overwrite: "auto"
+            });
           } else {
-            // Mouse kick impact when already at the bottom
+            // Kick animation when hovering already-fallen icons
             const rect = el.getBoundingClientRect();
             const mouseRelX = e.clientX - (rect.left + rect.width / 2);
             const kickDirX = mouseRelX < 0 ? 1 : -1;
-            const kickX = kickDirX * (4.5 + Math.random() * 4.5);
-            const kickY = -7.5 - Math.random() * 5.0;
+            const kickJumpX = kickDirX * (Math.random() * 24 + 10);
+            const kickJumpY = iconData.settledY - (Math.random() * 65 + 75);
+            const kickSpin = iconData.settledRot + (Math.random() - 0.5) * 45;
 
-            Body.setVelocity(body, { x: kickX, y: kickY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.28);
-
-            gsap.fromTo(el, { scale: 1.12 }, { scale: 1.0, duration: 0.26, ease: "back.out(2)" });
+            // Kick pop into the air
+            gsap.to(el, {
+              y: kickJumpY,
+              x: `+=${kickJumpX}`,
+              rotation: kickSpin,
+              duration: 0.32,
+              ease: "power2.out",
+              onComplete: () => {
+                // Settle back down with mini-bounce
+                gsap.to(el, {
+                  y: iconData.settledY,
+                  rotation: iconData.settledRot + (Math.random() - 0.5) * 8,
+                  duration: 0.68,
+                  ease: "bounce.out"
+                });
+              }
+            });
           }
         });
+
+        iconObjects.push(iconData);
+        curX += iconW + gapX;
       }
 
-      // Physics Loop (Direct requestAnimationFrame ticker)
-      let lastTime = performance.now();
-      function updatePhysics(time) {
-        const delta = Math.min(time - lastTime, 32);
-        lastTime = time;
-
-        Engine.update(engine, delta);
-
-        for (let i = 0; i < items.length; i++) {
-          const item = items[i];
-          const pos = item.body.position;
-          const angle = item.body.angle;
-          item.el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0px) rotate(${angle}rad)`;
+      // Responsive Recalculation on Screen Resize
+      window.addEventListener('resize', () => {
+        const newW = stage.clientWidth;
+        if (Math.abs(newW - stageW) > 60) {
+          initPuzzleStackEngine();
         }
-
-        requestAnimationFrame(updatePhysics);
-      }
-      requestAnimationFrame(updatePhysics);
-
-      // Reset To Square One on Scroll Out & Return
-      function resetToSquareOne() {
-        items.forEach(item => {
-          item.hasFallen = false;
-          item.el.classList.add('is-static');
-
-          Body.setStatic(item.body, true);
-          Body.setPosition(item.body, { x: item.initX, y: item.initY });
-          Body.setAngle(item.body, 0);
-          Body.setVelocity(item.body, { x: 0, y: 0 });
-          Body.setAngularVelocity(item.body, 0);
-
-          item.el.style.transform = `translate3d(${item.initX}px, ${item.initY}px, 0px) rotate(0rad)`;
-        });
-      }
-
-      ScrollTrigger.create({
-        trigger: "#software-section",
-        start: "top 85%",
-        end: "bottom 15%",
-        onEnter: resetToSquareOne,
-        onEnterBack: resetToSquareOne
       });
-
-      // Window Resize Boundary Recalibration
-      function handleResize() {
-        stageW = stage.clientWidth;
-        stageH = stage.clientHeight;
-
-        Body.setPosition(ground, { x: stageW / 2, y: stageH + WALL_T / 2 });
-        Body.setVertices(ground, Bodies.rectangle(stageW / 2, stageH + WALL_T / 2, stageW * 3, WALL_T).vertices);
-
-        Body.setPosition(leftWall, { x: -WALL_T / 2, y: stageH / 2 });
-        Body.setPosition(rightWall, { x: stageW + WALL_T / 2, y: stageH / 2 });
-      }
-      window.addEventListener('resize', handleResize);
     })();
   </script>
 </body>
