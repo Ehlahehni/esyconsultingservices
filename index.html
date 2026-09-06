@@ -225,15 +225,15 @@
       opacity: 1;
     }
 
-    /* ==================== HARDWARE-ACCELERATED PUZZLE ICONS ==================== */
+    /* ==================== JENGA HARDWARE-ACCELERATED BRICKS ==================== */
     .software-brick {
       position: absolute;
       cursor: pointer;
       user-select: none;
       will-change: transform;
       transform-origin: center center;
-      transition: filter 0.2s ease;
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+      transition: filter 0.2s ease, box-shadow 0.2s ease;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
       pointer-events: auto;
     }
 
@@ -598,7 +598,7 @@
     </div>
 
     <!-- Arena Box (Calibrated Stage Boundary) -->
-    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[620px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
+    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[640px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
       <!-- Subtle Floor Landing Guide -->
       <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-[#d4f038]/25 pointer-events-none"></div>
@@ -988,29 +988,29 @@
       }, 500);
     })();
 
-    // ==================== 6. HIGH-PERFORMANCE GSAP GRAVITY, STACK & KICK ====================
-    (function initPuzzleStackEngine() {
+    // ==================== 6. TRUE JENGA FLOOR TOPOGRAPHY & DIRECTIONAL KICK ====================
+    (function initJengaStackEngine() {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
       let stageW = stage.clientWidth || 1180;
-      let stageH = stage.clientHeight || 620;
+      let stageH = stage.clientHeight || 640;
 
-      // Sizing calibrated to match reference image (neat 5-across on desktop)
       const isMobile = stageW < 640;
-      const iconW = isMobile ? 122 : Math.min(180, Math.floor((stageW - 100) / 5.4));
+      const iconW = isMobile ? 120 : Math.min(180, Math.floor((stageW - 100) / 5.2));
       const iconH = Math.round(iconW * 0.36);
-      const gapX = isMobile ? 8 : 14;
+      const gapX = isMobile ? 8 : 12;
       const gapY = isMobile ? 10 : 14;
-      const padX = isMobile ? 14 : 28;
-      const startY = 24;
+      const padX = isMobile ? 14 : 26;
+      const startY = 22;
 
-      // Stacking tracker along the bottom floor
-      const NUM_COLUMNS = isMobile ? 4 : 6;
-      const colStep = (stageW - padX * 2) / NUM_COLUMNS;
-      const floorStacks = new Array(NUM_COLUMNS).fill(0);
+      // CONTINUOUS FLOOR TOPOGRAPHY MAP (High-res spatial buckets across the stage floor)
+      const MAP_RESOLUTION = 12; // Sample every 12 pixels across width
+      const totalBuckets = Math.ceil(stageW / MAP_RESOLUTION);
+      // Stores current surface height in pixels from the bottom edge
+      const floorHeightMap = new Array(totalBuckets).fill(0);
 
       container.innerHTML = '';
       const iconObjects = [];
@@ -1019,7 +1019,7 @@
       let curY = startY;
 
       for (let i = 1; i <= TOTAL_ICONS; i++) {
-        // Wrap to the next line if the icon exceeds the box boundary
+        // Wrap to the next line without overflowing the box boundaries
         if (curX + iconW > stageW - padX) {
           curX = padX;
           curY += iconH + gapY;
@@ -1053,61 +1053,97 @@
           hasFallen: false,
           top: initialTop,
           left: initialLeft,
-          settledY: 0,
-          settledRot: 0
+          currentY: 0,
+          currentX: 0,
+          settledRot: 0,
+          isAnimating: false
         };
 
-        // Interactive Event: First Hover = Detach & Fall; Later Hover = Kick
+        // INTERACTION: First Hover = Detach & Jenga Stack; Subsequent Hover = Directional Kick
         el.addEventListener('mouseenter', (e) => {
           if (!iconData.hasFallen) {
             iconData.hasFallen = true;
             el.classList.remove('is-pinned');
 
-            // Find best floor column to stack onto like Tetris
-            const colIdx = Math.min(NUM_COLUMNS - 1, Math.max(0, Math.floor((iconData.left - padX) / colStep)));
-            const stackHeight = floorStacks[colIdx];
-            floorStacks[colIdx] += 1;
+            // 1. Determine landing zone with natural lateral scatter (-24px to +24px)
+            const lateralDrift = (Math.random() - 0.5) * 48;
+            const targetLandingLeft = Math.max(padX, Math.min(stageW - padX - iconW, iconData.left + lateralDrift));
+            const deltaX = targetLandingLeft - iconData.left;
 
-            // Target landing Y on the floor
-            const baseFloorY = stageH - iconH - 18;
-            const targetY = baseFloorY - (stackHeight * (iconH * 0.65));
-            const deltaY = targetY - iconData.top;
-            const targetRot = (Math.random() - 0.5) * 16;
+            // 2. Scan Floor Topography underneath this block's footprint
+            const startBucket = Math.floor(targetLandingLeft / MAP_RESOLUTION);
+            const endBucket = Math.min(totalBuckets - 1, Math.floor((targetLandingLeft + iconW) / MAP_RESOLUTION));
 
-            iconData.settledY = deltaY;
+            let maxSurfaceHeight = 0;
+            for (let b = startBucket; b <= endBucket; b++) {
+              if (floorHeightMap[b] > maxSurfaceHeight) {
+                maxSurfaceHeight = floorHeightMap[b];
+              }
+            }
+
+            // 3. New Jenga layer sits directly ON TOP of previously fallen blocks
+            const newSurfaceHeight = maxSurfaceHeight + (iconH * 0.94);
+
+            // Update topography so subsequent blocks land higher on this pile
+            for (let b = startBucket; b <= endBucket; b++) {
+              floorHeightMap[b] = newSurfaceHeight;
+            }
+
+            // Calculate precise vertical landing position inside stage
+            const landingYFromStageTop = stageH - newSurfaceHeight - 16;
+            const deltaY = landingYFromStageTop - iconData.top;
+            const targetRot = (Math.random() - 0.5) * 12; // Natural organic tilt
+
+            iconData.currentX = deltaX;
+            iconData.currentY = deltaY;
             iconData.settledRot = targetRot;
 
-            // 1.5s snappy gravity drop, tumble and realistic bounce
+            // 4. Snappy gravity drop and realistic bounce
             gsap.to(el, {
+              x: deltaX,
               y: deltaY,
               rotation: targetRot,
-              duration: 1.55,
+              duration: 1.45,
               ease: "bounce.out",
               overwrite: "auto"
             });
           } else {
-            // Kick animation when hovering already-fallen icons
-            const rect = el.getBoundingClientRect();
-            const mouseRelX = e.clientX - (rect.left + rect.width / 2);
-            const kickDirX = mouseRelX < 0 ? 1 : -1;
-            const kickJumpX = kickDirX * (Math.random() * 24 + 10);
-            const kickJumpY = iconData.settledY - (Math.random() * 65 + 75);
-            const kickSpin = iconData.settledRot + (Math.random() - 0.5) * 45;
+            // DIRECTIONAL KICK AWAY FROM CURSOR
+            if (iconData.isAnimating) return;
+            iconData.isAnimating = true;
 
-            // Kick pop into the air
+            const rect = el.getBoundingClientRect();
+            const brickCenterX = rect.left + rect.width / 2;
+            const brickCenterY = rect.top + rect.height / 2;
+
+            // Calculate direction vector pointing AWAY from cursor
+            const dirX = brickCenterX - e.clientX;
+            const dirY = brickCenterY - e.clientY;
+            const angle = Math.atan2(dirY, dirX);
+
+            // Impulse magnitude
+            const impulse = 65 + Math.random() * 45;
+            const kickJumpX = Math.cos(angle) * impulse;
+            const kickJumpY = -Math.abs(Math.sin(angle) * impulse) - 45; // Guaranteed upward kick
+            const spin = (Math.random() - 0.5) * 36;
+
             gsap.to(el, {
-              y: kickJumpY,
-              x: `+=${kickJumpX}`,
-              rotation: kickSpin,
-              duration: 0.32,
+              x: iconData.currentX + kickJumpX,
+              y: iconData.currentY + kickJumpY,
+              rotation: iconData.settledRot + spin,
+              duration: 0.3,
               ease: "power2.out",
               onComplete: () => {
-                // Settle back down with mini-bounce
+                // Return to Jenga rest position with secondary bounce
                 gsap.to(el, {
-                  y: iconData.settledY,
-                  rotation: iconData.settledRot + (Math.random() - 0.5) * 8,
-                  duration: 0.68,
-                  ease: "bounce.out"
+                  x: iconData.currentX,
+                  y: iconData.currentY,
+                  rotation: iconData.settledRot,
+                  duration: 0.65,
+                  ease: "bounce.out",
+                  onComplete: () => {
+                    iconData.isAnimating = false;
+                  }
                 });
               }
             });
@@ -1122,7 +1158,7 @@
       window.addEventListener('resize', () => {
         const newW = stage.clientWidth;
         if (Math.abs(newW - stageW) > 60) {
-          initPuzzleStackEngine();
+          initJengaStackEngine();
         }
       });
     })();
