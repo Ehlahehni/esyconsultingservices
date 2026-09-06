@@ -228,7 +228,7 @@
       opacity: 1;
     }
 
-    /* ==================== 2D RIGID-BODY BRICK WRAPPERS ==================== */
+    /* ==================== 2D RIGID-BODY BRICK STYLES ==================== */
     .physics-block {
       position: absolute;
       top: 0;
@@ -994,7 +994,7 @@
       }, 500);
     })();
 
-    // ==================== 6. MATTER.JS 2D RIGID-BODY ENGINE (TRUE COLLISION & NO RECOIL) ====================
+    // ==================== 6. MATTER.JS 2D RIGID-BODY ENGINE WITH DYNAMIC COLLISION FILTERING ====================
     (function () {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
@@ -1003,7 +1003,7 @@
 
       const { Engine, World, Bodies, Body, Runner, Events } = Matter;
 
-      // 1. Setup Engine with snappy real-world gravity
+      // Real 2D Physics Setup
       const engine = Engine.create({ enableSleeping: false });
       engine.world.gravity.y = 1.65;
 
@@ -1013,7 +1013,6 @@
       let stageW = stage.clientWidth || 1200;
       let stageH = stage.clientHeight || 640;
 
-      // Sizing geometry: 6 across desktop to eliminate lateral gap entirely
       const isMobile = stageW < 640;
       const COLS = isMobile ? 4 : 6;
       const padX = isMobile ? 12 : 20;
@@ -1024,23 +1023,38 @@
       const iconH = Math.round(iconW * 0.36);
       const startY = 20;
 
-      // 2. Rigid Static Boundaries (Traps all bodies strictly inside the box)
+      // COLLISION CATEGORIES
+      // Category 0x0001: Active World (Floor, Walls, Fallen dynamic blocks)
+      // Category 0x0002: Static Unhovered Ghost Blocks (Never block falling blocks)
+      const CAT_WORLD = 0x0001;
+      const CAT_GHOST = 0x0002;
+
       const WALL_THICKNESS = 160;
       let ground = Bodies.rectangle(stageW / 2, stageH + WALL_THICKNESS / 2, stageW * 2, WALL_THICKNESS, {
         isStatic: true,
-        restitution: 0.25, // Natural absorption like cushioned plastic/wood
-        friction: 0.65
+        restitution: 0.25,
+        friction: 0.7,
+        collisionFilter: { category: CAT_WORLD, mask: CAT_WORLD }
       });
-      let leftWall = Bodies.rectangle(-WALL_THICKNESS / 2, stageH / 2, WALL_THICKNESS, stageH * 3, { isStatic: true });
-      let rightWall = Bodies.rectangle(stageW + WALL_THICKNESS / 2, stageH / 2, WALL_THICKNESS, stageH * 3, { isStatic: true });
-      let ceiling = Bodies.rectangle(stageW / 2, -WALL_THICKNESS / 2, stageW * 2, WALL_THICKNESS, { isStatic: true });
+      let leftWall = Bodies.rectangle(-WALL_THICKNESS / 2, stageH / 2, WALL_THICKNESS, stageH * 3, {
+        isStatic: true,
+        collisionFilter: { category: CAT_WORLD, mask: CAT_WORLD }
+      });
+      let rightWall = Bodies.rectangle(stageW + WALL_THICKNESS / 2, stageH / 2, WALL_THICKNESS, stageH * 3, {
+        isStatic: true,
+        collisionFilter: { category: CAT_WORLD, mask: CAT_WORLD }
+      });
+      let ceiling = Bodies.rectangle(stageW / 2, -WALL_THICKNESS / 2, stageW * 2, WALL_THICKNESS, {
+        isStatic: true,
+        collisionFilter: { category: CAT_WORLD, mask: CAT_WORLD }
+      });
 
       World.add(engine.world, [ground, leftWall, rightWall, ceiling]);
 
       const items = [];
       container.innerHTML = '';
 
-      // 3. Grid Generation (Edge-to-Edge, 0deg level)
+      // Grid Generation
       for (let i = 1; i <= TOTAL_ICONS; i++) {
         const idx = i - 1;
         const col = idx % COLS;
@@ -1049,18 +1063,21 @@
         const initX = padX + (col * (iconW + gapX)) + (iconW / 2);
         const initY = startY + (row * (iconH + gapY)) + (iconH / 2);
 
-        // Chamfered rigid rectangle body
+        // Body starts in GHOST category: It collides with NOTHING while waiting in the grid
         const body = Bodies.rectangle(initX, initY, iconW, iconH, {
           isStatic: true,
-          restitution: 0.28,   // Realistic bounce
-          friction: 0.55,      // Blocks slide and grip without slipping infinitely
-          frictionAir: 0.018,  // Clean air resistance
-          chamfer: { radius: 14 }
+          restitution: 0.28,
+          friction: 0.65,
+          frictionAir: 0.018,
+          chamfer: { radius: 14 },
+          collisionFilter: {
+            category: CAT_GHOST,
+            mask: 0 // Collides with nothing
+          }
         });
 
         World.add(engine.world, body);
 
-        // Mapped DOM image block
         const el = document.createElement('div');
         el.className = 'physics-block is-pinned';
         el.style.width = `${iconW}px`;
@@ -1083,19 +1100,23 @@
         const itemData = { id: i, body, el, hasFallen: false };
         items.push(itemData);
 
-        // 4. Physical Interaction: Real Forces & Zero Recoil
+        // Hover Trigger
         el.addEventListener('mouseenter', (e) => {
           if (!itemData.hasFallen) {
-            // First hover: Drop straight down under gravity
+            // First hover: Drop straight down past all unhovered blocks
             itemData.hasFallen = true;
             el.classList.remove('is-pinned');
 
+            // Promote to full physical body: Collides only with Floor, Walls & other Fallen Blocks
+            body.collisionFilter.category = CAT_WORLD;
+            body.collisionFilter.mask = CAT_WORLD;
+
             Body.setStatic(body, false);
 
-            // Tiny natural perturbation so it doesn't drop like a frozen block
+            // Natural initial drop impulse
             Body.setVelocity(body, {
               x: (Math.random() - 0.5) * 1.5,
-              y: 2.2 + Math.random() * 1.0
+              y: 2.5 + Math.random() * 1.2
             });
             Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04);
           } else {
@@ -1108,10 +1129,9 @@
             const dirY = brickCenterY - e.clientY;
             const angle = Math.atan2(dirY, dirX);
 
-            // True kinetic impulse away from the cursor
             const forceMagnitude = 0.065 + Math.random() * 0.035;
             const forceX = Math.cos(angle) * forceMagnitude;
-            const forceY = -Math.abs(Math.sin(angle) * forceMagnitude) - 0.04; // Kick up into the air
+            const forceY = -Math.abs(Math.sin(angle) * forceMagnitude) - 0.04;
 
             Body.applyForce(body, body.position, { x: forceX, y: forceY });
             Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.22);
@@ -1119,7 +1139,7 @@
         });
       }
 
-      // 5. Synchronize DOM transforms directly to Matter.js coordinate positions on every frame
+      // Synchronize DOM positions to Matter.js coordinates
       Events.on(engine, 'afterUpdate', () => {
         for (let i = 0; i < items.length; i++) {
           const it = items[i];
@@ -1130,7 +1150,7 @@
         }
       });
 
-      // 6. Responsive Boundary Recalibration
+      // Responsive Boundary Recalibration
       window.addEventListener('resize', () => {
         stageW = stage.clientWidth;
         stageH = stage.clientHeight;
