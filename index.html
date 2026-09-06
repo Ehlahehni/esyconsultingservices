@@ -109,14 +109,16 @@
       will-change: transform;
     }
 
-    /* ==================== DOCK TASKBAR ==================== */
+    /* ==================== DOCK TASKBAR (COMPACT & SNUG) ==================== */
     .canva-dock-wrapper {
       position: relative;
-      width: min(96vw, 1080px);
+      width: fit-content; /* Squeezes the glass tight to the contents */
+      max-width: min(94vw, 840px);
       height: 80px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 1.75rem; /* Shortens the gap between the last icon and the email */
       padding: 0 1.75rem;
       box-sizing: border-box;
     }
@@ -125,10 +127,11 @@
       .canva-dock-wrapper {
         height: 84px;
         padding: 0 2.25rem;
+        gap: 2.75rem; /* Clean, tight ~44px gap on desktop */
       }
     }
 
-    /* Calibrated to make top and bottom margins completely symmetrical */
+    /* Calibrated to keep top and bottom margins completely symmetrical */
     .canva-dock-bg {
       position: absolute;
       top: -14px;
@@ -483,7 +486,7 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT EQUAL MARGINS) ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (SNUG CLUSTERED WIDTH) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -495,7 +498,7 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <!-- Left Group: Cream Logo (Static) + 4 App Icons (Middle of Height, Equal Top/Bottom Margins) -->
+        <!-- Left Group: Cream Logo (Static) + 4 App Icons -->
         <div class="flex items-center gap-1.5 relative z-10 my-auto">
           
           <!-- Brand Logo: Static, no hover animations -->
@@ -558,8 +561,8 @@
 
         </div>
 
-        <!-- Right Group: Email Copy Pill Capsule (Strict Midline Centering) -->
-        <div class="flex items-center relative z-10 pl-3 my-auto">
+        <!-- Right Group: Email Copy Pill (Now sits directly adjacent to Intro) -->
+        <div class="flex items-center relative z-10 my-auto">
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
