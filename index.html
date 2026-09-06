@@ -115,30 +115,30 @@
     .canva-dock-wrapper {
       position: relative;
       width: min(96vw, 1140px);
-      height: 88px;
+      height: 98px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 2rem;
+      padding: 0 1.75rem;
       box-sizing: border-box;
     }
 
     @media (min-width: 640px) {
       .canva-dock-wrapper {
-        height: 96px;
+        height: 104px;
         padding: 0 2.5rem;
       }
     }
 
-    /* Background image shifted to preserve equal margins above and below */
+    /* Background texture calibrated so top margin equals bottom margin */
     .canva-dock-bg {
       position: absolute;
-      top: -9px;
-      bottom: -3px;
+      top: -10px;
+      bottom: -4px;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100% + 12px);
+      height: calc(100% + 14px);
       object-fit: fill;
       pointer-events: none;
       z-index: 0;
@@ -177,12 +177,12 @@
     }
 
     .dock-app-item:hover .dock-app-icon {
-      transform: translateY(-7px) scale(1.1);
+      transform: translateY(-7px) scale(1.08);
       filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.45));
     }
 
     .dock-app-item:active .dock-app-icon {
-      transform: translateY(-3px) scale(1.04);
+      transform: translateY(-3px) scale(1.03);
       transition-duration: 0.12s;
     }
 
@@ -420,17 +420,17 @@
           <span class="scatter-line block whitespace-nowrap">focus on your vision</span>
         </h2>
 
-        <!-- Subheadline (Enlarged and refined) -->
+        <!-- Subheadline -->
         <p class="font-mono-code text-sm sm:text-base md:text-lg text-neutral-200 tracking-wide uppercase text-left opacity-95 drop-shadow-[0_4px_14px_rgba(0,0,0,0.85)] mt-3">
           Clean books. Zero stress. More time to build what matters.
         </p>
 
-        <!-- Metrics Card: Snug fit with ~1-inch space (mt-10) and eliminated lateral empty space -->
-        <div id="metrics-card" class="w-full max-w-3xl rounded-2xl glass-metrics-card py-3.5 sm:py-4 px-3 sm:px-6 grid grid-cols-3 divide-x divide-white/20 relative mt-10">
+        <!-- Metrics Card: Snug fit with NO lateral empty space (~1-inch gap mt-10) -->
+        <div id="metrics-card" class="w-fit inline-grid grid-cols-3 divide-x divide-white/20 rounded-2xl glass-metrics-card py-3 px-3 sm:px-5 relative mt-10">
           
           <!-- Metric 1: 3000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] h-[34px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
+          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-4">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[25px] h-[34px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="3000+">
               0000
             </div>
             <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
@@ -441,8 +441,8 @@
           </div>
 
           <!-- Metric 2: 200+ -->
-          <div class="flex flex-col items-center justify-between text-center px-2">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] h-[34px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
+          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-4">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[25px] h-[34px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)]" data-target="200+">
               000
             </div>
             <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
@@ -453,12 +453,12 @@
           </div>
 
           <!-- Metric 3: 1000+ -->
-          <div class="flex flex-col items-center justify-between text-center px-2 w-full">
-            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[26px] h-[34px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)] w-full text-center" data-target="1000+">
+          <div class="flex flex-col items-center justify-between text-center px-3 sm:px-4">
+            <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[25px] h-[34px] flex items-center justify-center drop-shadow-[0_0_12px_rgba(212,240,56,0.45)] text-center" data-target="1000+">
               0000
             </div>
-            <div class="min-h-[2.4rem] flex items-center justify-center mt-1 w-full">
-              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug text-center mx-auto">
+            <div class="min-h-[2.4rem] flex items-center justify-center mt-1">
+              <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-normal uppercase tracking-wider leading-snug text-center whitespace-nowrap">
                 Invoices, Bills &amp; Checks<br/>Accurately Recorded
               </p>
             </div>
@@ -468,15 +468,12 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: Clean Single Lime Green Circle Only -->
+      <!-- RIGHT COLUMN: Only One Pure Lime Green Border (All Outer Halo Rings & Fuzzy Glow Removed) -->
       <div id="about" class="portrait-tilt-stage flex items-center justify-center shrink-0 pr-0 lg:pr-2">
         <div id="portrait-interactive" class="portrait-card relative w-72 sm:w-84 md:w-96 lg:w-[410px] cursor-pointer select-none">
           
-          <!-- Outer Ambient Glow -->
-          <div class="absolute inset-0 rounded-full bg-[#d4f038]/30 blur-3xl -z-10 scale-110 pointer-events-none"></div>
-
-          <!-- Single Pure Lime Green Border (No nested or dark outer rings) -->
-          <div class="relative w-full aspect-square rounded-full border-[8px] border-[#d4f038] shadow-[0_0_35px_rgba(212,240,56,0.5),0_20px_45px_rgba(0,0,0,0.9)] overflow-hidden">
+          <!-- Single Pure Lime Green Border Only (No background glow div, no outer colored rings) -->
+          <div class="relative w-full aspect-square rounded-full border-[8px] border-[#d4f038] shadow-[0_20px_45px_rgba(0,0,0,0.85)] overflow-hidden">
             <picture class="w-full h-full block">
               <source srcset="images/portrait.webp" type="image/webp" />
               <img 
@@ -492,7 +489,7 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (PERFECT MIDLINE VERTICAL CENTERING) ==================== -->
+    <!-- ==================== CANVA PNG FROSTED GLASS DOCK (EQUAL TOP & BOTTOM MARGINS) ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -504,11 +501,11 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <!-- Left Group: Cream Logo (Static) + 4 App Icons (Centered along the horizontal midline) -->
+        <!-- Left Group: Cream Logo (Static) + 4 App Icons (Sized to give identical top & bottom margins) -->
         <div class="flex items-center gap-1.5 relative z-10 my-auto">
           
-          <!-- Brand Logo: Static, no hover animations -->
-          <div class="dock-app-item dock-logo-item shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]">
+          <!-- Brand Logo: Static, no hover animations (78px height) -->
+          <div class="dock-app-item dock-logo-item shrink-0 w-[70px] h-[70px] sm:w-[78px] sm:h-[78px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -518,50 +515,50 @@
           </div>
 
           <!-- Icon 1: Home -->
-          <a href="#home" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Home">
+          <a href="#home" class="dock-app-item group shrink-0 w-[70px] h-[70px] sm:w-[78px] sm:h-[78px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
             />
           </a>
 
           <!-- Icon 2: About me -->
-          <a href="#about" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to About Me">
+          <a href="#about" class="dock-app-item group shrink-0 w-[70px] h-[70px] sm:w-[78px] sm:h-[78px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
             />
           </a>
 
           <!-- Icon 3: Workflow -->
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Workflow">
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[70px] h-[70px] sm:w-[78px] sm:h-[78px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
             />
           </a>
 
           <!-- Icon 4: Intro -->
-          <a href="#intro" class="dock-app-item group shrink-0 w-[64px] h-[64px] sm:w-[72px] sm:h-[72px]" aria-label="Navigate to Intro">
+          <a href="#intro" class="dock-app-item group shrink-0 w-[70px] h-[70px] sm:w-[78px] sm:h-[78px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[20px]"
             />
           </a>
 
@@ -572,7 +569,7 @@
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-7 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
+            class="email-capsule relative bg-white text-slate-900 px-6 sm:px-7 py-2.5 sm:py-3 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
             title="Click to copy email address"
           >
             <span class="font-mono-code font-bold text-xs sm:text-sm tracking-tight text-neutral-900 whitespace-nowrap">
