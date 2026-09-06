@@ -228,34 +228,30 @@
       opacity: 1;
     }
 
-    /* ==================== MATTER.JS SOFTWARE PHYSICS SECTION ==================== */
+    /* ==================== MATTER.JS BIG ICON TETRIS PHYSICS ==================== */
     .physics-icon-body {
       position: absolute;
-      width: 68px;
-      height: 68px;
-      margin-left: -34px;
-      margin-top: -34px;
+      width: 120px;
+      height: 48px;
+      margin-left: -60px;
+      margin-top: -24px;
       left: 0;
       top: 0;
       user-select: none;
-      cursor: grab;
+      cursor: pointer;
       will-change: transform;
       transform-origin: center center;
-      transition: filter 0.25s ease;
-      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+      transition: filter 0.2s ease, transform 0.1s ease;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.7));
     }
 
-    @media (min-width: 768px) {
+    @media (min-width: 640px) {
       .physics-icon-body {
-        width: 78px;
-        height: 78px;
-        margin-left: -39px;
-        margin-top: -39px;
+        width: 140px;
+        height: 56px;
+        margin-left: -70px;
+        margin-top: -28px;
       }
-    }
-
-    .physics-icon-body:active {
-      cursor: grabbing;
     }
 
     .physics-icon-body img {
@@ -267,7 +263,8 @@
     }
 
     .physics-icon-body.is-static:hover {
-      filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.65)) brightness(1.12);
+      filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.75)) brightness(1.15);
+      transform: scale(1.05);
     }
 
     .film-grain {
@@ -422,7 +419,7 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & METRICS ==================== -->
-  <footer id="books-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-12 sm:pb-16 px-6 sm:px-12 md:px-16 overflow-hidden">
+  <footer id="books-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-12 px-6 sm:px-12 md:px-16 overflow-hidden">
     
     <!-- Background Video -->
     <video 
@@ -435,8 +432,8 @@
       <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
     </video>
 
-    <!-- Seamless Bottom Vignette Transition to Next Section -->
-    <div class="absolute bottom-0 left-0 right-0 h-44 bg-gradient-to-b from-transparent to-[#0b0f14] pointer-events-none z-10"></div>
+    <!-- Seamless Video Dissolve Gradient into the Software Section -->
+    <div class="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-[#0b0f14]/80 to-[#0b0f14] pointer-events-none z-10"></div>
 
     <!-- Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
@@ -517,7 +514,6 @@
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
-        <!-- Canva Frosted Glass Background Texture -->
         <img 
           src="images/dock-bg.png" 
           alt="Frosted Glass Dock" 
@@ -525,10 +521,8 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <!-- Left Group: Cream Logo (Static) + 4 App Icons -->
         <div class="flex items-center gap-1.5 relative z-10 my-auto">
           
-          <!-- Brand Logo: Static -->
           <div class="dock-app-item dock-logo-item shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]">
             <img 
               src="images/cream.png" 
@@ -538,7 +532,6 @@
             />
           </div>
 
-          <!-- Icon 1: Home -->
           <a href="#home" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
@@ -550,7 +543,6 @@
             />
           </a>
 
-          <!-- Icon 2: About me -->
           <a href="#about" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
@@ -562,7 +554,6 @@
             />
           </a>
 
-          <!-- Icon 3: Workflow -->
           <a href="#workflow" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
@@ -574,7 +565,6 @@
             />
           </a>
 
-          <!-- Icon 4: Intro -->
           <a href="#intro" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
@@ -588,7 +578,6 @@
 
         </div>
 
-        <!-- Right Group: Email Copy Pill -->
         <div class="flex items-center relative z-10 my-auto">
           <button 
             id="email-copy-btn" 
@@ -608,53 +597,34 @@
       </div>
     </nav>
 
-    <!-- Anchors for Dock Navigation -->
     <div id="workflow" class="w-0 h-0 pointer-events-none"></div>
     <div id="intro" class="w-0 h-0 pointer-events-none"></div>
 
   </footer>
 
-  <!-- ==================== NEW SECTION: SOFTWARE GRAVITY STACK ==================== -->
-  <section id="software-section" class="relative z-30 min-h-screen bg-[#0b0f14] text-white flex flex-col justify-start pt-16 sm:pt-24 pb-20 px-6 sm:px-12 md:px-16 overflow-hidden border-t border-white/10">
+  <!-- ==================== CLEAN REDESIGNED SOFTWARE SECTION ==================== -->
+  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-8 sm:pt-12 pb-24 px-4 sm:px-8 md:px-12 overflow-hidden">
     
-    <!-- Ambient Background Radial Glow -->
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#d4f038]/5 blur-[120px] pointer-events-none z-0"></div>
-
-    <!-- Editorial Header Stack -->
-    <div class="w-full max-w-7xl mx-auto flex flex-col items-center text-center select-none relative z-10 mb-8 sm:mb-12">
-      
-      <!-- Eyebrow Category -->
-      <span class="font-mono-code text-xs sm:text-sm text-[#d4f038] tracking-[0.22em] uppercase font-bold mb-3 drop-shadow-[0_0_12px_rgba(212,240,56,0.4)]">
-        // Ecosystem &amp; Software Architecture
-      </span>
-
-      <!-- Display Headline -->
-      <h2 class="font-headline text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] tracking-tight leading-[0.9] uppercase text-white drop-shadow-[0_14px_38px_rgba(0,0,0,0.85)]">
-        Toolstack I Mastered <span class="text-[#d4f038] block sm:inline">So You Don't Have To</span>
-      </h2>
-
-      <!-- Subheadline & Interactive Hover Cue -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 mt-4">
-        <p class="font-mono-code text-xs sm:text-sm text-neutral-300 uppercase tracking-wider max-w-xl">
-          26 mission-critical accounting, ERP &amp; workflow platforms battle-tested in live operations.
-        </p>
-
-        <!-- Dynamic Indicator Capsule -->
-        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.07] border border-white/20 font-mono-code text-[11px] text-[#d4f038] tracking-widest uppercase shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-[#d4f038] animate-pulse"></span>
-          Hover an icon to engage gravity
-        </span>
+    <!-- Editorial Header (Left-aligned & Balanced) -->
+    <div class="w-full max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-end justify-between gap-4 select-none relative z-10 mb-6">
+      <div>
+        <h2 class="font-headline text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[0.92] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]">
+          My Digital Toolbox<br/>
+          <span class="text-[#d4f038]">Hands-On Experience</span>
+        </h2>
       </div>
-
+      <p class="font-mono-code text-xs sm:text-sm text-neutral-400 uppercase tracking-wider max-w-sm sm:text-right pb-1">
+        Softwares &amp; platforms I actively operate in live workflows.
+      </p>
     </div>
 
-    <!-- Interactive Physics Arena (Full Viewport Stage) -->
-    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[620px] sm:h-[700px] md:h-[760px] rounded-3xl border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden shadow-[inset_0_2px_4px_rgba(255,255,255,0.06),0_20px_50px_rgba(0,0,0,0.7)] z-10">
+    <!-- Interactive Compact Tetris Physics Arena (380px–420px tall) -->
+    <div id="physics-stage" class="relative w-full max-w-6xl mx-auto h-[380px] sm:h-[420px] rounded-3xl bg-white/[0.015] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
-      <!-- Floor Guide Line -->
-      <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#d4f038]/30 to-transparent pointer-events-none"></div>
+      <!-- Subtle Floor Landing Guide -->
+      <div class="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#d4f038]/20 pointer-events-none"></div>
 
-      <!-- DOM Container where the 26 <img> physics elements are rendered -->
+      <!-- Container for the 26 Large Physics Elements -->
       <div id="physics-body-container" class="relative w-full h-full pointer-events-auto"></div>
 
     </div>
@@ -1039,38 +1009,44 @@
       }, 500);
     })();
 
-    // ==================== 6. MATTER.JS SOFTWARE HOVER-FALL PHYSICS ENGINE ====================
+    // ==================== 6. MATTER.JS BIG ICON TETRIS PHYSICS ====================
     (function () {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
-      const { Engine, World, Bodies, Body, Events } = Matter;
+      const { Engine, World, Bodies, Body } = Matter;
 
       const engine = Engine.create({
         enableSleeping: false
       });
-      engine.world.gravity.y = 1.35; // Snappy, realistic gravity
+      // Snappy gravity for quick ~1.5 - 2.0s drop and bounce
+      engine.world.gravity.y = 2.4;
 
       let width = stage.clientWidth;
       let height = stage.clientHeight;
-      const iconSize = window.innerWidth < 768 ? 68 : 78;
-      const radius = iconSize / 2;
 
-      // Static boundaries
-      const WALL_THICKNESS = 120;
-      let ground = Bodies.rectangle(width / 2, height + WALL_THICKNESS / 2, width * 2, WALL_THICKNESS, { isStatic: true, restitution: 0.52 });
+      const isMobile = window.innerWidth < 640;
+      const bodyW = isMobile ? 120 : 140;
+      const bodyH = isMobile ? 48 : 56;
+
+      // Rigid physical floor and lateral walls
+      const WALL_THICKNESS = 160;
+      let ground = Bodies.rectangle(width / 2, height + WALL_THICKNESS / 2, width * 2, WALL_THICKNESS, {
+        isStatic: true,
+        restitution: 0.35,
+        friction: 0.4
+      });
       let leftWall = Bodies.rectangle(-WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height * 2, { isStatic: true });
       let rightWall = Bodies.rectangle(width + WALL_THICKNESS / 2, height / 2, WALL_THICKNESS, height * 2, { isStatic: true });
 
       World.add(engine.world, [ground, leftWall, rightWall]);
 
-      // Calculate initial layout positions in upper area (grid with organic offsets)
-      const cols = window.innerWidth < 640 ? 4 : (window.innerWidth < 1024 ? 6 : 9);
-      const rows = Math.ceil(TOTAL_ICONS / cols);
-      const spacingX = (width - 120) / (cols - 1 || 1);
-      const spacingY = Math.min((height * 0.44) / rows, 90);
+      // Spread initial icons across 3 clean, tight upper resting rows (short fall)
+      const cols = isMobile ? 5 : 9;
+      const spacingX = (width - 140) / (cols - 1 || 1);
+      const spacingY = 62;
 
       const items = [];
 
@@ -1079,25 +1055,25 @@
         const col = index % cols;
         const row = Math.floor(index / cols);
 
-        // Staggered initial position with organic tilt
-        const initX = 60 + col * spacingX + ((row % 2 === 1) ? 14 : -14);
-        const initY = 55 + row * spacingY;
-        const initAngle = ((i * 19) % 24 - 12) * (Math.PI / 180);
+        // Clustered near the top of this short arena so the drop is fast (~1.5s - 2s)
+        const initX = 70 + col * spacingX + ((row % 2 === 1) ? 12 : -12);
+        const initY = 40 + row * spacingY;
+        const initAngle = ((i * 17) % 18 - 9) * (Math.PI / 180);
 
-        // Circular collision body with natural bounce and slight friction
-        const body = Bodies.circle(initX, initY, radius, {
+        // Rectangular brick body matching the capsule dimensions for realistic Tetris stacking
+        const body = Bodies.rectangle(initX, initY, bodyW, bodyH, {
           isStatic: true,
-          restitution: 0.55,
-          friction: 0.15,
-          frictionAir: 0.015,
-          density: 0.003
+          restitution: 0.38,   // Realistic bounce
+          friction: 0.45,      // Allows sliding and settling
+          frictionAir: 0.012,  // Snappy fall speed
+          density: 0.005,
+          chamfer: { radius: 12 }
         });
-        body.torque = 0;
         Body.setAngle(body, initAngle);
 
         World.add(engine.world, body);
 
-        // Create the mapped transparent DOM element
+        // Mapped DOM Image Container
         const el = document.createElement('div');
         el.className = 'physics-icon-body is-static';
         el.setAttribute('data-id', i);
@@ -1107,37 +1083,35 @@
         img.src = `./images/${i}.png`;
         img.alt = `Software ${i}`;
         img.loading = 'lazy';
-        // Elegant fallback indicator in case a specific icon file is missing
         img.onerror = () => {
           img.style.display = 'none';
-          el.innerHTML = `<div class="w-full h-full rounded-2xl bg-white/10 border border-[#d4f038]/40 flex items-center justify-center font-mono-code text-[11px] text-[#d4f038] font-bold">#${i}</div>`;
+          el.innerHTML = `<div class="w-full h-full rounded-2xl bg-neutral-900 border border-[#d4f038]/40 flex items-center justify-center font-mono-code text-xs text-[#d4f038] font-bold">#${i}</div>`;
         };
 
         el.appendChild(img);
         container.appendChild(el);
 
-        const itemObj = { id: i, body, el, hasFallen: false, initX, initY, initAngle };
+        const itemObj = { id: i, body, el, hasFallen: false };
         items.push(itemObj);
 
-        // Hover Trigger: Detach and fall
+        // Hover Trigger: Releases the icon to fall, tumble, and stack
         el.addEventListener('mouseenter', () => {
           if (!itemObj.hasFallen) {
             itemObj.hasFallen = true;
             el.classList.remove('is-static');
 
-            // Wake up rigid-body
             Body.setStatic(body, false);
 
-            // Kinetic burst pop + slight spin
-            const impulseX = (Math.random() - 0.5) * 4.5;
-            const impulseY = -2.5 - Math.random() * 2.5;
-            Body.setVelocity(body, { x: impulseX, y: impulseY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.14);
+            // Pop impulse with slight rotational tumble
+            const popX = (Math.random() - 0.5) * 3.5;
+            const popY = -1.5 - Math.random() * 2.0;
+            Body.setVelocity(body, { x: popX, y: popY });
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.12);
           }
         });
       }
 
-      // Physics animation tick
+      // Physics loop updating element transforms
       let lastTime = performance.now();
       function updatePhysics(time) {
         const delta = Math.min(time - lastTime, 32);
@@ -1145,7 +1119,6 @@
 
         Engine.update(engine, delta);
 
-        // Synchronize DOM elements to Matter.js coordinates
         for (let i = 0; i < items.length; i++) {
           const item = items[i];
           const pos = item.body.position;
@@ -1157,7 +1130,7 @@
       }
       requestAnimationFrame(updatePhysics);
 
-      // Window resize handling
+      // Responsive Stage Resize
       function handleResize() {
         width = stage.clientWidth;
         height = stage.clientHeight;
