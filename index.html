@@ -228,30 +228,17 @@
       opacity: 1;
     }
 
-    /* ==================== MATTER.JS KICK & TETRIS PHYSICS ==================== */
+    /* ==================== MATTER.JS PILL PHYSICS ==================== */
     .physics-icon-body {
       position: absolute;
-      width: 130px;
-      height: 50px;
-      margin-left: -65px;
-      margin-top: -25px;
-      left: 0;
       top: 0;
+      left: 0;
       user-select: none;
       cursor: pointer;
       will-change: transform;
       transform-origin: center center;
       transition: filter 0.2s ease;
-      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.75));
-    }
-
-    @media (min-width: 640px) {
-      .physics-icon-body {
-        width: 150px;
-        height: 58px;
-        margin-left: -75px;
-        margin-top: -29px;
-      }
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.8));
     }
 
     .physics-icon-body img {
@@ -263,7 +250,7 @@
     }
 
     .physics-icon-body.is-static:hover {
-      filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.8)) brightness(1.15);
+      filter: drop-shadow(0 0 16px rgba(212, 240, 56, 0.85)) brightness(1.15);
     }
 
     .film-grain {
@@ -602,23 +589,23 @@
   </footer>
 
   <!-- ==================== CLEAN REDESIGNED SOFTWARE SECTION ==================== -->
-  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-8 sm:pt-10 pb-28 px-4 sm:px-8 md:px-12 overflow-hidden">
+  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-12 pb-28 px-4 sm:px-8 md:px-12 overflow-hidden">
     
     <!-- Editorial Header (Left-aligned & Direct) -->
-    <div class="w-full max-w-6xl mx-auto flex flex-col items-start select-none relative z-10 mb-6">
+    <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-8 px-2">
       <h2 class="font-headline text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.92] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]">
         My Digital Toolbox
       </h2>
-      <p class="font-mono-code text-xs sm:text-sm text-neutral-400 uppercase tracking-wider mt-2.5">
+      <p class="font-mono-code text-xs sm:text-sm text-neutral-400 uppercase tracking-wider mt-3">
         Softwares &amp; platforms I actively operate in live workflows.
       </p>
     </div>
 
-    <!-- Interactive Tetris & Kick Physics Arena (540px Runway with Clean Padding) -->
-    <div id="physics-stage" class="relative w-full max-w-6xl mx-auto h-[480px] sm:h-[540px] rounded-3xl bg-white/[0.015] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10 px-4">
+    <!-- Generous Interactive Physics Arena (620px High, Non-Cramped Stage) -->
+    <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[620px] rounded-3xl bg-white/[0.015] overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
       <!-- Subtle Floor Landing Guide -->
-      <div class="absolute bottom-0 left-0 right-0 h-[1.5px] bg-[#d4f038]/20 pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-[#d4f038]/20 pointer-events-none"></div>
 
       <!-- Container for the 26 Physics Elements -->
       <div id="physics-body-container" class="relative w-full h-full pointer-events-auto"></div>
@@ -1005,78 +992,84 @@
       }, 500);
     })();
 
-    // ==================== 6. MATTER.JS TETRIS STACK, MOUSE KICK & SCROLL RESET ====================
-    (function () {
+    // ==================== 6. MATTER.JS BULLETPROOF PHYSICS ENGINE ====================
+    window.addEventListener('load', () => {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
-      const { Engine, World, Bodies, Body } = Matter;
+      const { Engine, World, Bodies, Body, Runner, Sleeping, Events } = Matter;
 
+      // 1. Create Engine & Dedicated Runner
       const engine = Engine.create({ enableSleeping: false });
-      engine.world.gravity.y = 2.1; // Snappy gravity for fast ~1.5s - 2.0s fall
+      engine.world.gravity.y = 2.4; // Realistic gravity
 
-      let width = stage.clientWidth;
-      let height = stage.clientHeight;
+      const runner = Runner.create();
+      Runner.run(runner, engine);
+
+      let width = stage.clientWidth || 1200;
+      let height = stage.clientHeight || 620;
 
       const isMobile = window.innerWidth < 640;
-      const bodyW = isMobile ? 130 : 150;
-      const bodyH = isMobile ? 50 : 58;
+      const bodyW = isMobile ? 124 : 148;
+      const bodyH = isMobile ? 48 : 56;
 
-      // Rigid physical floor and wider lateral boundary walls (prevent cutoffs)
-      const WALL_THICKNESS = 200;
-      let ground = Bodies.rectangle(width / 2, height + WALL_THICKNESS / 2, width * 2, WALL_THICKNESS, {
+      // 2. Solid Floor and Lateral Boundary Walls
+      const WALL_T = 200;
+      const ground = Bodies.rectangle(width / 2, height + WALL_T / 2, width * 3, WALL_T, {
         isStatic: true,
-        restitution: 0.58, // Prominent bounce
+        restitution: 0.6,
         friction: 0.35
       });
-      let leftWall = Bodies.rectangle(-WALL_THICKNESS / 2 + 10, height / 2, WALL_THICKNESS, height * 2, { isStatic: true });
-      let rightWall = Bodies.rectangle(width + WALL_THICKNESS / 2 - 10, height / 2, WALL_THICKNESS, height * 2, { isStatic: true });
+      const leftWall = Bodies.rectangle(-WALL_T / 2 + 15, height / 2, WALL_T, height * 3, { isStatic: true });
+      const rightWall = Bodies.rectangle(width + WALL_T / 2 - 15, height / 2, WALL_T, height * 3, { isStatic: true });
 
       World.add(engine.world, [ground, leftWall, rightWall]);
 
-      // Grid Layout for Upper Resting Slots (3 tight rows)
-      const cols = isMobile ? 5 : 9;
-      const horizontalMargin = isMobile ? 75 : 95;
-      const availableWidth = width - (horizontalMargin * 2);
-      const spacingX = availableWidth / (cols - 1 || 1);
-      const spacingY = 64;
+      // 3. Grid Positioning (4 Staggered Rows, Max 7 Columns to prevent crowding)
+      const cols = isMobile ? 4 : 7;
+      const horizontalPad = isMobile ? 70 : 85;
+      const availWidth = width - (horizontalPad * 2);
+      const stepX = availWidth / (cols - 1 || 1);
+      const stepY = 62;
 
       const items = [];
 
       for (let i = 1; i <= TOTAL_ICONS; i++) {
-        const index = i - 1;
-        const col = index % cols;
-        const row = Math.floor(index / cols);
+        const idx = i - 1;
+        const col = idx % cols;
+        const row = Math.floor(idx / cols);
 
-        const initX = horizontalMargin + col * spacingX + ((row % 2 === 1) ? 14 : -14);
-        const initY = 44 + row * spacingY;
-        const initAngle = ((i * 17) % 16 - 8) * (Math.PI / 180);
+        // Stagger every other row
+        const rowOffset = (row % 2 === 1) ? (stepX * 0.45) : 0;
+        const initX = horizontalPad + (col * stepX) + rowOffset;
+        const initY = 42 + (row * stepY);
+        const initAngle = ((i * 17) % 18 - 9) * (Math.PI / 180);
 
-        // Chamfered capsule body for organic collision, rolling, and stacking
+        // Chamfered capsule body for organic collision and tumbling
         const body = Bodies.rectangle(initX, initY, bodyW, bodyH, {
           isStatic: true,
-          restitution: 0.58,   // Bouncy, lively impact
-          friction: 0.35,      // Allows dynamic rolling/sliding into stacks
-          frictionAir: 0.014,
-          density: 0.005,
+          restitution: 0.6,
+          friction: 0.35,
+          frictionAir: 0.012,
           chamfer: { radius: 14 }
         });
         Body.setAngle(body, initAngle);
-
         World.add(engine.world, body);
 
         // Mapped DOM Element
         const el = document.createElement('div');
         el.className = 'physics-icon-body is-static';
-        el.setAttribute('data-id', i);
+        el.style.width = bodyW + 'px';
+        el.style.height = bodyH + 'px';
+        el.style.marginLeft = (-bodyW / 2) + 'px';
+        el.style.marginTop = (-bodyH / 2) + 'px';
         el.style.transform = `translate3d(${initX}px, ${initY}px, 0px) rotate(${initAngle}rad)`;
 
         const img = document.createElement('img');
         img.src = `./images/${i}.png`;
         img.alt = `Software ${i}`;
-        img.loading = 'lazy';
         img.onerror = () => {
           img.style.display = 'none';
           el.innerHTML = `<div class="w-full h-full rounded-2xl bg-neutral-900 border border-[#d4f038]/40 flex items-center justify-center font-mono-code text-xs text-[#d4f038] font-bold">#${i}</div>`;
@@ -1088,58 +1081,48 @@
         const itemObj = { id: i, body, el, hasFallen: false, initX, initY, initAngle };
         items.push(itemObj);
 
-        // INTERACTION: First Hover = Detach and Fall / Subsequent Hover = KICK IMPACT
+        // Hover: First Time = Detach & Fall; Later = Kicking Force
         el.addEventListener('mouseenter', (e) => {
           if (!itemObj.hasFallen) {
-            // First trigger: detach from static anchor
             itemObj.hasFallen = true;
             el.classList.remove('is-static');
-            Body.setStatic(body, false);
 
-            // Pop impulse with rotational tumble
-            const popX = (Math.random() - 0.5) * 4.2;
-            const popY = -2.5 - Math.random() * 2.2;
+            // Force dynamic physics mode
+            Body.setStatic(body, false);
+            Sleeping.set(body, false);
+
+            // Pop impulse with slight rotational tumble
+            const popX = (Math.random() - 0.5) * 4.5;
+            const popY = -2.0 - Math.random() * 2.5;
             Body.setVelocity(body, { x: popX, y: popY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.16);
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.18);
           } else {
-            // Mouse Kick Animation on already-fallen icons
+            // Interactive mouse kick when hovered again at the bottom
             const rect = el.getBoundingClientRect();
             const mouseRelX = e.clientX - (rect.left + rect.width / 2);
-            
-            // Kick away from mouse entry side
             const kickDirX = mouseRelX < 0 ? 1 : -1;
-            const kickForceX = (kickDirX * (3.5 + Math.random() * 4.5));
-            const kickForceY = -6.5 - Math.random() * 5.0; // Upward kick into the air
+            const kickX = kickDirX * (4.0 + Math.random() * 5.0);
+            const kickY = -7.5 - Math.random() * 6.0;
 
-            Body.setVelocity(body, { x: kickForceX, y: kickForceY });
-            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.28);
+            Body.setVelocity(body, { x: kickX, y: kickY });
+            Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.32);
 
-            // Quick visual pop
-            gsap.fromTo(el, { scale: 1.12 }, { scale: 1.0, duration: 0.28, ease: "back.out(2)" });
+            gsap.fromTo(el, { scale: 1.15 }, { scale: 1.0, duration: 0.28, ease: "back.out(2)" });
           }
         });
       }
 
-      // Physics Loop: Synchronize DOM Image transforms to Matter.js coordinates
-      let lastTime = performance.now();
-      function updatePhysics(time) {
-        const delta = Math.min(time - lastTime, 32);
-        lastTime = time;
-
-        Engine.update(engine, delta);
-
+      // 4. Synchronize DOM positions to Matter.js coordinate positions on every physics tick
+      Events.on(engine, 'afterUpdate', () => {
         for (let i = 0; i < items.length; i++) {
           const item = items[i];
           const pos = item.body.position;
           const angle = item.body.angle;
           item.el.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0px) rotate(${angle}rad)`;
         }
+      });
 
-        requestAnimationFrame(updatePhysics);
-      }
-      requestAnimationFrame(updatePhysics);
-
-      // RESET TO SQUARE ONE ON SECTION RE-ENTRY
+      // 5. Reset to Square One when scrolling out and back into the section
       function resetToSquareOne() {
         items.forEach(item => {
           item.hasFallen = false;
@@ -1155,7 +1138,6 @@
         });
       }
 
-      // Trigger reset whenever user leaves and returns to #software-section
       ScrollTrigger.create({
         trigger: "#software-section",
         start: "top 85%",
@@ -1164,19 +1146,19 @@
         onEnterBack: resetToSquareOne
       });
 
-      // Responsive Stage Resize
+      // 6. Responsive Window Resize
       function handleResize() {
         width = stage.clientWidth;
         height = stage.clientHeight;
 
-        Body.setPosition(ground, { x: width / 2, y: height + WALL_THICKNESS / 2 });
-        Body.setVertices(ground, Bodies.rectangle(width / 2, height + WALL_THICKNESS / 2, width * 2, WALL_THICKNESS).vertices);
+        Body.setPosition(ground, { x: width / 2, y: height + WALL_T / 2 });
+        Body.setVertices(ground, Bodies.rectangle(width / 2, height + WALL_T / 2, width * 3, WALL_T).vertices);
 
-        Body.setPosition(leftWall, { x: -WALL_THICKNESS / 2 + 10, y: height / 2 });
-        Body.setPosition(rightWall, { x: width + WALL_THICKNESS / 2 - 10, y: height / 2 });
+        Body.setPosition(leftWall, { x: -WALL_T / 2 + 15, y: height / 2 });
+        Body.setPosition(rightWall, { x: width + WALL_T / 2 - 15, y: height / 2 });
       }
       window.addEventListener('resize', handleResize);
-    })();
+    });
   </script>
 </body>
 </html>
