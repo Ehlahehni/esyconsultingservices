@@ -225,16 +225,17 @@
       opacity: 1;
     }
 
-    /* ==================== JENGA HARDWARE-ACCELERATED BRICKS ==================== */
+    /* ==================== REAL JENGA PHYSICS BRICKS ==================== */
     .software-brick {
       position: absolute;
       cursor: pointer;
       user-select: none;
       will-change: transform;
       transform-origin: center center;
-      transition: filter 0.2s ease, box-shadow 0.2s ease;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
+      transition: filter 0.2s ease;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
       pointer-events: auto;
+      touch-action: none;
     }
 
     .software-brick img {
@@ -246,7 +247,7 @@
     }
 
     .software-brick.is-pinned:hover {
-      filter: drop-shadow(0 0 16px rgba(212, 240, 56, 0.85)) brightness(1.15);
+      filter: drop-shadow(0 0 18px rgba(212, 240, 56, 0.9)) brightness(1.2);
     }
 
     .film-grain {
@@ -597,7 +598,7 @@
       </p>
     </div>
 
-    <!-- Arena Box (Calibrated Stage Boundary) -->
+    <!-- Arena Box (Strict Collision Containment) -->
     <div id="physics-stage" class="relative w-full max-w-7xl mx-auto h-[640px] rounded-3xl bg-white/[0.015] border border-white/10 overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.08),0_15px_40px_rgba(0,0,0,0.8)] z-10">
       
       <!-- Subtle Floor Landing Guide -->
@@ -988,38 +989,36 @@
       }, 500);
     })();
 
-    // ==================== 6. TRUE JENGA FLOOR TOPOGRAPHY & DIRECTIONAL KICK ====================
-    (function initJengaStackEngine() {
+    // ==================== 6. TRUE PHYSICAL JENGA ENGINE (NO RECOIL, COLLISION STACKING) ====================
+    (function () {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
       const container = document.getElementById('physics-body-container');
       if (!stage || !container) return;
 
-      let stageW = stage.clientWidth || 1180;
+      let stageW = stage.clientWidth || 1200;
       let stageH = stage.clientHeight || 640;
 
       const isMobile = stageW < 640;
-      const iconW = isMobile ? 120 : Math.min(180, Math.floor((stageW - 100) / 5.2));
+      const iconW = isMobile ? 122 : Math.min(180, Math.floor((stageW - 100) / 5.2));
       const iconH = Math.round(iconW * 0.36);
       const gapX = isMobile ? 8 : 12;
       const gapY = isMobile ? 10 : 14;
       const padX = isMobile ? 14 : 26;
       const startY = 22;
 
-      // CONTINUOUS FLOOR TOPOGRAPHY MAP (High-res spatial buckets across the stage floor)
-      const MAP_RESOLUTION = 12; // Sample every 12 pixels across width
-      const totalBuckets = Math.ceil(stageW / MAP_RESOLUTION);
-      // Stores current surface height in pixels from the bottom edge
-      const floorHeightMap = new Array(totalBuckets).fill(0);
+      const GRAVITY = 0.55;
+      const RESTITUTION = 0.45; // Natural brick bounce
+      const FRICTION = 0.985;
+      const ROT_FRICTION = 0.97;
 
-      container.innerHTML = '';
-      const iconObjects = [];
-
+      const bodies = [];
       let curX = padX;
       let curY = startY;
 
+      container.innerHTML = '';
+
       for (let i = 1; i <= TOTAL_ICONS; i++) {
-        // Wrap to the next line without overflowing the box boundaries
         if (curX + iconW > stageW - padX) {
           curX = padX;
           curY += iconH + gapY;
@@ -1029,8 +1028,8 @@
         el.className = 'software-brick is-pinned';
         el.style.width = `${iconW}px`;
         el.style.height = `${iconH}px`;
-        el.style.left = `${curX}px`;
-        el.style.top = `${curY}px`;
+        el.style.left = `0px`;
+        el.style.top = `0px`;
         el.setAttribute('data-id', i);
 
         const img = document.createElement('img');
@@ -1044,122 +1043,160 @@
         el.appendChild(img);
         container.appendChild(el);
 
-        const initialLeft = curX;
-        const initialTop = curY;
-
-        const iconData = {
-          el,
+        const body = {
           id: i,
-          hasFallen: false,
-          top: initialTop,
-          left: initialLeft,
-          currentY: 0,
-          currentX: 0,
-          settledRot: 0,
-          isAnimating: false
+          el: el,
+          w: iconW,
+          h: iconH,
+          // Center-based physics coordinates
+          x: curX + iconW / 2,
+          y: curY + iconH / 2,
+          vx: 0,
+          vy: 0,
+          rot: 0,
+          vrot: 0,
+          isPinned: true
         };
 
-        // INTERACTION: First Hover = Detach & Jenga Stack; Subsequent Hover = Directional Kick
+        bodies.push(body);
+
+        // Position in initial neat grid
+        el.style.transform = `translate3d(${body.x - body.w / 2}px, ${body.y - body.h / 2}px, 0px) rotate(0deg)`;
+
+        // INTERACTION: First Hover = Detach; Subsequent Hover = Directional Kick
         el.addEventListener('mouseenter', (e) => {
-          if (!iconData.hasFallen) {
-            iconData.hasFallen = true;
+          if (body.isPinned) {
+            body.isPinned = false;
             el.classList.remove('is-pinned');
 
-            // 1. Determine landing zone with natural lateral scatter (-24px to +24px)
-            const lateralDrift = (Math.random() - 0.5) * 48;
-            const targetLandingLeft = Math.max(padX, Math.min(stageW - padX - iconW, iconData.left + lateralDrift));
-            const deltaX = targetLandingLeft - iconData.left;
-
-            // 2. Scan Floor Topography underneath this block's footprint
-            const startBucket = Math.floor(targetLandingLeft / MAP_RESOLUTION);
-            const endBucket = Math.min(totalBuckets - 1, Math.floor((targetLandingLeft + iconW) / MAP_RESOLUTION));
-
-            let maxSurfaceHeight = 0;
-            for (let b = startBucket; b <= endBucket; b++) {
-              if (floorHeightMap[b] > maxSurfaceHeight) {
-                maxSurfaceHeight = floorHeightMap[b];
-              }
-            }
-
-            // 3. New Jenga layer sits directly ON TOP of previously fallen blocks
-            const newSurfaceHeight = maxSurfaceHeight + (iconH * 0.94);
-
-            // Update topography so subsequent blocks land higher on this pile
-            for (let b = startBucket; b <= endBucket; b++) {
-              floorHeightMap[b] = newSurfaceHeight;
-            }
-
-            // Calculate precise vertical landing position inside stage
-            const landingYFromStageTop = stageH - newSurfaceHeight - 16;
-            const deltaY = landingYFromStageTop - iconData.top;
-            const targetRot = (Math.random() - 0.5) * 12; // Natural organic tilt
-
-            iconData.currentX = deltaX;
-            iconData.currentY = deltaY;
-            iconData.settledRot = targetRot;
-
-            // 4. Snappy gravity drop and realistic bounce
-            gsap.to(el, {
-              x: deltaX,
-              y: deltaY,
-              rotation: targetRot,
-              duration: 1.45,
-              ease: "bounce.out",
-              overwrite: "auto"
-            });
+            // Gentle release with tiny organic spin
+            body.vx = (Math.random() - 0.5) * 2.5;
+            body.vy = 1.0 + Math.random() * 2.0;
+            body.vrot = (Math.random() - 0.5) * 0.08;
           } else {
-            // DIRECTIONAL KICK AWAY FROM CURSOR
-            if (iconData.isAnimating) return;
-            iconData.isAnimating = true;
-
+            // DIRECTIONAL KICK AWAY FROM CURSOR (NO RECOIL)
             const rect = el.getBoundingClientRect();
             const brickCenterX = rect.left + rect.width / 2;
             const brickCenterY = rect.top + rect.height / 2;
 
-            // Calculate direction vector pointing AWAY from cursor
             const dirX = brickCenterX - e.clientX;
             const dirY = brickCenterY - e.clientY;
             const angle = Math.atan2(dirY, dirX);
 
-            // Impulse magnitude
-            const impulse = 65 + Math.random() * 45;
-            const kickJumpX = Math.cos(angle) * impulse;
-            const kickJumpY = -Math.abs(Math.sin(angle) * impulse) - 45; // Guaranteed upward kick
-            const spin = (Math.random() - 0.5) * 36;
-
-            gsap.to(el, {
-              x: iconData.currentX + kickJumpX,
-              y: iconData.currentY + kickJumpY,
-              rotation: iconData.settledRot + spin,
-              duration: 0.3,
-              ease: "power2.out",
-              onComplete: () => {
-                // Return to Jenga rest position with secondary bounce
-                gsap.to(el, {
-                  x: iconData.currentX,
-                  y: iconData.currentY,
-                  rotation: iconData.settledRot,
-                  duration: 0.65,
-                  ease: "bounce.out",
-                  onComplete: () => {
-                    iconData.isAnimating = false;
-                  }
-                });
-              }
-            });
+            const kickSpeed = 16 + Math.random() * 8;
+            body.vx += Math.cos(angle) * kickSpeed;
+            body.vy = -Math.abs(Math.sin(angle) * kickSpeed) - 8.5; // Upward-biased launch
+            body.vrot += (Math.random() - 0.5) * 0.45; // Real tumble torque
           }
         });
 
-        iconObjects.push(iconData);
         curX += iconW + gapX;
       }
 
-      // Responsive Recalculation on Screen Resize
-      window.addEventListener('resize', () => {
-        const newW = stage.clientWidth;
-        if (Math.abs(newW - stageW) > 60) {
-          initJengaStackEngine();
+      // PHYSICAL SIMULATION TICK
+      function updatePhysics() {
+        for (let i = 0; i < bodies.length; i++) {
+          const b = bodies[i];
+          if (b.isPinned) continue;
+
+          // Apply Gravity & Velocity
+          b.vy += GRAVITY;
+          b.vx *= FRICTION;
+          b.vy *= FRICTION;
+          b.vrot *= ROT_FRICTION;
+
+          b.x += b.vx;
+          b.y += b.vy;
+          b.rot += b.vrot;
+
+          // 1. ARENA BOX BOUNDARY LIMITS (Never escape the box borders)
+          const halfW = b.w / 2;
+          const halfH = b.h / 2;
+
+          // Floor Limit
+          if (b.y + halfH > stageH) {
+            b.y = stageH - halfH;
+            b.vy = -b.vy * RESTITUTION;
+            b.vx *= 0.85; // Ground friction
+            b.vrot *= 0.8;
+            if (Math.abs(b.vy) < 0.3) b.vy = 0;
+          }
+
+          // Left Wall Limit
+          if (b.x - halfW < 0) {
+            b.x = halfW;
+            b.vx = -b.vx * RESTITUTION;
+            b.vrot += 0.05;
+          }
+
+          // Right Wall Limit
+          if (b.x + halfW > stageW) {
+            b.x = stageW - halfW;
+            b.vx = -b.vx * RESTITUTION;
+            b.vrot -= 0.05;
+          }
+
+          // Ceiling Limit
+          if (b.y - halfH < 0) {
+            b.y = halfH;
+            b.vy = -b.vy * RESTITUTION;
+          }
+
+          // 2. MULTI-BODY BRICK COLLISIONS (True Jenga Stacking & Stumbling)
+          for (let j = i + 1; j < bodies.length; j++) {
+            const other = bodies[j];
+            if (other.isPinned) continue;
+
+            const dx = other.x - b.x;
+            const dy = other.y - b.y;
+            const minDistX = (b.w + other.w) / 2 * 0.92;
+            const minDistY = (b.h + other.h) / 2 * 0.92;
+
+            if (Math.abs(dx) < minDistX && Math.abs(dy) < minDistY) {
+              const overlapX = minDistX - Math.abs(dx);
+              const overlapY = minDistY - Math.abs(dy);
+
+              if (overlapX < overlapY) {
+                // Horizontal Push
+                const signX = dx > 0 ? 1 : -1;
+                b.x -= overlapX * 0.5 * signX;
+                other.x += overlapX * 0.5 * signX;
+
+                const avgVx = (b.vx - other.vx) * RESTITUTION;
+                b.vx -= avgVx;
+                other.vx += avgVx;
+              } else {
+                // Vertical Push (Stacking On Top)
+                const signY = dy > 0 ? 1 : -1;
+                b.y -= overlapY * 0.5 * signY;
+                other.y += overlapY * 0.5 * signY;
+
+                const avgVy = (b.vy - other.vy) * RESTITUTION;
+                b.vy -= avgVy;
+                other.vy += avgVy;
+
+                // Tumble torque when landing off-center
+                const tilt = (dx / minDistX) * 0.08;
+                b.vrot -= tilt;
+                other.vrot += tilt;
+              }
+            }
+          }
+
+          // Apply Transform
+          const deg = (b.rot * 180 / Math.PI).toFixed(2);
+          b.el.style.transform = `translate3d(${(b.x - b.w / 2).toFixed(1)}px, ${(b.y - b.h / 2).toFixed(1)}px, 0px) rotate(${deg}deg)`;
         }
+
+        requestAnimationFrame(updatePhysics);
+      }
+
+      requestAnimationFrame(updatePhysics);
+
+      // Recalibrate Arena on Window Resize
+      window.addEventListener('resize', () => {
+        stageW = stage.clientWidth || 1200;
+        stageH = stage.clientHeight || 640;
       });
     })();
   </script>
