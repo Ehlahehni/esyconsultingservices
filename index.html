@@ -225,14 +225,14 @@
       opacity: 1;
     }
 
-    /* ==================== REAL JENGA PHYSICS BRICKS ==================== */
+    /* ==================== HARDWARE-ACCELERATED JENGA BLOCKS ==================== */
     .software-brick {
       position: absolute;
       cursor: pointer;
       user-select: none;
       will-change: transform;
       transform-origin: center center;
-      transition: filter 0.2s ease;
+      transition: filter 0.15s ease;
       filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
       pointer-events: auto;
       touch-action: none;
@@ -989,7 +989,7 @@
       }, 500);
     })();
 
-    // ==================== 6. TRUE PHYSICAL JENGA ENGINE (NO RECOIL, COLLISION STACKING) ====================
+    // ==================== 6. TRUE JENGA ENGINE (ORIENTED BOUNDING BOX + STABILIZING DAMPING) ====================
     (function () {
       const TOTAL_ICONS = 26;
       const stage = document.getElementById('physics-stage');
@@ -1007,10 +1007,13 @@
       const padX = isMobile ? 14 : 26;
       const startY = 22;
 
-      const GRAVITY = 0.55;
-      const RESTITUTION = 0.45; // Natural brick bounce
-      const FRICTION = 0.985;
-      const ROT_FRICTION = 0.97;
+      // Realistic Physics Tunings
+      const GRAVITY = 0.58;
+      const RESTITUTION = 0.28;       // Low restitution = realistic heavy solid wood impact, no frantic bouncy pop
+      const LINEAR_DAMPING = 0.94;    // Strong drag so pieces settle quickly
+      const ANGULAR_DAMPING = 0.82;   // Heavy rotational friction to stop infinite spinning
+      const SLEEP_VELOCITY = 0.08;    // Snaps to full rest below this speed
+      const SLEEP_ANGULAR = 0.005;
 
       const bodies = [];
       let curX = padX;
@@ -1048,7 +1051,6 @@
           el: el,
           w: iconW,
           h: iconH,
-          // Center-based physics coordinates
           x: curX + iconW / 2,
           y: curY + iconH / 2,
           vx: 0,
@@ -1060,21 +1062,21 @@
 
         bodies.push(body);
 
-        // Position in initial neat grid
-        el.style.transform = `translate3d(${body.x - body.w / 2}px, ${body.y - body.h / 2}px, 0px) rotate(0deg)`;
+        // Initial neat placement
+        el.style.transform = `translate3d(${(body.x - body.w / 2).toFixed(1)}px, ${(body.y - body.h / 2).toFixed(1)}px, 0px) rotate(0deg)`;
 
-        // INTERACTION: First Hover = Detach; Subsequent Hover = Directional Kick
+        // Interaction: First Hover = Drop / Next Hover = Directional Kick
         el.addEventListener('mouseenter', (e) => {
           if (body.isPinned) {
             body.isPinned = false;
             el.classList.remove('is-pinned');
 
-            // Gentle release with tiny organic spin
-            body.vx = (Math.random() - 0.5) * 2.5;
-            body.vy = 1.0 + Math.random() * 2.0;
-            body.vrot = (Math.random() - 0.5) * 0.08;
+            // Natural initial drop with gentle slip
+            body.vx = (Math.random() - 0.5) * 1.8;
+            body.vy = 2.2 + Math.random() * 1.5;
+            body.vrot = (Math.random() - 0.5) * 0.03;
           } else {
-            // DIRECTIONAL KICK AWAY FROM CURSOR (NO RECOIL)
+            // Directional Kick Away from Cursor
             const rect = el.getBoundingClientRect();
             const brickCenterX = rect.left + rect.width / 2;
             const brickCenterY = rect.top + rect.height / 2;
@@ -1083,107 +1085,122 @@
             const dirY = brickCenterY - e.clientY;
             const angle = Math.atan2(dirY, dirX);
 
-            const kickSpeed = 16 + Math.random() * 8;
-            body.vx += Math.cos(angle) * kickSpeed;
-            body.vy = -Math.abs(Math.sin(angle) * kickSpeed) - 8.5; // Upward-biased launch
-            body.vrot += (Math.random() - 0.5) * 0.45; // Real tumble torque
+            const kickSpeed = 12 + Math.random() * 6;
+            body.vx = Math.cos(angle) * kickSpeed;
+            body.vy = -Math.abs(Math.sin(angle) * kickSpeed) - 6.5;
+            body.vrot = (Math.random() - 0.5) * 0.18; // Controlled organic tumble
           }
         });
 
         curX += iconW + gapX;
       }
 
-      // PHYSICAL SIMULATION TICK
+      // Physical Simulation Loop
       function updatePhysics() {
         for (let i = 0; i < bodies.length; i++) {
           const b = bodies[i];
           if (b.isPinned) continue;
 
-          // Apply Gravity & Velocity
+          // 1. Dynamics with Damping
           b.vy += GRAVITY;
-          b.vx *= FRICTION;
-          b.vy *= FRICTION;
-          b.vrot *= ROT_FRICTION;
+          b.vx *= LINEAR_DAMPING;
+          b.vy *= LINEAR_DAMPING;
+          b.vrot *= ANGULAR_DAMPING;
+
+          // Snap tiny residual micro-movements to complete rest
+          if (Math.abs(b.vx) < SLEEP_VELOCITY) b.vx = 0;
+          if (Math.abs(b.vy) < SLEEP_VELOCITY) b.vy = 0;
+          if (Math.abs(b.vrot) < SLEEP_ANGULAR) b.vrot = 0;
 
           b.x += b.vx;
           b.y += b.vy;
           b.rot += b.vrot;
 
-          // 1. ARENA BOX BOUNDARY LIMITS (Never escape the box borders)
-          const halfW = b.w / 2;
-          const halfH = b.h / 2;
+          // 2. Oriented Bounding Box (OBB) Clamping - Prevents Edge Cutting on Any Rotation
+          const cosR = Math.abs(Math.cos(b.rot));
+          const sinR = Math.abs(Math.sin(b.rot));
+          const effectiveHalfW = (b.w / 2) * cosR + (b.h / 2) * sinR;
+          const effectiveHalfH = (b.w / 2) * sinR + (b.h / 2) * cosR;
 
-          // Floor Limit
-          if (b.y + halfH > stageH) {
-            b.y = stageH - halfH;
+          // Bottom Floor Bound
+          if (b.y + effectiveHalfH > stageH) {
+            b.y = stageH - effectiveHalfH;
             b.vy = -b.vy * RESTITUTION;
-            b.vx *= 0.85; // Ground friction
-            b.vrot *= 0.8;
-            if (Math.abs(b.vy) < 0.3) b.vy = 0;
+            b.vx *= 0.65;  // Strong surface traction
+            b.vrot *= 0.5;
+
+            // Rest upright or flat to prevent infinite spin on floor
+            const snapToNearestQuarter = Math.round(b.rot / (Math.PI / 2)) * (Math.PI / 2);
+            b.rot += (snapToNearestQuarter - b.rot) * 0.08;
           }
 
-          // Left Wall Limit
-          if (b.x - halfW < 0) {
-            b.x = halfW;
-            b.vx = -b.vx * RESTITUTION;
-            b.vrot += 0.05;
-          }
-
-          // Right Wall Limit
-          if (b.x + halfW > stageW) {
-            b.x = stageW - halfW;
-            b.vx = -b.vx * RESTITUTION;
-            b.vrot -= 0.05;
-          }
-
-          // Ceiling Limit
-          if (b.y - halfH < 0) {
-            b.y = halfH;
+          // Top Bound
+          if (b.y - effectiveHalfH < 0) {
+            b.y = effectiveHalfH;
             b.vy = -b.vy * RESTITUTION;
           }
 
-          // 2. MULTI-BODY BRICK COLLISIONS (True Jenga Stacking & Stumbling)
+          // Left Wall Bound
+          if (b.x - effectiveHalfW < 0) {
+            b.x = effectiveHalfW;
+            b.vx = -b.vx * RESTITUTION;
+          }
+
+          // Right Wall Bound
+          if (b.x + effectiveHalfW > stageW) {
+            b.x = stageW - effectiveHalfW;
+            b.vx = -b.vx * RESTITUTION;
+          }
+
+          // 3. Jenga Solid Surface Separation (Blocks Push & Stack On Top of Each Other)
           for (let j = i + 1; j < bodies.length; j++) {
             const other = bodies[j];
             if (other.isPinned) continue;
 
             const dx = other.x - b.x;
             const dy = other.y - b.y;
-            const minDistX = (b.w + other.w) / 2 * 0.92;
-            const minDistY = (b.h + other.h) / 2 * 0.92;
 
-            if (Math.abs(dx) < minDistX && Math.abs(dy) < minDistY) {
-              const overlapX = minDistX - Math.abs(dx);
-              const overlapY = minDistY - Math.abs(dy);
+            const otherCos = Math.abs(Math.cos(other.rot));
+            const otherSin = Math.abs(Math.sin(other.rot));
+            const otherHalfW = (other.w / 2) * otherCos + (other.h / 2) * otherSin;
+            const otherHalfH = (other.w / 2) * otherSin + (other.h / 2) * otherCos;
+
+            const minSepX = (effectiveHalfW + otherHalfW) * 0.88;
+            const minSepY = (effectiveHalfH + otherHalfH) * 0.88;
+
+            if (Math.abs(dx) < minSepX && Math.abs(dy) < minSepY) {
+              const overlapX = minSepX - Math.abs(dx);
+              const overlapY = minSepY - Math.abs(dy);
 
               if (overlapX < overlapY) {
-                // Horizontal Push
+                // Lateral Collision (Sideways Stumble)
                 const signX = dx > 0 ? 1 : -1;
                 b.x -= overlapX * 0.5 * signX;
                 other.x += overlapX * 0.5 * signX;
 
-                const avgVx = (b.vx - other.vx) * RESTITUTION;
-                b.vx -= avgVx;
-                other.vx += avgVx;
+                const relVx = (b.vx - other.vx) * RESTITUTION;
+                b.vx -= relVx * 0.5;
+                other.vx += relVx * 0.5;
               } else {
-                // Vertical Push (Stacking On Top)
+                // Vertical Collision (Jenga Layering)
                 const signY = dy > 0 ? 1 : -1;
                 b.y -= overlapY * 0.5 * signY;
                 other.y += overlapY * 0.5 * signY;
 
-                const avgVy = (b.vy - other.vy) * RESTITUTION;
-                b.vy -= avgVy;
-                other.vy += avgVy;
+                const relVy = (b.vy - other.vy) * RESTITUTION;
+                b.vy -= relVy * 0.5;
+                other.vy += relVy * 0.5;
 
-                // Tumble torque when landing off-center
-                const tilt = (dx / minDistX) * 0.08;
-                b.vrot -= tilt;
-                other.vrot += tilt;
+                // Friction transfer between stacked faces
+                b.vx *= 0.8;
+                other.vx *= 0.8;
+                b.vrot *= 0.7;
+                other.vrot *= 0.7;
               }
             }
           }
 
-          // Apply Transform
+          // 4. Render Position
           const deg = (b.rot * 180 / Math.PI).toFixed(2);
           b.el.style.transform = `translate3d(${(b.x - b.w / 2).toFixed(1)}px, ${(b.y - b.h / 2).toFixed(1)}px, 0px) rotate(${deg}deg)`;
         }
@@ -1193,7 +1210,7 @@
 
       requestAnimationFrame(updatePhysics);
 
-      // Recalibrate Arena on Window Resize
+      // Window Resize Handling
       window.addEventListener('resize', () => {
         stageW = stage.clientWidth || 1200;
         stageH = stage.clientHeight || 640;
