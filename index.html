@@ -358,7 +358,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2, 3].
         </p>
       </div>
     </div>
@@ -407,7 +407,8 @@
   <div id="master-scroll-track" class="relative w-full h-[760vh]"></div>
 
   <!-- ==================== FINAL STATEMENT, PORTRAIT & METRICS ==================== -->
-  <footer id="books-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-12 px-6 sm:px-12 md:px-16 overflow-hidden">
+  <!-- Extended Bottom Clearance (pb-32 sm:pb-44 md:pb-52) for Natural Breathing Room -->
+  <footer id="books-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-24 md:pt-28 pb-32 sm:pb-44 md:pb-52 px-6 sm:px-12 md:px-16 overflow-hidden">
     
     <!-- Background Video -->
     <video 
@@ -420,8 +421,8 @@
       <source src="images-webp3/bg-loop.mp4" type="video/mp4" />
     </video>
 
-    <!-- Seamless Video Dissolve Gradient into the Software Section -->
-    <div class="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-b from-transparent via-[#0b0f14]/80 to-[#0b0f14] pointer-events-none z-10"></div>
+    <!-- Deepened Seamless Dissolve Gradient (h-96) into the Next Section -->
+    <div class="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-b from-transparent via-[#0b0f14]/85 to-[#0b0f14] pointer-events-none z-10"></div>
 
     <!-- Ambient Spotlight -->
     <div id="cursor-glow" class="pointer-events-none absolute w-[260px] h-[260px] rounded-full bg-[#d4f038]/10 blur-[80px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 opacity-0 z-10"></div>
@@ -590,15 +591,15 @@
 
   </footer>
 
-  <!-- ==================== REAL 2D RIGID-BODY SOFTWARE SECTION ==================== -->
-  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-10 pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
+  <!-- ==================== ENLARGED SOFTWARE SECTION ==================== -->
+  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-20 sm:pt-28 pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
     
-    <!-- Editorial Header -->
-    <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-8 px-2">
-      <h2 class="font-headline text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.92] uppercase text-white drop-shadow-[0_8px_24px_rgba(0,0,0,0.8)]">
+    <!-- Editorial Header (Scaled Up Headline & Subheadline) -->
+    <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-8 sm:mb-10 px-2">
+      <h2 class="font-headline text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tight leading-[0.88] uppercase text-white drop-shadow-[0_10px_28px_rgba(0,0,0,0.85)]">
         My Digital Toolbox
       </h2>
-      <p class="font-mono-code text-xs sm:text-sm text-neutral-400 uppercase tracking-wider mt-3">
+      <p class="font-mono-code text-sm sm:text-base md:text-lg text-neutral-300 uppercase tracking-wider mt-4">
         Softwares &amp; platforms I actively operate in live workflows.
       </p>
     </div>
@@ -1024,8 +1025,6 @@
       const startY = 20;
 
       // COLLISION CATEGORIES
-      // Category 0x0001: Active World (Floor, Walls, Fallen dynamic blocks)
-      // Category 0x0002: Static Unhovered Ghost Blocks (Never block falling blocks)
       const CAT_WORLD = 0x0001;
       const CAT_GHOST = 0x0002;
 
