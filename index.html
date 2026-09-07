@@ -53,7 +53,7 @@
 
     .font-pixel {
       font-family: 'Press Start 2P', monospace;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
     }
 
     .font-signature {
@@ -88,8 +88,8 @@
     }
 
     .scatter-char.active-scatter {
-      text-shadow: 0 0 14px rgba(212, 240, 56, 0.65);
-      filter: drop-shadow(0 0 8px rgba(212, 240, 56, 0.45));
+      text-shadow: 0 0 18px rgba(212, 240, 56, 0.35);
+      filter: drop-shadow(0 0 10px rgba(212, 240, 56, 0.2));
     }
 
     /* Interactive 3D Card Tilt Wrapper */
@@ -124,6 +124,7 @@
       }
     }
 
+    /* 20% Opacity Reduction on Dock-BG + Proportional Centering Offset */
     .canva-dock-bg {
       position: absolute;
       top: -10px;
@@ -136,7 +137,7 @@
       pointer-events: none;
       z-index: 0;
       border-radius: 26px;
-      opacity: 0.80;
+      opacity: 0.80; /* Reduced by 20% */
       filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.45));
     }
 
@@ -359,7 +360,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 3].
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
         </p>
       </div>
     </div>
@@ -433,47 +434,47 @@
       <!-- LEFT COLUMN -->
       <div class="flex-1 flex flex-col items-start text-left w-full max-w-2xl lg:max-w-[760px]">
         
-        <!-- 3-Line Statement Styled in 8-Bit Retro Pixel Type -->
-        <h2 id="scatter-statement" class="font-pixel text-left text-white text-lg sm:text-2xl md:text-[1.85rem] lg:text-[2.2rem] leading-[1.65] tracking-[0.03em] uppercase drop-shadow-[0_4px_0_rgba(0,0,0,0.9)] w-full">
+        <!-- 3-Line Statement -->
+        <h2 id="scatter-statement" class="font-statement-grotesk text-left text-white text-3xl sm:text-5xl md:text-[3.2rem] lg:text-[3.75rem] leading-[1.03] tracking-tight uppercase drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)] w-full">
           <span class="scatter-line block whitespace-nowrap">Let me handle your books</span>
           <span class="scatter-line block whitespace-nowrap"><span class="text-[#d4f038]">with precision</span> while you</span>
           <span class="scatter-line block whitespace-nowrap">focus on your vision</span>
         </h2>
 
-        <!-- Subheadline Styled with Terminal Command Prompt -->
-        <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 tracking-wider uppercase text-left opacity-95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] mt-5 flex items-center gap-2">
-          <span class="text-[#d4f038] font-bold">&gt;_</span> Clean books. Zero stress. More time to build what matters.
+        <!-- Subheadline -->
+        <p class="font-mono-code text-sm sm:text-base md:text-lg text-neutral-200 tracking-wide uppercase text-left opacity-95 drop-shadow-[0_4px_14px_rgba(0,0,0,0.85)] mt-3">
+          Clean books. Zero stress. More time to build what matters.
         </p>
 
         <!-- Floating Minimalist Key Metrics -->
         <div id="metrics-card" class="w-fit flex items-start gap-6 sm:gap-10 divide-x divide-white/20 mt-8 select-none">
           
-          <!-- Metric 1: 3000+ (Untouched 8-Bit Tumbler) -->
+          <!-- Metric 1: 3000+ -->
           <div class="flex flex-col items-start text-left pr-2">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[34px] flex items-center drop-shadow-[0_0_14px_rgba(212,240,56,0.45)]" data-target="3000+">
               0000
             </div>
-            <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-medium uppercase tracking-wider leading-relaxed mt-2.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <p class="font-mono-code text-[11px] sm:text-xs text-neutral-100 font-semibold uppercase tracking-wider leading-relaxed mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Transactions correctly<br/>categorized
             </p>
           </div>
 
-          <!-- Metric 2: 200+ (Untouched 8-Bit Tumbler) -->
+          <!-- Metric 2: 200+ -->
           <div class="flex flex-col items-start text-left pl-6 sm:pl-10 pr-2">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[34px] flex items-center drop-shadow-[0_0_14px_rgba(212,240,56,0.45)]" data-target="200+">
               000
             </div>
-            <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-medium uppercase tracking-wider leading-relaxed mt-2.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <p class="font-mono-code text-[11px] sm:text-xs text-neutral-100 font-semibold uppercase tracking-wider leading-relaxed mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Accounts successfully<br/>reconciled
             </p>
           </div>
 
-          <!-- Metric 3: 1000+ (Untouched 8-Bit Tumbler) -->
+          <!-- Metric 3: 1000+ -->
           <div class="flex flex-col items-start text-left pl-6 sm:pl-10">
             <div class="slot-counter font-pixel text-[#d4f038] text-xl sm:text-2xl lg:text-[28px] h-[34px] flex items-center drop-shadow-[0_0_14px_rgba(212,240,56,0.45)]" data-target="1000+">
               0000
             </div>
-            <p class="font-mono-code text-[11px] sm:text-xs text-neutral-300 font-medium uppercase tracking-wider leading-relaxed mt-2.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <p class="font-mono-code text-[11px] sm:text-xs text-neutral-100 font-semibold uppercase tracking-wider leading-relaxed mt-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               Invoices, Bills &amp; Checks<br/>Accurately Recorded
             </p>
           </div>
@@ -512,6 +513,7 @@
 
         <div class="flex items-center gap-2 sm:gap-2.5 relative z-10 my-auto">
           
+          <!-- Enlarged Brand Logo -->
           <div class="dock-app-item dock-logo-item shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]">
             <img 
               src="images/cream.png" 
@@ -521,6 +523,7 @@
             />
           </div>
 
+          <!-- Enlarged App Icon 1: Home -->
           <a href="#home" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
@@ -532,6 +535,7 @@
             />
           </a>
 
+          <!-- Enlarged App Icon 2: About me -->
           <a href="#about" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
@@ -543,6 +547,7 @@
             />
           </a>
 
+          <!-- Enlarged App Icon 3: Workflow -->
           <a href="#workflow" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
@@ -554,6 +559,7 @@
             />
           </a>
 
+          <!-- Enlarged App Icon 4: Intro -->
           <a href="#intro" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
@@ -594,13 +600,13 @@
   <!-- ==================== SOFTWARE SECTION ==================== -->
   <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-16 sm:pt-20 pb-20 sm:pb-28 px-4 sm:px-8 md:px-12 overflow-hidden">
     
-    <!-- Editorial Header Styled in Arcade Retro Pixel Type -->
+    <!-- Editorial Header (Matched to Space Grotesk Bold Statement Cadence) -->
     <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-6 sm:mb-8 px-2">
-      <h2 class="font-pixel text-xl sm:text-3xl md:text-4xl lg:text-[2.6rem] leading-[1.6] tracking-[0.03em] uppercase text-white drop-shadow-[0_4px_0_rgba(0,0,0,0.95)]">
+      <h2 class="font-statement-grotesk text-3xl sm:text-5xl md:text-[3.4rem] lg:text-[4.25rem] leading-[1.02] tracking-tight uppercase text-white drop-shadow-[0_12px_32px_rgba(0,0,0,0.95)]">
         My Digital Toolbox
       </h2>
-      <p class="font-mono-code text-xs sm:text-sm md:text-base text-neutral-300 uppercase tracking-wider mt-3.5 flex items-center gap-2">
-        <span class="text-[#d4f038] font-bold">&gt;_</span> Softwares &amp; platforms I actively operate in live workflows.
+      <p class="font-mono-code text-sm sm:text-base md:text-lg text-neutral-300 uppercase tracking-wider mt-2.5 sm:mt-3">
+        Softwares &amp; platforms I actively operate in live workflows.
       </p>
     </div>
 
@@ -628,6 +634,7 @@
 
         <div class="flex items-center gap-2 sm:gap-2.5 relative z-10 my-auto">
           
+          <!-- Enlarged Brand Logo -->
           <div class="dock-app-item dock-logo-item shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]">
             <img 
               src="images/cream.png" 
@@ -637,6 +644,7 @@
             />
           </div>
 
+          <!-- Enlarged App Icon 1: Home -->
           <a href="#home" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
@@ -648,6 +656,7 @@
             />
           </a>
 
+          <!-- Enlarged App Icon 2: About me -->
           <a href="#about" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
@@ -659,6 +668,7 @@
             />
           </a>
 
+          <!-- Enlarged App Icon 3: Workflow -->
           <a href="#workflow" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
@@ -670,6 +680,7 @@
             />
           </a>
 
+          <!-- Enlarged App Icon 4: Intro -->
           <a href="#intro" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
