@@ -106,8 +106,8 @@
     .canva-dock-wrapper {
       position: relative;
       width: fit-content;
-      max-width: min(94vw, 840px);
-      height: 80px;
+      max-width: min(94vw, 940px);
+      height: 96px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -118,24 +118,26 @@
 
     @media (min-width: 640px) {
       .canva-dock-wrapper {
-        height: 84px;
+        height: 102px;
         padding: 0 2.25rem;
         gap: 2.75rem;
       }
     }
 
+    /* 20% Opacity Reduction on Dock-BG + Proportional Centering Offset */
     .canva-dock-bg {
       position: absolute;
-      top: -14px;
-      bottom: 2px;
+      top: -10px;
+      bottom: 0px;
       left: 0;
       right: 0;
       width: 100%;
-      height: calc(100% + 16px);
+      height: calc(100% + 10px);
       object-fit: fill;
       pointer-events: none;
       z-index: 0;
-      border-radius: 24px;
+      border-radius: 26px;
+      opacity: 0.80; /* Reduced by 20% */
       filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.45));
     }
 
@@ -358,7 +360,7 @@
           <span class="text-xs sm:text-sm font-bold text-amber-900 uppercase tracking-wide font-mono-code">Sync Discrepancy</span>
         </div>
         <p class="text-xs sm:text-sm text-amber-800/90 mt-3.5 font-mono-code leading-relaxed">
-          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 2].
+          142 unreconciled entries synced via QuickBooks &amp; Xero[cite: 1, 3].
         </p>
       </div>
     </div>
@@ -498,7 +500,7 @@
 
     </div>
 
-    <!-- ==================== CANVA PNG FROSTED GLASS DOCK ==================== -->
+    <!-- ==================== DOCK 1: EDITORIAL TASKBAR ==================== -->
     <nav aria-label="Taskbar dock navigation" class="relative z-30 mt-10 sm:mt-14 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -509,9 +511,10 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <div class="flex items-center gap-1.5 relative z-10 my-auto">
+        <div class="flex items-center gap-2 sm:gap-2.5 relative z-10 my-auto">
           
-          <div class="dock-app-item dock-logo-item shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]">
+          <!-- Enlarged Brand Logo -->
+          <div class="dock-app-item dock-logo-item shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -520,47 +523,51 @@
             />
           </div>
 
-          <a href="#home" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Home">
+          <!-- Enlarged App Icon 1: Home -->
+          <a href="#home" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
-          <a href="#about" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to About Me">
+          <!-- Enlarged App Icon 2: About me -->
+          <a href="#about" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Workflow">
+          <!-- Enlarged App Icon 3: Workflow -->
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
-          <a href="#intro" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Intro">
+          <!-- Enlarged App Icon 4: Intro -->
+          <a href="#intro" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
@@ -570,7 +577,7 @@
           <button 
             id="email-copy-btn" 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
+            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
             title="Click to copy email address"
           >
             <span class="font-mono-code font-bold text-xs sm:text-[13px] tracking-tight text-neutral-900 whitespace-nowrap">
@@ -614,7 +621,7 @@
 
     </div>
 
-    <!-- ==================== FROSTED GLASS DOCK (TOOLBOX FOOTER) ==================== -->
+    <!-- ==================== DOCK 2: TOOLBOX TASKBAR ==================== -->
     <nav aria-label="Taskbar dock navigation toolbox" class="relative z-30 mt-16 sm:mt-20 w-full flex justify-center">
       <div class="canva-dock-wrapper">
         
@@ -625,9 +632,10 @@
           onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
         />
 
-        <div class="flex items-center gap-1.5 relative z-10 my-auto">
+        <div class="flex items-center gap-2 sm:gap-2.5 relative z-10 my-auto">
           
-          <div class="dock-app-item dock-logo-item shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]">
+          <!-- Enlarged Brand Logo -->
+          <div class="dock-app-item dock-logo-item shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]">
             <img 
               src="images/cream.png" 
               alt="Logo" 
@@ -636,47 +644,51 @@
             />
           </div>
 
-          <a href="#home" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Home">
+          <!-- Enlarged App Icon 1: Home -->
+          <a href="#home" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Home">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Home
             </span>
             <img 
               src="images/home.png" 
               alt="Home" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
-          <a href="#about" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to About Me">
+          <!-- Enlarged App Icon 2: About me -->
+          <a href="#about" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to About Me">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               About me
             </span>
             <img 
               src="images/about me.png" 
               alt="About Me" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
-          <a href="#workflow" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Workflow">
+          <!-- Enlarged App Icon 3: Workflow -->
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Workflow">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Workflow
             </span>
             <img 
               src="images/workflow.png" 
               alt="Workflow" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
-          <a href="#intro" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Intro">
+          <!-- Enlarged App Icon 4: Intro -->
+          <a href="#intro" class="dock-app-item group shrink-0 w-[66px] h-[66px] sm:w-[74px] sm:h-[74px]" aria-label="Navigate to Intro">
             <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
               Intro
             </span>
             <img 
               src="images/intro.png" 
               alt="Intro" 
-              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[18px]"
             />
           </a>
 
@@ -685,7 +697,7 @@
         <div class="flex items-center relative z-10 my-auto">
           <button 
             onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
-            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
+            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
             title="Click to copy email address"
           >
             <span class="font-mono-code font-bold text-xs sm:text-[13px] tracking-tight text-neutral-900 whitespace-nowrap">
