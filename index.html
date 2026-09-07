@@ -591,7 +591,7 @@
   </footer>
 
   <!-- ==================== SOFTWARE SECTION ==================== -->
-  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-16 sm:pt-20 pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
+  <section id="software-section" class="relative z-30 bg-[#0b0f14] text-white flex flex-col justify-start pt-16 sm:pt-20 pb-20 sm:pb-28 px-4 sm:px-8 md:px-12 overflow-hidden">
     
     <!-- Editorial Header (Tightened Spacing & Line-Height) -->
     <div class="w-full max-w-7xl mx-auto flex flex-col items-start select-none relative z-10 mb-6 sm:mb-8 px-2">
@@ -613,6 +613,92 @@
       <div id="physics-body-container" class="relative w-full h-full pointer-events-auto"></div>
 
     </div>
+
+    <!-- ==================== FROSTED GLASS DOCK (TOOLBOX FOOTER) ==================== -->
+    <nav aria-label="Taskbar dock navigation toolbox" class="relative z-30 mt-16 sm:mt-20 w-full flex justify-center">
+      <div class="canva-dock-wrapper">
+        
+        <img 
+          src="images/dock-bg.png" 
+          alt="Frosted Glass Dock" 
+          class="canva-dock-bg"
+          onerror="this.style.display='none'; this.parentElement.style.background='rgba(255,255,255,0.38)'; this.parentElement.style.backdropFilter='blur(28px)';"
+        />
+
+        <div class="flex items-center gap-1.5 relative z-10 my-auto">
+          
+          <div class="dock-app-item dock-logo-item shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]">
+            <img 
+              src="images/cream.png" 
+              alt="Logo" 
+              class="w-full h-full object-contain pointer-events-none"
+              onerror="this.src='images-webp3/logo.png';"
+            />
+          </div>
+
+          <a href="#home" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Home">
+            <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              Home
+            </span>
+            <img 
+              src="images/home.png" 
+              alt="Home" 
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+            />
+          </a>
+
+          <a href="#about" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to About Me">
+            <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              About me
+            </span>
+            <img 
+              src="images/about me.png" 
+              alt="About Me" 
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+            />
+          </a>
+
+          <a href="#workflow" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Workflow">
+            <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              Workflow
+            </span>
+            <img 
+              src="images/workflow.png" 
+              alt="Workflow" 
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+            />
+          </a>
+
+          <a href="#intro" class="dock-app-item group shrink-0 w-[54px] h-[54px] sm:w-[60px] sm:h-[60px]" aria-label="Navigate to Intro">
+            <span class="dock-tooltip px-3 py-1 rounded-lg text-xs font-mono-code font-bold text-white tracking-wider uppercase">
+              Intro
+            </span>
+            <img 
+              src="images/intro.png" 
+              alt="Intro" 
+              class="dock-app-icon w-full h-full object-contain pointer-events-none rounded-[15px]"
+            />
+          </a>
+
+        </div>
+
+        <div class="flex items-center relative z-10 my-auto">
+          <button 
+            onclick="navigator.clipboard.writeText('elaineyap.ph@gmail.com'); const hint=this.querySelector('.copy-hint'); hint.textContent='COPIED!'; setTimeout(()=>hint.textContent='CLICK TO COPY', 2000);"
+            class="email-capsule relative bg-white text-slate-900 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full flex items-center justify-center shadow-md border border-black/10 cursor-pointer group focus:outline-none select-none"
+            title="Click to copy email address"
+          >
+            <span class="font-mono-code font-bold text-xs sm:text-[13px] tracking-tight text-neutral-900 whitespace-nowrap">
+              elaineyap.ph@gmail.com
+            </span>
+            <span class="copy-hint absolute -top-9 left-1/2 -translate-x-1/2 px-2.5 py-1 rounded bg-black/85 text-white font-mono-code text-[11px] tracking-wider uppercase opacity-0 pointer-events-none transition-opacity duration-200 shadow-md">
+              CLICK TO COPY
+            </span>
+          </button>
+        </div>
+
+      </div>
+    </nav>
 
   </section>
 
@@ -1061,7 +1147,6 @@
         const initX = padX + (col * (iconW + gapX)) + (iconW / 2);
         const initY = startY + (row * (iconH + gapY)) + (iconH / 2);
 
-        // Body starts in GHOST category: It collides with NOTHING while waiting in the grid
         const body = Bodies.rectangle(initX, initY, iconW, iconH, {
           isStatic: true,
           restitution: 0.28,
@@ -1070,7 +1155,7 @@
           chamfer: { radius: 14 },
           collisionFilter: {
             category: CAT_GHOST,
-            mask: 0 // Collides with nothing
+            mask: 0
           }
         });
 
@@ -1101,24 +1186,20 @@
         // Hover Trigger
         el.addEventListener('mouseenter', (e) => {
           if (!itemData.hasFallen) {
-            // First hover: Drop straight down past all unhovered blocks
             itemData.hasFallen = true;
             el.classList.remove('is-pinned');
 
-            // Promote to full physical body: Collides only with Floor, Walls & other Fallen Blocks
             body.collisionFilter.category = CAT_WORLD;
             body.collisionFilter.mask = CAT_WORLD;
 
             Body.setStatic(body, false);
 
-            // Natural initial drop impulse
             Body.setVelocity(body, {
               x: (Math.random() - 0.5) * 1.5,
               y: 2.5 + Math.random() * 1.2
             });
             Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.04);
           } else {
-            // DIRECTIONAL KICK AWAY FROM CURSOR (Matter.js force transfer)
             const rect = el.getBoundingClientRect();
             const brickCenterX = rect.left + rect.width / 2;
             const brickCenterY = rect.top + rect.height / 2;
